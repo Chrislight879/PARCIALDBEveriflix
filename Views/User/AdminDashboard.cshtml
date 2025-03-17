@@ -1,0 +1,29 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Dashboard de Administrador";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<h2>Bienvenido Administrador, @ViewBag.UserName!</h2>
+
+<p>¡Estás en el Dashboard de Administrador!</p>
+
+<!-- Mostrar foto de perfil -->
+<div class="profile-container">
+    @if (Model.ImgURL != null && !string.IsNullOrEmpty(Model.ImgURL))
+    {
+        <img src="@Url.Content(Model.ImgURL)" alt="Foto de perfil" class="profile-img" />
+    }
+    else
+    {
+        <!-- Imagen por defecto si no hay imagen de perfil -->
+        <img src="~/Content/Images/default-profile.jpg" alt="Foto de perfil" class="profile-img" />
+    }
+</div>
+
+<!-- Aquí puedes agregar enlaces a secciones específicas para el administrador -->
+<p><a href="@Url.Action("ManageUsers", "Admin")">Administrar Usuarios</a></p>

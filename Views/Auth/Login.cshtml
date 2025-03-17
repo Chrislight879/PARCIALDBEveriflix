@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+
+<form method="post" action="/Auth/Login">
+    <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+    </div>
+
+    <div>
+        <button type="submit">Login</button>
+    </div>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div style="color: red;">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+</form>
+
+<p>Don't have an account? <a href="/Auth/SignUp">Sign up here</a></p>

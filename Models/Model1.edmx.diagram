@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d40f7879ecb4495db17f55833807eaff" Name="Diagram1">
+        <EntityTypeShape EntityType="EveryflixDBModel.Album" Width="1.5" PointX="9.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Artista" Width="1.5" PointX="7.5" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Cancion" Width="1.5" PointX="13" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Capitulo" Width="1.5" PointX="15" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Categoria" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Clasificacion" Width="1.5" PointX="8.25" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Contenido" Width="1.5" PointX="17.25" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Director" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Disquera" Width="1.5" PointX="5.25" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.GeneroCancion" Width="1.5" PointX="10.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Pelicula" Width="1.5" PointX="7.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Productor" Width="1.5" PointX="5.25" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Seguidor" Width="1.5" PointX="5.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Serie" Width="1.5" PointX="10.5" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Temporada" Width="1.5" PointX="12.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.TipoContenido" Width="1.5" PointX="8.25" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.TipoUsuario" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Usuario" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.VotacionContenido" Width="1.5" PointX="19.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EveryflixDBModel.Voto" Width="1.5" PointX="21.75" PointY="12.125" IsExpanded="true" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Album_Artista" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Cancion_Album" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Artista_Disquera" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Artista_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Cancion_Artista" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Cancion_GeneroCancion" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Cancion_TipoContenido" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Contenido_Cancion" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Capitulo_Temporada" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Pelicula_Categoria" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Serie_Categoria" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Pelicula_CLasificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Serie_Clasificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Contenido_Pelicula" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Contenido_Serie" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_VotacionContenido_Contenido1" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_VotacionContenido_Contenido2" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_VotacionContenido_Contenido3" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_VotacionContenido_Contenido4" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Voto_Contenido" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Director_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Pelicula_Director" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Serie_Director" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Disquera_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Pelicula_Productor" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Pelicula_TipoContenido" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Productor_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Serie_Productor" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Seguidor_UsuarioSeguidor" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Seguidor_UsuarioSiguiendo" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Serie_TipoContenido" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Temporada_Serie" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_VotacionContenido_TipoContenido" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Usuario_TipoUsuario" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Voto_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="EveryflixDBModel.FK_Voto_VotacionContenido" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

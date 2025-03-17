@@ -1,0 +1,1931 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EveryflixDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Id_Album" />
+          </Key>
+          <Property Name="Id_Album" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ImgURL" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Id_Artista" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Artista">
+          <Key>
+            <PropertyRef Name="Id_Artista" />
+          </Key>
+          <Property Name="Id_Artista" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_Usuario" Type="bigint" Nullable="false" />
+          <Property Name="Id_Disquera" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Cancion">
+          <Key>
+            <PropertyRef Name="Id_Cancion" />
+          </Key>
+          <Property Name="Id_Cancion" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Duracion" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ImgURL" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Id_Album" Type="bigint" />
+          <Property Name="Id_Artista" Type="bigint" Nullable="false" />
+          <Property Name="Id_GeneroCancion" Type="bigint" Nullable="false" />
+          <Property Name="Id_TipoContenido" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Capitulo">
+          <Key>
+            <PropertyRef Name="Id_Capitulo" />
+          </Key>
+          <Property Name="Id_Capitulo" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Duracion" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Id_Temporada" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id_Categoria" />
+          </Key>
+          <Property Name="Id_Categoria" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clasificacion">
+          <Key>
+            <PropertyRef Name="Id_Clasificacion" />
+          </Key>
+          <Property Name="Id_Clasificacion" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Contenido">
+          <Key>
+            <PropertyRef Name="Id_Contenido" />
+          </Key>
+          <Property Name="Id_Contenido" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Serie" Type="bigint" />
+          <Property Name="Id_Pelicula" Type="bigint" />
+          <Property Name="Id_Cancion" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Director">
+          <Key>
+            <PropertyRef Name="Id_Director" />
+          </Key>
+          <Property Name="Id_Director" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_Usuario" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Disquera">
+          <Key>
+            <PropertyRef Name="Id_Disquera" />
+          </Key>
+          <Property Name="Id_Disquera" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_Usuario" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GeneroCancion">
+          <Key>
+            <PropertyRef Name="Id_GeneroCancion" />
+          </Key>
+          <Property Name="Id_GeneroCancion" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pelicula">
+          <Key>
+            <PropertyRef Name="Id_pelicula" />
+          </Key>
+          <Property Name="Id_pelicula" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Duracion" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ImgURL" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Id_Productor" Type="bigint" />
+          <Property Name="Id_Categoria" Type="bigint" Nullable="false" />
+          <Property Name="Id_Clasificacion" Type="bigint" Nullable="false" />
+          <Property Name="Id_Director" Type="bigint" />
+          <Property Name="Id_TipoContenido" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Productor">
+          <Key>
+            <PropertyRef Name="Id_Productor" />
+          </Key>
+          <Property Name="Id_Productor" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_Usuario" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seguidor">
+          <Key>
+            <PropertyRef Name="Id_Seguidor" />
+          </Key>
+          <Property Name="Id_Seguidor" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_UsuarioSeguidor" Type="bigint" Nullable="false" />
+          <Property Name="Id_UsuarioSiguiendo" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Serie">
+          <Key>
+            <PropertyRef Name="Id_Serie" />
+          </Key>
+          <Property Name="Id_Serie" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ImgURL" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Id_Categoria" Type="bigint" Nullable="false" />
+          <Property Name="Id_Productor" Type="bigint" />
+          <Property Name="Id_Clasificacion" Type="bigint" Nullable="false" />
+          <Property Name="Id_Director" Type="bigint" />
+          <Property Name="Id_TipoContenido" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Temporada">
+          <Key>
+            <PropertyRef Name="Id_Temporada" />
+          </Key>
+          <Property Name="Id_Temporada" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_Serie" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoContenido">
+          <Key>
+            <PropertyRef Name="Id_TipoContenido" />
+          </Key>
+          <Property Name="Id_TipoContenido" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoUsuario">
+          <Key>
+            <PropertyRef Name="id_TipoUsuario" />
+          </Key>
+          <Property Name="id_TipoUsuario" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id_Usuario" />
+          </Key>
+          <Property Name="id_Usuario" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Correo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Id_TipoUsuario" Type="bigint" Nullable="false" />
+          <Property Name="ImgURL" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VotacionContenido">
+          <Key>
+            <PropertyRef Name="Id_VotacionContenido" />
+          </Key>
+          <Property Name="Id_VotacionContenido" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" />
+          <Property Name="Id_TipoContenido" Type="bigint" Nullable="false" />
+          <Property Name="Id_Contenido1" Type="bigint" />
+          <Property Name="Id_Contenido2" Type="bigint" />
+          <Property Name="Id_Contenido3" Type="bigint" />
+          <Property Name="Id_Contenido4" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Voto">
+          <Key>
+            <PropertyRef Name="Id_Voto" />
+          </Key>
+          <Property Name="Id_Voto" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Usuario" Type="bigint" Nullable="false" />
+          <Property Name="Id_Contenido" Type="bigint" Nullable="false" />
+          <Property Name="Id_VotacionContenido" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Album_Artista">
+          <End Role="Artista" Type="Self.Artista" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Album" Type="Self.Album" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artista">
+              <PropertyRef Name="Id_Artista" />
+            </Principal>
+            <Dependent Role="Album">
+              <PropertyRef Name="Id_Artista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artista_Disquera">
+          <End Role="Disquera" Type="Self.Disquera" Multiplicity="0..1" />
+          <End Role="Artista" Type="Self.Artista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disquera">
+              <PropertyRef Name="Id_Disquera" />
+            </Principal>
+            <Dependent Role="Artista">
+              <PropertyRef Name="Id_Disquera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artista_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Artista" Type="Self.Artista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Artista">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_Album">
+          <End Role="Album" Type="Self.Album" Multiplicity="0..1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="Id_Album" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_Album" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_Artista">
+          <End Role="Artista" Type="Self.Artista" Multiplicity="1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artista">
+              <PropertyRef Name="Id_Artista" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_Artista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_GeneroCancion">
+          <End Role="GeneroCancion" Type="Self.GeneroCancion" Multiplicity="1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneroCancion">
+              <PropertyRef Name="Id_GeneroCancion" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_GeneroCancion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Capitulo_Temporada">
+          <End Role="Temporada" Type="Self.Temporada" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Capitulo" Type="Self.Capitulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Temporada">
+              <PropertyRef Name="Id_Temporada" />
+            </Principal>
+            <Dependent Role="Capitulo">
+              <PropertyRef Name="Id_Temporada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contenido_Cancion">
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cancion">
+              <PropertyRef Name="Id_Cancion" />
+            </Principal>
+            <Dependent Role="Contenido">
+              <PropertyRef Name="Id_Cancion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contenido_Pelicula">
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pelicula">
+              <PropertyRef Name="Id_pelicula" />
+            </Principal>
+            <Dependent Role="Contenido">
+              <PropertyRef Name="Id_Pelicula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contenido_Serie">
+          <End Role="Serie" Type="Self.Serie" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="Id_Serie" />
+            </Principal>
+            <Dependent Role="Contenido">
+              <PropertyRef Name="Id_Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Director_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Director" Type="Self.Director" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Director">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Disquera_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Disquera" Type="Self.Disquera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Disquera">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_Categoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id_Categoria" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_CLasificacion">
+          <End Role="Clasificacion" Type="Self.Clasificacion" Multiplicity="1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clasificacion">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_Director">
+          <End Role="Director" Type="Self.Director" Multiplicity="0..1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Director">
+              <PropertyRef Name="Id_Director" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Director" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_Productor">
+          <End Role="Productor" Type="Self.Productor" Multiplicity="0..1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productor">
+              <PropertyRef Name="Id_Productor" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Productor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productor_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Productor" Type="Self.Productor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Productor">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seguidor_UsuarioSeguidor">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Seguidor" Type="Self.Seguidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Seguidor">
+              <PropertyRef Name="Id_UsuarioSeguidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seguidor_UsuarioSiguiendo">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Seguidor" Type="Self.Seguidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Seguidor">
+              <PropertyRef Name="Id_UsuarioSiguiendo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Categoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id_Categoria" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Clasificacion">
+          <End Role="Clasificacion" Type="Self.Clasificacion" Multiplicity="1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clasificacion">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Director">
+          <End Role="Director" Type="Self.Director" Multiplicity="0..1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Director">
+              <PropertyRef Name="Id_Director" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Director" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Productor">
+          <End Role="Productor" Type="Self.Productor" Multiplicity="0..1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productor">
+              <PropertyRef Name="Id_Productor" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Productor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Temporada_Serie">
+          <End Role="Serie" Type="Self.Serie" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Temporada" Type="Self.Temporada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="Id_Serie" />
+            </Principal>
+            <Dependent Role="Temporada">
+              <PropertyRef Name="Id_Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoUsuario">
+          <End Role="TipoUsuario" Type="Self.TipoUsuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUsuario">
+              <PropertyRef Name="id_TipoUsuario" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Id_TipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido1">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido2">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido3">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido3" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido4">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido4" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voto_Contenido">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Voto" Type="Self.Voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="Voto">
+              <PropertyRef Name="Id_Contenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voto_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Voto" Type="Self.Voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Voto">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voto_VotacionContenido">
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Voto" Type="Self.Voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VotacionContenido">
+              <PropertyRef Name="Id_VotacionContenido" />
+            </Principal>
+            <Dependent Role="Voto">
+              <PropertyRef Name="Id_VotacionContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EveryflixDBModelStoreContainer">
+          <EntitySet Name="Album" EntityType="Self.Album" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Artista" EntityType="Self.Artista" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cancion" EntityType="Self.Cancion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Capitulo" EntityType="Self.Capitulo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clasificacion" EntityType="Self.Clasificacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contenido" EntityType="Self.Contenido" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Director" EntityType="Self.Director" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Disquera" EntityType="Self.Disquera" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GeneroCancion" EntityType="Self.GeneroCancion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pelicula" EntityType="Self.Pelicula" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Productor" EntityType="Self.Productor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seguidor" EntityType="Self.Seguidor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Serie" EntityType="Self.Serie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Temporada" EntityType="Self.Temporada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoContenido" EntityType="Self.TipoContenido" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoUsuario" EntityType="Self.TipoUsuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VotacionContenido" EntityType="Self.VotacionContenido" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Voto" EntityType="Self.Voto" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Album_Artista" Association="Self.FK_Album_Artista">
+            <End Role="Artista" EntitySet="Artista" />
+            <End Role="Album" EntitySet="Album" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artista_Disquera" Association="Self.FK_Artista_Disquera">
+            <End Role="Disquera" EntitySet="Disquera" />
+            <End Role="Artista" EntitySet="Artista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artista_Usuario" Association="Self.FK_Artista_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Artista" EntitySet="Artista" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_Album" Association="Self.FK_Cancion_Album">
+            <End Role="Album" EntitySet="Album" />
+            <End Role="Cancion" EntitySet="Cancion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_Artista" Association="Self.FK_Cancion_Artista">
+            <End Role="Artista" EntitySet="Artista" />
+            <End Role="Cancion" EntitySet="Cancion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_GeneroCancion" Association="Self.FK_Cancion_GeneroCancion">
+            <End Role="GeneroCancion" EntitySet="GeneroCancion" />
+            <End Role="Cancion" EntitySet="Cancion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_TipoContenido" Association="Self.FK_Cancion_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenido" />
+            <End Role="Cancion" EntitySet="Cancion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Capitulo_Temporada" Association="Self.FK_Capitulo_Temporada">
+            <End Role="Temporada" EntitySet="Temporada" />
+            <End Role="Capitulo" EntitySet="Capitulo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contenido_Cancion" Association="Self.FK_Contenido_Cancion">
+            <End Role="Cancion" EntitySet="Cancion" />
+            <End Role="Contenido" EntitySet="Contenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contenido_Pelicula" Association="Self.FK_Contenido_Pelicula">
+            <End Role="Pelicula" EntitySet="Pelicula" />
+            <End Role="Contenido" EntitySet="Contenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contenido_Serie" Association="Self.FK_Contenido_Serie">
+            <End Role="Serie" EntitySet="Serie" />
+            <End Role="Contenido" EntitySet="Contenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Director_Usuario" Association="Self.FK_Director_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Director" EntitySet="Director" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Disquera_Usuario" Association="Self.FK_Disquera_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Disquera" EntitySet="Disquera" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_Categoria" Association="Self.FK_Pelicula_Categoria">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Pelicula" EntitySet="Pelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_CLasificacion" Association="Self.FK_Pelicula_CLasificacion">
+            <End Role="Clasificacion" EntitySet="Clasificacion" />
+            <End Role="Pelicula" EntitySet="Pelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_Director" Association="Self.FK_Pelicula_Director">
+            <End Role="Director" EntitySet="Director" />
+            <End Role="Pelicula" EntitySet="Pelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_Productor" Association="Self.FK_Pelicula_Productor">
+            <End Role="Productor" EntitySet="Productor" />
+            <End Role="Pelicula" EntitySet="Pelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_TipoContenido" Association="Self.FK_Pelicula_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenido" />
+            <End Role="Pelicula" EntitySet="Pelicula" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productor_Usuario" Association="Self.FK_Productor_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Productor" EntitySet="Productor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seguidor_UsuarioSeguidor" Association="Self.FK_Seguidor_UsuarioSeguidor">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Seguidor" EntitySet="Seguidor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seguidor_UsuarioSiguiendo" Association="Self.FK_Seguidor_UsuarioSiguiendo">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Seguidor" EntitySet="Seguidor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Categoria" Association="Self.FK_Serie_Categoria">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Serie" EntitySet="Serie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Clasificacion" Association="Self.FK_Serie_Clasificacion">
+            <End Role="Clasificacion" EntitySet="Clasificacion" />
+            <End Role="Serie" EntitySet="Serie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Director" Association="Self.FK_Serie_Director">
+            <End Role="Director" EntitySet="Director" />
+            <End Role="Serie" EntitySet="Serie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Productor" Association="Self.FK_Serie_Productor">
+            <End Role="Productor" EntitySet="Productor" />
+            <End Role="Serie" EntitySet="Serie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_TipoContenido" Association="Self.FK_Serie_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenido" />
+            <End Role="Serie" EntitySet="Serie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Temporada_Serie" Association="Self.FK_Temporada_Serie">
+            <End Role="Serie" EntitySet="Serie" />
+            <End Role="Temporada" EntitySet="Temporada" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoUsuario" Association="Self.FK_Usuario_TipoUsuario">
+            <End Role="TipoUsuario" EntitySet="TipoUsuario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido1" Association="Self.FK_VotacionContenido_Contenido1">
+            <End Role="Contenido" EntitySet="Contenido" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido2" Association="Self.FK_VotacionContenido_Contenido2">
+            <End Role="Contenido" EntitySet="Contenido" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido3" Association="Self.FK_VotacionContenido_Contenido3">
+            <End Role="Contenido" EntitySet="Contenido" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido4" Association="Self.FK_VotacionContenido_Contenido4">
+            <End Role="Contenido" EntitySet="Contenido" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_TipoContenido" Association="Self.FK_VotacionContenido_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenido" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenido" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voto_Contenido" Association="Self.FK_Voto_Contenido">
+            <End Role="Contenido" EntitySet="Contenido" />
+            <End Role="Voto" EntitySet="Voto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voto_Usuario" Association="Self.FK_Voto_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Voto" EntitySet="Voto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voto_VotacionContenido" Association="Self.FK_Voto_VotacionContenido">
+            <End Role="VotacionContenido" EntitySet="VotacionContenido" />
+            <End Role="Voto" EntitySet="Voto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EveryflixDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Id_Album" />
+          </Key>
+          <Property Name="Id_Album" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImgURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Artista" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Artista" Relationship="Self.FK_Album_Artista" FromRole="Album" ToRole="Artista" />
+          <NavigationProperty Name="Cancions" Relationship="Self.FK_Cancion_Album" FromRole="Album" ToRole="Cancion" />
+        </EntityType>
+        <EntityType Name="Artista">
+          <Key>
+            <PropertyRef Name="Id_Artista" />
+          </Key>
+          <Property Name="Id_Artista" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Usuario" Type="Int64" Nullable="false" />
+          <Property Name="Id_Disquera" Type="Int64" />
+          <NavigationProperty Name="Albums" Relationship="Self.FK_Album_Artista" FromRole="Artista" ToRole="Album" />
+          <NavigationProperty Name="Disquera" Relationship="Self.FK_Artista_Disquera" FromRole="Artista" ToRole="Disquera" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Artista_Usuario" FromRole="Artista" ToRole="Usuario" />
+          <NavigationProperty Name="Cancions" Relationship="Self.FK_Cancion_Artista" FromRole="Artista" ToRole="Cancion" />
+        </EntityType>
+        <EntityType Name="Cancion">
+          <Key>
+            <PropertyRef Name="Id_Cancion" />
+          </Key>
+          <Property Name="Id_Cancion" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duracion" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ImgURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Album" Type="Int64" />
+          <Property Name="Id_Artista" Type="Int64" Nullable="false" />
+          <Property Name="Id_GeneroCancion" Type="Int64" Nullable="false" />
+          <Property Name="Id_TipoContenido" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Album" Relationship="Self.FK_Cancion_Album" FromRole="Cancion" ToRole="Album" />
+          <NavigationProperty Name="Artista" Relationship="Self.FK_Cancion_Artista" FromRole="Cancion" ToRole="Artista" />
+          <NavigationProperty Name="GeneroCancion" Relationship="Self.FK_Cancion_GeneroCancion" FromRole="Cancion" ToRole="GeneroCancion" />
+          <NavigationProperty Name="TipoContenido" Relationship="Self.FK_Cancion_TipoContenido" FromRole="Cancion" ToRole="TipoContenido" />
+          <NavigationProperty Name="Contenidoes" Relationship="Self.FK_Contenido_Cancion" FromRole="Cancion" ToRole="Contenido" />
+        </EntityType>
+        <EntityType Name="Capitulo">
+          <Key>
+            <PropertyRef Name="Id_Capitulo" />
+          </Key>
+          <Property Name="Id_Capitulo" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duracion" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Id_Temporada" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Temporada" Relationship="Self.FK_Capitulo_Temporada" FromRole="Capitulo" ToRole="Temporada" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id_Categoria" />
+          </Key>
+          <Property Name="Id_Categoria" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK_Pelicula_Categoria" FromRole="Categoria" ToRole="Pelicula" />
+          <NavigationProperty Name="Series" Relationship="Self.FK_Serie_Categoria" FromRole="Categoria" ToRole="Serie" />
+        </EntityType>
+        <EntityType Name="Clasificacion">
+          <Key>
+            <PropertyRef Name="Id_Clasificacion" />
+          </Key>
+          <Property Name="Id_Clasificacion" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK_Pelicula_CLasificacion" FromRole="Clasificacion" ToRole="Pelicula" />
+          <NavigationProperty Name="Series" Relationship="Self.FK_Serie_Clasificacion" FromRole="Clasificacion" ToRole="Serie" />
+        </EntityType>
+        <EntityType Name="Contenido">
+          <Key>
+            <PropertyRef Name="Id_Contenido" />
+          </Key>
+          <Property Name="Id_Contenido" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Serie" Type="Int64" />
+          <Property Name="Id_Pelicula" Type="Int64" />
+          <Property Name="Id_Cancion" Type="Int64" />
+          <NavigationProperty Name="Cancion" Relationship="Self.FK_Contenido_Cancion" FromRole="Contenido" ToRole="Cancion" />
+          <NavigationProperty Name="Pelicula" Relationship="Self.FK_Contenido_Pelicula" FromRole="Contenido" ToRole="Pelicula" />
+          <NavigationProperty Name="Serie" Relationship="Self.FK_Contenido_Serie" FromRole="Contenido" ToRole="Serie" />
+          <NavigationProperty Name="VotacionContenidoes" Relationship="Self.FK_VotacionContenido_Contenido1" FromRole="Contenido" ToRole="VotacionContenido" />
+          <NavigationProperty Name="VotacionContenidoes1" Relationship="Self.FK_VotacionContenido_Contenido2" FromRole="Contenido" ToRole="VotacionContenido" />
+          <NavigationProperty Name="VotacionContenidoes2" Relationship="Self.FK_VotacionContenido_Contenido3" FromRole="Contenido" ToRole="VotacionContenido" />
+          <NavigationProperty Name="VotacionContenidoes3" Relationship="Self.FK_VotacionContenido_Contenido4" FromRole="Contenido" ToRole="VotacionContenido" />
+          <NavigationProperty Name="Votoes" Relationship="Self.FK_Voto_Contenido" FromRole="Contenido" ToRole="Voto" />
+        </EntityType>
+        <EntityType Name="Director">
+          <Key>
+            <PropertyRef Name="Id_Director" />
+          </Key>
+          <Property Name="Id_Director" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Usuario" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Director_Usuario" FromRole="Director" ToRole="Usuario" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK_Pelicula_Director" FromRole="Director" ToRole="Pelicula" />
+          <NavigationProperty Name="Series" Relationship="Self.FK_Serie_Director" FromRole="Director" ToRole="Serie" />
+        </EntityType>
+        <EntityType Name="Disquera">
+          <Key>
+            <PropertyRef Name="Id_Disquera" />
+          </Key>
+          <Property Name="Id_Disquera" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Usuario" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Artistas" Relationship="Self.FK_Artista_Disquera" FromRole="Disquera" ToRole="Artista" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Disquera_Usuario" FromRole="Disquera" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="GeneroCancion">
+          <Key>
+            <PropertyRef Name="Id_GeneroCancion" />
+          </Key>
+          <Property Name="Id_GeneroCancion" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cancions" Relationship="Self.FK_Cancion_GeneroCancion" FromRole="GeneroCancion" ToRole="Cancion" />
+        </EntityType>
+        <EntityType Name="Pelicula">
+          <Key>
+            <PropertyRef Name="Id_pelicula" />
+          </Key>
+          <Property Name="Id_pelicula" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duracion" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ImgURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Productor" Type="Int64" />
+          <Property Name="Id_Categoria" Type="Int64" Nullable="false" />
+          <Property Name="Id_Clasificacion" Type="Int64" Nullable="false" />
+          <Property Name="Id_Director" Type="Int64" />
+          <Property Name="Id_TipoContenido" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK_Pelicula_Categoria" FromRole="Pelicula" ToRole="Categoria" />
+          <NavigationProperty Name="Clasificacion" Relationship="Self.FK_Pelicula_CLasificacion" FromRole="Pelicula" ToRole="Clasificacion" />
+          <NavigationProperty Name="Contenidoes" Relationship="Self.FK_Contenido_Pelicula" FromRole="Pelicula" ToRole="Contenido" />
+          <NavigationProperty Name="Director" Relationship="Self.FK_Pelicula_Director" FromRole="Pelicula" ToRole="Director" />
+          <NavigationProperty Name="Productor" Relationship="Self.FK_Pelicula_Productor" FromRole="Pelicula" ToRole="Productor" />
+          <NavigationProperty Name="TipoContenido" Relationship="Self.FK_Pelicula_TipoContenido" FromRole="Pelicula" ToRole="TipoContenido" />
+        </EntityType>
+        <EntityType Name="Productor">
+          <Key>
+            <PropertyRef Name="Id_Productor" />
+          </Key>
+          <Property Name="Id_Productor" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Usuario" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK_Pelicula_Productor" FromRole="Productor" ToRole="Pelicula" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Productor_Usuario" FromRole="Productor" ToRole="Usuario" />
+          <NavigationProperty Name="Series" Relationship="Self.FK_Serie_Productor" FromRole="Productor" ToRole="Serie" />
+        </EntityType>
+        <EntityType Name="Seguidor">
+          <Key>
+            <PropertyRef Name="Id_Seguidor" />
+          </Key>
+          <Property Name="Id_Seguidor" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_UsuarioSeguidor" Type="Int64" Nullable="false" />
+          <Property Name="Id_UsuarioSiguiendo" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Seguidor_UsuarioSeguidor" FromRole="Seguidor" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Seguidor_UsuarioSiguiendo" FromRole="Seguidor" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Serie">
+          <Key>
+            <PropertyRef Name="Id_Serie" />
+          </Key>
+          <Property Name="Id_Serie" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImgURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Categoria" Type="Int64" Nullable="false" />
+          <Property Name="Id_Productor" Type="Int64" />
+          <Property Name="Id_Clasificacion" Type="Int64" Nullable="false" />
+          <Property Name="Id_Director" Type="Int64" />
+          <Property Name="Id_TipoContenido" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK_Serie_Categoria" FromRole="Serie" ToRole="Categoria" />
+          <NavigationProperty Name="Clasificacion" Relationship="Self.FK_Serie_Clasificacion" FromRole="Serie" ToRole="Clasificacion" />
+          <NavigationProperty Name="Contenidoes" Relationship="Self.FK_Contenido_Serie" FromRole="Serie" ToRole="Contenido" />
+          <NavigationProperty Name="Director" Relationship="Self.FK_Serie_Director" FromRole="Serie" ToRole="Director" />
+          <NavigationProperty Name="Productor" Relationship="Self.FK_Serie_Productor" FromRole="Serie" ToRole="Productor" />
+          <NavigationProperty Name="TipoContenido" Relationship="Self.FK_Serie_TipoContenido" FromRole="Serie" ToRole="TipoContenido" />
+          <NavigationProperty Name="Temporadas" Relationship="Self.FK_Temporada_Serie" FromRole="Serie" ToRole="Temporada" />
+        </EntityType>
+        <EntityType Name="Temporada">
+          <Key>
+            <PropertyRef Name="Id_Temporada" />
+          </Key>
+          <Property Name="Id_Temporada" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_Serie" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Capituloes" Relationship="Self.FK_Capitulo_Temporada" FromRole="Temporada" ToRole="Capitulo" />
+          <NavigationProperty Name="Serie" Relationship="Self.FK_Temporada_Serie" FromRole="Temporada" ToRole="Serie" />
+        </EntityType>
+        <EntityType Name="TipoContenido">
+          <Key>
+            <PropertyRef Name="Id_TipoContenido" />
+          </Key>
+          <Property Name="Id_TipoContenido" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cancions" Relationship="Self.FK_Cancion_TipoContenido" FromRole="TipoContenido" ToRole="Cancion" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK_Pelicula_TipoContenido" FromRole="TipoContenido" ToRole="Pelicula" />
+          <NavigationProperty Name="Series" Relationship="Self.FK_Serie_TipoContenido" FromRole="TipoContenido" ToRole="Serie" />
+          <NavigationProperty Name="VotacionContenidoes" Relationship="Self.FK_VotacionContenido_TipoContenido" FromRole="TipoContenido" ToRole="VotacionContenido" />
+        </EntityType>
+        <EntityType Name="TipoUsuario">
+          <Key>
+            <PropertyRef Name="id_TipoUsuario" />
+          </Key>
+          <Property Name="id_TipoUsuario" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_TipoUsuario" FromRole="TipoUsuario" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id_Usuario" />
+          </Key>
+          <Property Name="id_Usuario" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id_TipoUsuario" Type="Int64" Nullable="false" />
+          <Property Name="ImgURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Artistas" Relationship="Self.FK_Artista_Usuario" FromRole="Usuario" ToRole="Artista" />
+          <NavigationProperty Name="Directors" Relationship="Self.FK_Director_Usuario" FromRole="Usuario" ToRole="Director" />
+          <NavigationProperty Name="Disqueras" Relationship="Self.FK_Disquera_Usuario" FromRole="Usuario" ToRole="Disquera" />
+          <NavigationProperty Name="Productors" Relationship="Self.FK_Productor_Usuario" FromRole="Usuario" ToRole="Productor" />
+          <NavigationProperty Name="Seguidors" Relationship="Self.FK_Seguidor_UsuarioSeguidor" FromRole="Usuario" ToRole="Seguidor" />
+          <NavigationProperty Name="Seguidors1" Relationship="Self.FK_Seguidor_UsuarioSiguiendo" FromRole="Usuario" ToRole="Seguidor" />
+          <NavigationProperty Name="TipoUsuario" Relationship="Self.FK_Usuario_TipoUsuario" FromRole="Usuario" ToRole="TipoUsuario" />
+          <NavigationProperty Name="Votoes" Relationship="Self.FK_Voto_Usuario" FromRole="Usuario" ToRole="Voto" />
+        </EntityType>
+        <EntityType Name="VotacionContenido">
+          <Key>
+            <PropertyRef Name="Id_VotacionContenido" />
+          </Key>
+          <Property Name="Id_VotacionContenido" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Id_TipoContenido" Type="Int64" Nullable="false" />
+          <Property Name="Id_Contenido1" Type="Int64" />
+          <Property Name="Id_Contenido2" Type="Int64" />
+          <Property Name="Id_Contenido3" Type="Int64" />
+          <Property Name="Id_Contenido4" Type="Int64" />
+          <NavigationProperty Name="Contenido" Relationship="Self.FK_VotacionContenido_Contenido1" FromRole="VotacionContenido" ToRole="Contenido" />
+          <NavigationProperty Name="Contenido1" Relationship="Self.FK_VotacionContenido_Contenido2" FromRole="VotacionContenido" ToRole="Contenido" />
+          <NavigationProperty Name="Contenido2" Relationship="Self.FK_VotacionContenido_Contenido3" FromRole="VotacionContenido" ToRole="Contenido" />
+          <NavigationProperty Name="Contenido3" Relationship="Self.FK_VotacionContenido_Contenido4" FromRole="VotacionContenido" ToRole="Contenido" />
+          <NavigationProperty Name="TipoContenido" Relationship="Self.FK_VotacionContenido_TipoContenido" FromRole="VotacionContenido" ToRole="TipoContenido" />
+          <NavigationProperty Name="Votoes" Relationship="Self.FK_Voto_VotacionContenido" FromRole="VotacionContenido" ToRole="Voto" />
+        </EntityType>
+        <EntityType Name="Voto">
+          <Key>
+            <PropertyRef Name="Id_Voto" />
+          </Key>
+          <Property Name="Id_Voto" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Usuario" Type="Int64" Nullable="false" />
+          <Property Name="Id_Contenido" Type="Int64" Nullable="false" />
+          <Property Name="Id_VotacionContenido" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Contenido" Relationship="Self.FK_Voto_Contenido" FromRole="Voto" ToRole="Contenido" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Voto_Usuario" FromRole="Voto" ToRole="Usuario" />
+          <NavigationProperty Name="VotacionContenido" Relationship="Self.FK_Voto_VotacionContenido" FromRole="Voto" ToRole="VotacionContenido" />
+        </EntityType>
+        <Association Name="FK_Album_Artista">
+          <End Role="Artista" Type="Self.Artista" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Album" Type="Self.Album" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artista">
+              <PropertyRef Name="Id_Artista" />
+            </Principal>
+            <Dependent Role="Album">
+              <PropertyRef Name="Id_Artista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_Album">
+          <End Role="Album" Type="Self.Album" Multiplicity="0..1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="Id_Album" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_Album" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artista_Disquera">
+          <End Role="Disquera" Type="Self.Disquera" Multiplicity="0..1" />
+          <End Role="Artista" Type="Self.Artista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disquera">
+              <PropertyRef Name="Id_Disquera" />
+            </Principal>
+            <Dependent Role="Artista">
+              <PropertyRef Name="Id_Disquera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artista_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Artista" Type="Self.Artista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Artista">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_Artista">
+          <End Role="Artista" Type="Self.Artista" Multiplicity="1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artista">
+              <PropertyRef Name="Id_Artista" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_Artista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_GeneroCancion">
+          <End Role="GeneroCancion" Type="Self.GeneroCancion" Multiplicity="1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneroCancion">
+              <PropertyRef Name="Id_GeneroCancion" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_GeneroCancion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancion_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="Cancion">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contenido_Cancion">
+          <End Role="Cancion" Type="Self.Cancion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cancion">
+              <PropertyRef Name="Id_Cancion" />
+            </Principal>
+            <Dependent Role="Contenido">
+              <PropertyRef Name="Id_Cancion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Capitulo_Temporada">
+          <End Role="Temporada" Type="Self.Temporada" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Capitulo" Type="Self.Capitulo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Temporada">
+              <PropertyRef Name="Id_Temporada" />
+            </Principal>
+            <Dependent Role="Capitulo">
+              <PropertyRef Name="Id_Temporada" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_Categoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id_Categoria" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Categoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id_Categoria" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_CLasificacion">
+          <End Role="Clasificacion" Type="Self.Clasificacion" Multiplicity="1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clasificacion">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Clasificacion">
+          <End Role="Clasificacion" Type="Self.Clasificacion" Multiplicity="1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clasificacion">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Clasificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contenido_Pelicula">
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pelicula">
+              <PropertyRef Name="Id_pelicula" />
+            </Principal>
+            <Dependent Role="Contenido">
+              <PropertyRef Name="Id_Pelicula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contenido_Serie">
+          <End Role="Serie" Type="Self.Serie" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="Id_Serie" />
+            </Principal>
+            <Dependent Role="Contenido">
+              <PropertyRef Name="Id_Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido1">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido2">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido3">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido3" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_Contenido4">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="0..1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_Contenido4" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voto_Contenido">
+          <End Role="Contenido" Type="Self.Contenido" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Voto" Type="Self.Voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contenido">
+              <PropertyRef Name="Id_Contenido" />
+            </Principal>
+            <Dependent Role="Voto">
+              <PropertyRef Name="Id_Contenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Director_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Director" Type="Self.Director" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Director">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_Director">
+          <End Role="Director" Type="Self.Director" Multiplicity="0..1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Director">
+              <PropertyRef Name="Id_Director" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Director" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Director">
+          <End Role="Director" Type="Self.Director" Multiplicity="0..1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Director">
+              <PropertyRef Name="Id_Director" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Director" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Disquera_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Disquera" Type="Self.Disquera" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Disquera">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_Productor">
+          <End Role="Productor" Type="Self.Productor" Multiplicity="0..1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productor">
+              <PropertyRef Name="Id_Productor" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_Productor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pelicula_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="Pelicula" Type="Self.Pelicula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="Pelicula">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productor_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Productor" Type="Self.Productor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Productor">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_Productor">
+          <End Role="Productor" Type="Self.Productor" Multiplicity="0..1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Productor">
+              <PropertyRef Name="Id_Productor" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_Productor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seguidor_UsuarioSeguidor">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Seguidor" Type="Self.Seguidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Seguidor">
+              <PropertyRef Name="Id_UsuarioSeguidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Seguidor_UsuarioSiguiendo">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Seguidor" Type="Self.Seguidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Seguidor">
+              <PropertyRef Name="Id_UsuarioSiguiendo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Serie_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="Serie" Type="Self.Serie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="Serie">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Temporada_Serie">
+          <End Role="Serie" Type="Self.Serie" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Temporada" Type="Self.Temporada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="Id_Serie" />
+            </Principal>
+            <Dependent Role="Temporada">
+              <PropertyRef Name="Id_Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VotacionContenido_TipoContenido">
+          <End Role="TipoContenido" Type="Self.TipoContenido" Multiplicity="1" />
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Principal>
+            <Dependent Role="VotacionContenido">
+              <PropertyRef Name="Id_TipoContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_TipoUsuario">
+          <End Role="TipoUsuario" Type="Self.TipoUsuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUsuario">
+              <PropertyRef Name="id_TipoUsuario" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Id_TipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voto_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Voto" Type="Self.Voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id_Usuario" />
+            </Principal>
+            <Dependent Role="Voto">
+              <PropertyRef Name="Id_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voto_VotacionContenido">
+          <End Role="VotacionContenido" Type="Self.VotacionContenido" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Voto" Type="Self.Voto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VotacionContenido">
+              <PropertyRef Name="Id_VotacionContenido" />
+            </Principal>
+            <Dependent Role="Voto">
+              <PropertyRef Name="Id_VotacionContenido" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EveryflixDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Albums" EntityType="Self.Album" />
+          <EntitySet Name="Artistas" EntityType="Self.Artista" />
+          <EntitySet Name="Cancions" EntityType="Self.Cancion" />
+          <EntitySet Name="Capituloes" EntityType="Self.Capitulo" />
+          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
+          <EntitySet Name="Clasificacions" EntityType="Self.Clasificacion" />
+          <EntitySet Name="Contenidoes" EntityType="Self.Contenido" />
+          <EntitySet Name="Directors" EntityType="Self.Director" />
+          <EntitySet Name="Disqueras" EntityType="Self.Disquera" />
+          <EntitySet Name="GeneroCancions" EntityType="Self.GeneroCancion" />
+          <EntitySet Name="Peliculas" EntityType="Self.Pelicula" />
+          <EntitySet Name="Productors" EntityType="Self.Productor" />
+          <EntitySet Name="Seguidors" EntityType="Self.Seguidor" />
+          <EntitySet Name="Series" EntityType="Self.Serie" />
+          <EntitySet Name="Temporadas" EntityType="Self.Temporada" />
+          <EntitySet Name="TipoContenidoes" EntityType="Self.TipoContenido" />
+          <EntitySet Name="TipoUsuarios" EntityType="Self.TipoUsuario" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="VotacionContenidoes" EntityType="Self.VotacionContenido" />
+          <EntitySet Name="Votoes" EntityType="Self.Voto" />
+          <AssociationSet Name="FK_Album_Artista" Association="Self.FK_Album_Artista">
+            <End Role="Artista" EntitySet="Artistas" />
+            <End Role="Album" EntitySet="Albums" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_Album" Association="Self.FK_Cancion_Album">
+            <End Role="Album" EntitySet="Albums" />
+            <End Role="Cancion" EntitySet="Cancions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artista_Disquera" Association="Self.FK_Artista_Disquera">
+            <End Role="Disquera" EntitySet="Disqueras" />
+            <End Role="Artista" EntitySet="Artistas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artista_Usuario" Association="Self.FK_Artista_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Artista" EntitySet="Artistas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_Artista" Association="Self.FK_Cancion_Artista">
+            <End Role="Artista" EntitySet="Artistas" />
+            <End Role="Cancion" EntitySet="Cancions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_GeneroCancion" Association="Self.FK_Cancion_GeneroCancion">
+            <End Role="GeneroCancion" EntitySet="GeneroCancions" />
+            <End Role="Cancion" EntitySet="Cancions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancion_TipoContenido" Association="Self.FK_Cancion_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenidoes" />
+            <End Role="Cancion" EntitySet="Cancions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contenido_Cancion" Association="Self.FK_Contenido_Cancion">
+            <End Role="Cancion" EntitySet="Cancions" />
+            <End Role="Contenido" EntitySet="Contenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Capitulo_Temporada" Association="Self.FK_Capitulo_Temporada">
+            <End Role="Temporada" EntitySet="Temporadas" />
+            <End Role="Capitulo" EntitySet="Capituloes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_Categoria" Association="Self.FK_Pelicula_Categoria">
+            <End Role="Categoria" EntitySet="Categorias" />
+            <End Role="Pelicula" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Categoria" Association="Self.FK_Serie_Categoria">
+            <End Role="Categoria" EntitySet="Categorias" />
+            <End Role="Serie" EntitySet="Series" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_CLasificacion" Association="Self.FK_Pelicula_CLasificacion">
+            <End Role="Clasificacion" EntitySet="Clasificacions" />
+            <End Role="Pelicula" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Clasificacion" Association="Self.FK_Serie_Clasificacion">
+            <End Role="Clasificacion" EntitySet="Clasificacions" />
+            <End Role="Serie" EntitySet="Series" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contenido_Pelicula" Association="Self.FK_Contenido_Pelicula">
+            <End Role="Pelicula" EntitySet="Peliculas" />
+            <End Role="Contenido" EntitySet="Contenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contenido_Serie" Association="Self.FK_Contenido_Serie">
+            <End Role="Serie" EntitySet="Series" />
+            <End Role="Contenido" EntitySet="Contenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido1" Association="Self.FK_VotacionContenido_Contenido1">
+            <End Role="Contenido" EntitySet="Contenidoes" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido2" Association="Self.FK_VotacionContenido_Contenido2">
+            <End Role="Contenido" EntitySet="Contenidoes" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido3" Association="Self.FK_VotacionContenido_Contenido3">
+            <End Role="Contenido" EntitySet="Contenidoes" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_Contenido4" Association="Self.FK_VotacionContenido_Contenido4">
+            <End Role="Contenido" EntitySet="Contenidoes" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voto_Contenido" Association="Self.FK_Voto_Contenido">
+            <End Role="Contenido" EntitySet="Contenidoes" />
+            <End Role="Voto" EntitySet="Votoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Director_Usuario" Association="Self.FK_Director_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Director" EntitySet="Directors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_Director" Association="Self.FK_Pelicula_Director">
+            <End Role="Director" EntitySet="Directors" />
+            <End Role="Pelicula" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Director" Association="Self.FK_Serie_Director">
+            <End Role="Director" EntitySet="Directors" />
+            <End Role="Serie" EntitySet="Series" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Disquera_Usuario" Association="Self.FK_Disquera_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Disquera" EntitySet="Disqueras" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_Productor" Association="Self.FK_Pelicula_Productor">
+            <End Role="Productor" EntitySet="Productors" />
+            <End Role="Pelicula" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pelicula_TipoContenido" Association="Self.FK_Pelicula_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenidoes" />
+            <End Role="Pelicula" EntitySet="Peliculas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productor_Usuario" Association="Self.FK_Productor_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Productor" EntitySet="Productors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_Productor" Association="Self.FK_Serie_Productor">
+            <End Role="Productor" EntitySet="Productors" />
+            <End Role="Serie" EntitySet="Series" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seguidor_UsuarioSeguidor" Association="Self.FK_Seguidor_UsuarioSeguidor">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Seguidor" EntitySet="Seguidors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Seguidor_UsuarioSiguiendo" Association="Self.FK_Seguidor_UsuarioSiguiendo">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Seguidor" EntitySet="Seguidors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Serie_TipoContenido" Association="Self.FK_Serie_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenidoes" />
+            <End Role="Serie" EntitySet="Series" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Temporada_Serie" Association="Self.FK_Temporada_Serie">
+            <End Role="Serie" EntitySet="Series" />
+            <End Role="Temporada" EntitySet="Temporadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VotacionContenido_TipoContenido" Association="Self.FK_VotacionContenido_TipoContenido">
+            <End Role="TipoContenido" EntitySet="TipoContenidoes" />
+            <End Role="VotacionContenido" EntitySet="VotacionContenidoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_TipoUsuario" Association="Self.FK_Usuario_TipoUsuario">
+            <End Role="TipoUsuario" EntitySet="TipoUsuarios" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voto_Usuario" Association="Self.FK_Voto_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Voto" EntitySet="Votoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voto_VotacionContenido" Association="Self.FK_Voto_VotacionContenido">
+            <End Role="VotacionContenido" EntitySet="VotacionContenidoes" />
+            <End Role="Voto" EntitySet="Votoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EveryflixDBModelStoreContainer" CdmEntityContainer="EveryflixDBEntities">
+          <EntitySetMapping Name="Albums">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="Id_Album" ColumnName="Id_Album" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
+                <ScalarProperty Name="Id_Artista" ColumnName="Id_Artista" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artistas">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Artista">
+              <MappingFragment StoreEntitySet="Artista">
+                <ScalarProperty Name="Id_Artista" ColumnName="Id_Artista" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id_Usuario" ColumnName="Id_Usuario" />
+                <ScalarProperty Name="Id_Disquera" ColumnName="Id_Disquera" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cancions">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Cancion">
+              <MappingFragment StoreEntitySet="Cancion">
+                <ScalarProperty Name="Id_Cancion" ColumnName="Id_Cancion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+                <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
+                <ScalarProperty Name="Id_Album" ColumnName="Id_Album" />
+                <ScalarProperty Name="Id_Artista" ColumnName="Id_Artista" />
+                <ScalarProperty Name="Id_GeneroCancion" ColumnName="Id_GeneroCancion" />
+                <ScalarProperty Name="Id_TipoContenido" ColumnName="Id_TipoContenido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Capituloes">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Capitulo">
+              <MappingFragment StoreEntitySet="Capitulo">
+                <ScalarProperty Name="Id_Capitulo" ColumnName="Id_Capitulo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+                <ScalarProperty Name="Id_Temporada" ColumnName="Id_Temporada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="Id_Categoria" ColumnName="Id_Categoria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clasificacions">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Clasificacion">
+              <MappingFragment StoreEntitySet="Clasificacion">
+                <ScalarProperty Name="Id_Clasificacion" ColumnName="Id_Clasificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contenidoes">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Contenido">
+              <MappingFragment StoreEntitySet="Contenido">
+                <ScalarProperty Name="Id_Contenido" ColumnName="Id_Contenido" />
+                <ScalarProperty Name="Id_Serie" ColumnName="Id_Serie" />
+                <ScalarProperty Name="Id_Pelicula" ColumnName="Id_Pelicula" />
+                <ScalarProperty Name="Id_Cancion" ColumnName="Id_Cancion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Directors">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Director">
+              <MappingFragment StoreEntitySet="Director">
+                <ScalarProperty Name="Id_Director" ColumnName="Id_Director" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id_Usuario" ColumnName="Id_Usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Disqueras">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Disquera">
+              <MappingFragment StoreEntitySet="Disquera">
+                <ScalarProperty Name="Id_Disquera" ColumnName="Id_Disquera" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id_Usuario" ColumnName="Id_Usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GeneroCancions">
+            <EntityTypeMapping TypeName="EveryflixDBModel.GeneroCancion">
+              <MappingFragment StoreEntitySet="GeneroCancion">
+                <ScalarProperty Name="Id_GeneroCancion" ColumnName="Id_GeneroCancion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Peliculas">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Pelicula">
+              <MappingFragment StoreEntitySet="Pelicula">
+                <ScalarProperty Name="Id_pelicula" ColumnName="Id_pelicula" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+                <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
+                <ScalarProperty Name="Id_Productor" ColumnName="Id_Productor" />
+                <ScalarProperty Name="Id_Categoria" ColumnName="Id_Categoria" />
+                <ScalarProperty Name="Id_Clasificacion" ColumnName="Id_Clasificacion" />
+                <ScalarProperty Name="Id_Director" ColumnName="Id_Director" />
+                <ScalarProperty Name="Id_TipoContenido" ColumnName="Id_TipoContenido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Productors">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Productor">
+              <MappingFragment StoreEntitySet="Productor">
+                <ScalarProperty Name="Id_Productor" ColumnName="Id_Productor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id_Usuario" ColumnName="Id_Usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seguidors">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Seguidor">
+              <MappingFragment StoreEntitySet="Seguidor">
+                <ScalarProperty Name="Id_Seguidor" ColumnName="Id_Seguidor" />
+                <ScalarProperty Name="Id_UsuarioSeguidor" ColumnName="Id_UsuarioSeguidor" />
+                <ScalarProperty Name="Id_UsuarioSiguiendo" ColumnName="Id_UsuarioSiguiendo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Series">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Serie">
+              <MappingFragment StoreEntitySet="Serie">
+                <ScalarProperty Name="Id_Serie" ColumnName="Id_Serie" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
+                <ScalarProperty Name="Id_Categoria" ColumnName="Id_Categoria" />
+                <ScalarProperty Name="Id_Productor" ColumnName="Id_Productor" />
+                <ScalarProperty Name="Id_Clasificacion" ColumnName="Id_Clasificacion" />
+                <ScalarProperty Name="Id_Director" ColumnName="Id_Director" />
+                <ScalarProperty Name="Id_TipoContenido" ColumnName="Id_TipoContenido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Temporadas">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Temporada">
+              <MappingFragment StoreEntitySet="Temporada">
+                <ScalarProperty Name="Id_Temporada" ColumnName="Id_Temporada" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id_Serie" ColumnName="Id_Serie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoContenidoes">
+            <EntityTypeMapping TypeName="EveryflixDBModel.TipoContenido">
+              <MappingFragment StoreEntitySet="TipoContenido">
+                <ScalarProperty Name="Id_TipoContenido" ColumnName="Id_TipoContenido" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoUsuarios">
+            <EntityTypeMapping TypeName="EveryflixDBModel.TipoUsuario">
+              <MappingFragment StoreEntitySet="TipoUsuario">
+                <ScalarProperty Name="id_TipoUsuario" ColumnName="id_TipoUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="id_Usuario" ColumnName="id_Usuario" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Id_TipoUsuario" ColumnName="Id_TipoUsuario" />
+                <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VotacionContenidoes">
+            <EntityTypeMapping TypeName="EveryflixDBModel.VotacionContenido">
+              <MappingFragment StoreEntitySet="VotacionContenido">
+                <ScalarProperty Name="Id_VotacionContenido" ColumnName="Id_VotacionContenido" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id_TipoContenido" ColumnName="Id_TipoContenido" />
+                <ScalarProperty Name="Id_Contenido1" ColumnName="Id_Contenido1" />
+                <ScalarProperty Name="Id_Contenido2" ColumnName="Id_Contenido2" />
+                <ScalarProperty Name="Id_Contenido3" ColumnName="Id_Contenido3" />
+                <ScalarProperty Name="Id_Contenido4" ColumnName="Id_Contenido4" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Votoes">
+            <EntityTypeMapping TypeName="EveryflixDBModel.Voto">
+              <MappingFragment StoreEntitySet="Voto">
+                <ScalarProperty Name="Id_Voto" ColumnName="Id_Voto" />
+                <ScalarProperty Name="Id_Usuario" ColumnName="Id_Usuario" />
+                <ScalarProperty Name="Id_Contenido" ColumnName="Id_Contenido" />
+                <ScalarProperty Name="Id_VotacionContenido" ColumnName="Id_VotacionContenido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
