@@ -1,119 +1,104 @@
-﻿
-body {
+﻿body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #f0f2f5;
-    text-align: center;
+    background-color: #2c2c2c; /* Fondo gris oscuro */
+    color: #fff; /* Texto blanco */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     margin: 0;
+    text-align: center;
 }
 
-
 header h1 {
-    color: #333;
+    color: #fff;
     font-size: 2.5em;
     margin-bottom: 20px;
 }
 
-
-.table-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-}
-
-
-table {
-    width: 80%;
-    max-width: 1000px;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
+.container {
+    background-color: #333; /* Fondo oscuro para el contenedor */
+    padding: 30px;
+    border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 900px;
+    margin-top: 20px;
 }
 
-
-th {
-    background-color: #007bff;
-    color: white;
-    padding: 12px;
-    font-size: 18px;
+h2 {
+    color: red; /* Título en color rojo */
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos dentro del formulario */
+    width: 100%;
+}
 
-td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.form-group {
+    width: 100%; /* Hace que los campos de entrada ocupen el 100% del contenedor */
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra la etiqueta y el input */
+}
+
+label {
+    color: red; /* Etiquetas en color rojo */
     font-size: 16px;
+    margin-bottom: 5px;
 }
 
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-
-tr:hover {
-    background-color: #d6e4f0;
-}
-
-
-table img {
-    width: 100px;
-    height: 100px;
-    object-fit: fill;
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 80%; /* Ajusta el ancho de los campos de texto */
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
+    text-align: center; /* Centra el texto dentro de los campos */
 }
 
+button,
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #f44336; /* Fondo rojo para los botones */
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+}
 
-.btn {
-    display: inline-block;
+.btn-primary {
+    background-color: #f44336; /* Fondo rojo */
+    color: white;
+    border: none;
     padding: 10px 20px;
     font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 8px;
-    color: white;
-    transition: 0.3s ease-in-out;
-    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-
-.btn-productos {
-    background-color: #007bff;
-}
-
-    .btn-productos:hover {
-        background-color: #0056b3;
+    .btn-primary:hover {
+        background-color: #d32f2f; /* Fondo rojo oscuro en hover */
     }
 
-
-.btn-categorias {
-    background-color: #28a745;
-}
-
-    .btn-categorias:hover {
-        background-color: #1e7e34;
+    button:hover,
+    input[type="submit"]:hover {
+        background-color: #d32f2f; /* Fondo rojo oscuro en hover */
     }
 
-
-.btn-editar {
-    background-color: #ffc107;
-    color: black;
+.error-message {
+    color: red;
+    margin-top: 10px;
 }
-
-    .btn-editar:hover {
-        background-color: #e0a800;
-    }
-
-.btn-eliminar {
-    background-color: #dc3545;
-}
-
-    .btn-eliminar:hover {
-        background-color: #bd2130;
-    }
-
 
 footer {
     margin-top: 50px;
@@ -121,15 +106,79 @@ footer {
     color: #666;
 }
 
+a {
+    color: #f44336; /* Color rojo para los enlaces */
+    padding: 12px;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
 .profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     text-align: center;
-    margin-bottom: 20px;
+    padding: 20px;
 }
 
 .profile-img {
-    width: 120px; /* Ajusta el tamaño de la imagen según lo que necesites */
-    height: 120px;
-    border-radius: 50%; /* Para hacer la imagen circular */
-    object-fit: cover; /* Para asegurarte de que la imagen se recorte bien */
-    border: 2px solid #ccc; /* Agregar un borde si lo deseas */
+    width: 150px; /* Tamaño uniforme */
+    height: 150px;
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    object-fit: cover; /* Evita que la imagen se deforme */
+    border: 4px solid #007bff; /* Borde azul */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    transition: transform 0.3s ease-in-out;
+}
+
+    .profile-img:hover {
+        transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
+    }
+
+.profile-username {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+}
+
+.profile-role {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+    .user-table th {
+        background-color: #f44336;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .user-table td {
+        padding: 12px;
+        border-bottom: 1px solid #444;
+    }
+    .user-table a {
+    color: #fff; /* Color rojo para los enlaces */
+    padding: 12px;
+    }
+
+        .user-table a:hover {
+            color: #007bff; /* Color rojo para los enlaces */
+            padding: 12px text-decoration: underline;
+        }
+
+.alert-message {
+    color: #f44336;
+    margin: 20px 0;
 }

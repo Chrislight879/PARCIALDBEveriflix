@@ -1,0 +1,32 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Eliminar Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+<div class="container">
+    <h2>Eliminar Usuario</h2>
+
+    <div class="alert-message">
+        ¿Está seguro que desea eliminar este usuario?
+    </div>
+
+    <div class="profile-info">
+        <p><strong>Nombre:</strong> @Model.Username</p>
+        <p><strong>Correo:</strong> @Model.Correo</p>
+        <p><strong>Tipo:</strong> @(Model.TipoUsuario?.Nombre ?? "Sin tipo")</p>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <input type="submit" value="Confirmar Eliminación" class="btn-primary" style="background-color: #d32f2f" />
+            <a href="@Url.Action("ManageUsers")" class="btn-primary" style="background-color: #666">Cancelar</a>
+        </div>
+    }
+</div>

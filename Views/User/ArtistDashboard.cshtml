@@ -1,0 +1,32 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Dashboard de Artista";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<div class="container">
+    <h2>Bienvenido Artista, @ViewBag.UserName!</h2>
+    <p>¡Estás en tu Dashboard de Artista!</p>
+
+    <!-- Mostrar foto de perfil -->
+    <div class="profile-container">
+        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+    </div>
+
+    <!-- Información del artista -->
+    <div class="profile-info">
+        <p><strong>Correo:</strong> @Model.Correo</p>
+        <p><strong>Rol:</strong> Artista</p>
+    </div>
+
+
+    <!-- Botón para editar perfil -->
+    <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
+
+    <!-- Enlace a la sección de música/artista -->
+    <p><a href="@Url.Action("ManageSongs", "Artist")" class="btn btn-secondary">Gestionar Mis Canciones</a></p>
+</div>

@@ -1,0 +1,30 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Dashboard de Productor";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<div class="container">
+    <h2>Bienvenido Productor, @ViewBag.UserName!</h2>
+    <p>¡Gestiona tus producciones musicales!</p>
+
+    <div class="profile-container">
+        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+    </div>
+
+    <div class="profile-info">
+        <p><strong>Correo:</strong> @Model.Correo</p>
+        <p><strong>Rol:</strong> Productor</p>
+        <p><strong>Proyectos activos:</strong> @ViewBag.ActiveProjects</p>
+    </div>
+
+    <div class="producer-actions">
+        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
+        <a href="@Url.Action("MyProductions", "Producer")" class="btn btn-primary">Mis Producciones</a>
+        <a href="@Url.Action("Create", "Project")" class="btn btn-secondary">Nuevo Proyecto</a>
+    </div>
+</div>

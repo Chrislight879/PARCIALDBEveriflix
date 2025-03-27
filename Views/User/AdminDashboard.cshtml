@@ -8,22 +8,28 @@
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
 </head>
 
-<h2>Bienvenido Administrador, @ViewBag.UserName!</h2>
+<div class="container">
+    <h2>Bienvenido Administrador, @ViewBag.UserName!</h2>
+    <p>¡Estás en tu Dashboard de Administrador!</p>
 
-<p>¡Estás en el Dashboard de Administrador!</p>
+    <!-- Mostrar foto de perfil -->
+    <div class="profile-container">
+        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+    </div>
 
-<!-- Mostrar foto de perfil -->
-<div class="profile-container">
-    @if (Model.ImgURL != null && !string.IsNullOrEmpty(Model.ImgURL))
-    {
-        <img src="@Url.Content(Model.ImgURL)" alt="Foto de perfil" class="profile-img" />
-    }
-    else
-    {
-        <!-- Imagen por defecto si no hay imagen de perfil -->
-        <img src="~/Content/Images/default-profile.jpg" alt="Foto de perfil" class="profile-img" />
-    }
+    <!-- Información del administrador -->
+    <div class="profile-info">
+        <p><strong>Correo:</strong> @Model.Correo</p>
+        <p><strong>Rol:</strong> Administrador</p>
+    </div>
+
+    <!-- Botón para editar perfil -->
+    <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
+
+    <!-- Secciones de administración -->
+    <div class="admin-actions">
+        <a href="@Url.Action("ManageUsers", "User")" class="btn btn-secondary">Administrar Usuarios</a>
+        <a href="@Url.Action("ManageContent", "Admin")" class="btn btn-secondary">Administrar Contenido</a>
+        <a href="@Url.Action("SiteSettings", "Admin")" class="btn btn-secondary">Configuración del Sitio</a>
+    </div>
 </div>
-
-<!-- Aquí puedes agregar enlaces a secciones específicas para el administrador -->
-<p><a href="@Url.Action("ManageUsers", "Admin")">Administrar Usuarios</a></p>

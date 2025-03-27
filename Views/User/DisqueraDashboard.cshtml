@@ -1,0 +1,30 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Dashboard de Disquera";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<div class="container">
+    <h2>Bienvenido @ViewBag.UserName!</h2>
+    <p>¡Panel de gestión de tu disquera!</p>
+
+    <div class="profile-container">
+        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+    </div>
+
+    <div class="profile-info">
+        <p><strong>Correo:</strong> @Model.Correo</p>
+        <p><strong>Rol:</strong> Disquera</p>
+        <p><strong>Artistas registrados:</strong> @ViewBag.ArtistCount</p>
+    </div>
+
+    <div class="label-actions">
+        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
+        <a href="@Url.Action("ManageArtists", "Label")" class="btn btn-primary">Gestionar Artistas</a>
+        <a href="@Url.Action("Analytics", "Label")" class="btn btn-secondary">Estadísticas</a>
+    </div>
+</div>

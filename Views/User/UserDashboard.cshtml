@@ -1,0 +1,32 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "User Dashboard";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<div class="container">
+    <h2>Bienvenido @ViewBag.UserName!</h2>
+    <p>¡Descubre nuevo contenido!</p>
+
+    <div class="profile-container">
+        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+    </div>
+
+    <div class="profile-info">
+        <p><strong>Correo:</strong> @Model.Correo</p>
+    </div>
+
+    <div class="user-actions">
+        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
+        <a href="@Url.Action("Index", "Favorites")" class="btn btn-secondary">Mis Favoritos</a>
+    </div>
+
+    <div class="recommendations">
+        <h3>Recomendaciones para ti</h3>
+        <!-- Contenido recomendado aquí -->
+    </div>
+</div>

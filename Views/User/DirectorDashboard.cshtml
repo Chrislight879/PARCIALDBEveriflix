@@ -1,0 +1,30 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Dashboard de Director";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<div class="container">
+    <h2>Bienvenido Director, @ViewBag.UserName!</h2>
+    <p>¡Administra tus proyectos audiovisuales!</p>
+
+    <div class="profile-container">
+        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+    </div>
+
+    <div class="profile-info">
+        <p><strong>Correo:</strong> @Model.Correo</p>
+        <p><strong>Rol:</strong> Director</p>
+        <p><strong>Proyectos dirigidos:</strong> @ViewBag.DirectedProjects</p>
+    </div>
+
+    <div class="director-actions">
+        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
+        <a href="@Url.Action("MyVideos", "Director")" class="btn btn-primary">Mis Videos</a>
+        <a href="@Url.Action("Create", "Video")" class="btn btn-secondary">Nuevo Proyecto</a>
+    </div>
+</div>

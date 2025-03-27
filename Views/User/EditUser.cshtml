@@ -1,0 +1,38 @@
+﻿@model PARCIALDBEveriflix.Models.Usuario
+
+@{
+    ViewBag.Title = "Editar Usuario";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+
+<h2>Editar Usuario</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Username)
+        @Html.EditorFor(model => model.Username)
+        @Html.ValidationMessageFor(model => model.Username)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Correo)
+        @Html.EditorFor(model => model.Correo)
+        @Html.ValidationMessageFor(model => model.Correo)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Id_TipoUsuario, "Tipo de Usuario")
+        @Html.DropDownListFor(model => model.Id_TipoUsuario, (SelectList)ViewBag.TiposUsuario, "Selecciona un tipo", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Id_TipoUsuario)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Actualizar" class="btn btn-primary" />
+        <a href="@Url.Action("ManageUsers")" class="btn btn-secondary">Cancelar</a>
+    </div>
+}

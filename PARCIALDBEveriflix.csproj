@@ -301,6 +301,15 @@
     <Content Include="Views\Auth\SignUp.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\User\AdminDashboard.cshtml" />
+    <Content Include="Views\User\EditProfile.cshtml" />
+    <Content Include="Views\User\ArtistDashboard.cshtml" />
+    <Content Include="Views\User\UserDashboard.cshtml" />
+    <Content Include="Views\User\DisqueraDashboard.cshtml" />
+    <Content Include="Views\User\ProductorDashboard.cshtml" />
+    <Content Include="Views\User\DirectorDashboard.cshtml" />
+    <Content Include="Views\User\ManageUsers.cshtml" />
+    <Content Include="Views\User\EditUser.cshtml" />
+    <Content Include="Views\User\DeleteUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

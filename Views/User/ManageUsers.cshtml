@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Usuario>
+
+@{
+    ViewBag.Title = "Gestión de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+</head>
+<div class="container">
+    <h2>Gestión de Usuarios</h2>
+
+    <div class="admin-actions">
+        <a href="@Url.Action("Dashboard")" class="btn-primary">
+            ← Volver al Dashboard
+        </a>
+    </div>
+
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                    <td>@(item.TipoUsuario?.Nombre ?? "Sin tipo")</td>
+                    <td>
+                        <a href="@Url.Action("EditUser", new { id = item.id_Usuario })" class="btn-primary">Editar</a>
+                        <a href="@Url.Action("DeleteUser", new { id = item.id_Usuario })" class="btn-primary" style="background-color: #d32f2f">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
