@@ -8,23 +8,75 @@
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
 </head>
 
-<div class="container">
-    <h2>Bienvenido Productor, @ViewBag.UserName!</h2>
-    <p>¡Gestiona tus producciones musicales!</p>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Panel de Información del Productor (izquierda) -->
+        <div class="user-panel">
+            <div class="profile-header">
+                <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+                <h2>Bienvenido Productor, @ViewBag.UserName!</h2>
+            </div>
 
-    <div class="profile-container">
-        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
-    </div>
+            <div class="user-details">
+                <p><strong>Correo:</strong> @Model.Correo</p>
+                <p><strong>Rol:</strong> Productor</p>
+                <p><strong>Proyectos activos:</strong> @ViewBag.ActiveProjects</p>
+            </div>
+            <div class="social-stats">
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowerCount</div>
+                    <div class="stat-label">Seguidores</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowingCount</div>
+                    <div class="stat-label">Siguiendo</div>
+                </div>
+            </div>
 
-    <div class="profile-info">
-        <p><strong>Correo:</strong> @Model.Correo</p>
-        <p><strong>Rol:</strong> Productor</p>
-        <p><strong>Proyectos activos:</strong> @ViewBag.ActiveProjects</p>
-    </div>
+            <div class="user-actions">
+                <a href="@Url.Action("EditProfile", "User")" class="btn">
+                    <i class="fas fa-user-edit"></i> Editar Perfil
+                </a>
+                <a href="@Url.Action("MyProductions", "Producer")" class="btn">
+                    <i class="fas fa-music"></i> Mis Producciones
+                </a>
+                <a href="@Url.Action("Create", "Project")" class="btn">
+                    <i class="fas fa-plus-circle"></i> Nuevo Proyecto
+                </a>
+            </div>
+        </div>
 
-    <div class="producer-actions">
-        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
-        <a href="@Url.Action("MyProductions", "Producer")" class="btn btn-primary">Mis Producciones</a>
-        <a href="@Url.Action("Create", "Project")" class="btn btn-secondary">Nuevo Proyecto</a>
+        <!-- Panel de Control del Productor (derecha) -->
+        <div class="control-panel">
+            <div class="control-header">
+                <h2>Panel de Control</h2>
+            </div>
+
+            <div class="control-grid">
+                <div class="control-card">
+                    <h3>Mis Proyectos</h3>
+                    <p>Gestiona los proyectos musicales en los que estás trabajando.</p>
+                    <a href="@Url.Action("MyProjects", "Producer")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-music"></i> Gestionar Proyectos
+                    </a>
+                </div>
+
+                <div class="control-card">
+                    <h3>Mis Producciones</h3>
+                    <p>Visualiza y edita las producciones musicales que has realizado.</p>
+                    <a href="@Url.Action("MyProductions", "Producer")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-music"></i> Ver Producciones
+                    </a>
+                </div>
+
+                <div class="control-card">
+                    <h3>Reportes de Producciones</h3>
+                    <p>Genera reportes y estadísticas sobre tus producciones.</p>
+                    <a href="@Url.Action("Reports", "Producer")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-chart-bar"></i> Ver Reportes
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</body>

@@ -1,184 +1,293 @@
-﻿body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #2c2c2c; /* Fondo gris oscuro */
-    color: #fff; /* Texto blanco */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+﻿/* Reset completo para evitar conflictos */
+* {
     margin: 0;
-    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-header h1 {
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #2c2c2c;
     color: #fff;
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
-.container {
-    background-color: #333; /* Fondo oscuro para el contenedor */
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 900px;
-    margin-top: 20px;
-}
-
-h2 {
-    color: red; /* Título en color rojo */
-}
-
-form {
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Centra los elementos dentro del formulario */
-    width: 100%;
-}
-
-.form-group {
-    width: 100%; /* Hace que los campos de entrada ocupen el 100% del contenedor */
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centra la etiqueta y el input */
-}
-
-label {
-    color: red; /* Etiquetas en color rojo */
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="file"] {
-    width: 80%; /* Ajusta el ancho de los campos de texto */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center; /* Centra el texto dentro de los campos */
-}
-
-button,
-input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #f44336; /* Fondo rojo para los botones */
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: #f44336; /* Fondo rojo */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-    .btn-primary:hover {
-        background-color: #d32f2f; /* Fondo rojo oscuro en hover */
-    }
-
-    button:hover,
-    input[type="submit"]:hover {
-        background-color: #d32f2f; /* Fondo rojo oscuro en hover */
-    }
-
-.error-message {
-    color: red;
-    margin-top: 10px;
-}
-
-footer {
-    margin-top: 50px;
-    font-size: 14px;
-    color: #666;
-}
-
-a {
-    color: #f44336; /* Color rojo para los enlaces */
-    padding: 12px;
-}
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-.profile-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
     padding: 20px;
+    flex-direction: column;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    gap: 25px;
+}
+
+/* Panel de Información del Usuario */
+.user-panel {
+    width: 350px;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 .profile-img {
-    width: 150px; /* Tamaño uniforme */
+    width: 150px;
     height: 150px;
-    border-radius: 50%; /* Hace que la imagen sea circular */
-    object-fit: cover; /* Evita que la imagen se deforme */
-    border: 4px solid #007bff; /* Borde azul */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-    transition: transform 0.3s ease-in-out;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #f44336;
+    margin-bottom: 20px;
 }
 
-    .profile-img:hover {
-        transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
+.user-details {
+    margin-bottom: 30px;
+}
+
+    .user-details p {
+        margin: 12px 0;
+        font-size: 1.1em;
     }
 
-.profile-username {
-    font-size: 18px;
+    .user-details strong {
+        color: #f44336;
+    }
+
+.social-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 2em;
+    color: #f44336;
     font-weight: bold;
-    margin-top: 10px;
-    color: #333;
 }
 
-.profile-role {
-    font-size: 14px;
-    color: #666;
-    margin-top: 5px;
+.stat-label {
+    font-size: 0.9em;
+    color: #aaa;
 }
 
-.user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
+.user-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
 }
 
-    .user-table th {
-        background-color: #f44336;
-        color: white;
-        padding: 12px;
-        text-align: left;
+/* Panel de Control */
+.control-panel {
+    flex: 1;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    min-width: 500px;
+}
+
+.control-header {
+    margin-bottom: 25px;
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.control-card {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+    .control-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
-    .user-table td {
-        padding: 12px;
-        border-bottom: 1px solid #444;
+    .control-card h3 {
+        color: #f44336;
+        margin-bottom: 10px;
+        font-size: 1.2em;
     }
-    .user-table a {
-    color: #fff; /* Color rojo para los enlaces */
+
+    .control-card p {
+        color: #ccc;
+        font-size: 0.95em;
+    }
+
+/* Botones */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f44336;
+    color: white;
+    border: none;
     padding: 12px;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+}
+
+    .btn:hover {
+        background-color: #d32f2f;
     }
 
-        .user-table a:hover {
-            color: #007bff; /* Color rojo para los enlaces */
-            padding: 12px text-decoration: underline;
+    .btn i {
+        margin-right: 8px;
+    }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+
+    .user-panel,
+    .control-panel {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .control-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Estilos para la vista de Login */
+.login-container {
+    width: 100%;
+    max-width: 600px; /* Aumentamos el tamaño máximo del contenedor */
+    background-color: #333;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin: auto;
+}
+
+h2 {
+    color: #f44336;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* Estilo de los campos del formulario */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch; /* Asegura que los campos ocupen todo el ancho */
+}
+
+.form-group {
+    margin-bottom: 20px;
+    width: 100%; /* Aseguramos que el contenedor ocupe todo el espacio */
+}
+
+label {
+    font-size: 1.1em;
+    color: #f44336;
+    display: block;
+    margin-bottom: 8px;
+}
+
+input.form-control {
+    width: 100%; /* Asegura que el campo ocupe todo el ancho disponible */
+    padding: 12px; /* Aumentar el padding para mayor espacio interno */
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: white;
+    font-size: 1em;
+    text-align: center; /* Alineación del texto en el centro */
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+    input.form-control:focus {
+        border-color: #f44336;
+        background-color: #555;
+        outline: none;
+    }
+
+/* Botón de Login */
+button.btn-primary {
+    display: block;
+    width: 100%;
+    background-color: #f44336;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+    button.btn-primary:hover {
+        background-color: #d32f2f;
+    }
+
+/* Mensaje de error */
+.error-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #d32f2f;
+    color: white;
+    border-radius: 6px;
+    font-size: 1.1em;
+}
+
+/* Estilo para el enlace de "Sign up" */
+p {
+    color: #aaa;
+    font-size: 1em;
+}
+
+    p a {
+        color: #f44336;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        p a:hover {
+            text-decoration: underline;
         }
 
-.alert-message {
-    color: #f44336;
-    margin: 20px 0;
+/* Responsividad */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 20px;
+        width: 100%;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    button.btn-primary {
+        font-size: 1em;
+    }
 }

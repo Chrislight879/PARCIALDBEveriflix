@@ -8,25 +8,74 @@
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
 </head>
 
-<div class="container">
-    <h2>Bienvenido Artista, @ViewBag.UserName!</h2>
-    <p>¡Estás en tu Dashboard de Artista!</p>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Panel de Información del Artista -->
+        <div class="user-panel">
+            <div class="profile-header">
+                <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+                <h2>Bienvenido Artista, @ViewBag.UserName!</h2>
+            </div>
 
-    <!-- Mostrar foto de perfil -->
-    <div class="profile-container">
-        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+            <div class="user-details">
+                <p><strong>Correo:</strong> @Model.Correo</p>
+                <p><strong>Rol:</strong> Artista</p>
+            </div>
+
+
+            <div class="social-stats">
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowerCount</div>
+                    <div class="stat-label">Seguidores</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowingCount</div>
+                    <div class="stat-label">Siguiendo</div>
+                </div>
+            </div>
+
+
+            <div class="user-actions">
+                <a href="@Url.Action("EditProfile", "User")" class="btn">
+                    <i class="fas fa-user-edit"></i> Editar Perfil
+                </a>
+                <a href="@Url.Action("SearchUsers")" class="btn">
+                    <i class="fas fa-search"></i> Buscar Usuarios
+                </a>
+            </div>
+        </div>
+
+        <!-- Panel de Control del Artista -->
+        <div class="control-panel">
+            <div class="control-header">
+                <h2>Panel de Control</h2>
+            </div>
+
+            <div class="control-grid">
+                <div class="control-card">
+                    <h3>Mis Canciones</h3>
+                    <p>Gestiona tus canciones, álbumes y más.</p>
+                    <a href="@Url.Action("ManageSongs", "Artist")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-music"></i> Gestionar
+                    </a>
+                </div>
+
+                <div class="control-card">
+                    <h3>Mis Álbumes</h3>
+                    <p>Administra tus álbumes y contenidos.</p>
+                    <a href="@Url.Action("ManageAlbums", "Artist")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-compact-disc"></i> Gestionar
+                    </a>
+                </div>
+
+                <div class="control-card">
+                    <h3>Estadísticas</h3>
+                    <p>Visualiza las estadísticas de tus canciones y seguidores.</p>
+                    <a href="@Url.Action("Statistics", "Artist")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-chart-line"></i> Ver Estadísticas
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Información del artista -->
-    <div class="profile-info">
-        <p><strong>Correo:</strong> @Model.Correo</p>
-        <p><strong>Rol:</strong> Artista</p>
-    </div>
-
-
-    <!-- Botón para editar perfil -->
-    <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
-
-    <!-- Enlace a la sección de música/artista -->
-    <p><a href="@Url.Action("ManageSongs", "Artist")" class="btn btn-secondary">Gestionar Mis Canciones</a></p>
-</div>
+</body>

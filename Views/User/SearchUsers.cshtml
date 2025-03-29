@@ -1,0 +1,59 @@
+﻿<head>
+    <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
+</head>
+
+<div class="container">
+    <h2>Buscar Usuarios</h2>
+    <form action="@Url.Action("SearchUsers", "User")" method="get">
+        <input type="text" name="searchString" placeholder="Buscar usuarios..." />
+        <button type="submit">Buscar</button>
+    </form>
+
+    <ul>
+        @foreach (var user in Model)
+        {
+            <li>
+                <div class="user-info">
+                    <img src="@user.ImgURL" alt="Imagen de @user.Username" class="profile-img" />
+                    <span>@user.Username</span>
+                </div>
+
+                <!-- Botón de seguir o dejar de seguir -->
+                @if (!ViewBag.FollowingIds.Contains(user.id_Usuario))
+                {
+                    <form action="@Url.Action("FollowUser", "User")" method="post" style="display:inline;">
+                        <input type="hidden" name="userIdToFollow" value="@user.id_Usuario" />
+                        <button type="submit" class="btn btn-primary">Seguir</button>
+                    </form>
+                }
+                else
+                {
+                    <form action="@Url.Action("UnfollowUser", "User")" method="post" style="display:inline;">
+                        <input type="hidden" name="userIdToUnfollow" value="@user.id_Usuario" />
+                        <button type="submit" class="btn btn-danger">Dejar de seguir</button>
+                    </form>
+                }
+            </li>
+        }
+
+    </ul>
+</div>
+@{
+    var successMessage = TempData["SuccessMessage"];
+    var errorMessage = TempData["ErrorMessage"];
+}
+
+@if (successMessage != null)
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+

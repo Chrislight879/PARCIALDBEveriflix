@@ -67,9 +67,8 @@ public class AuthController : Controller
                 ViewBag.TiposUsuario = new SelectList(db.TipoUsuarios.Where(t => t.id_TipoUsuario != 1), "id_TipoUsuario", "Nombre");
                 return View();
             }
-
             // Imagen por defecto si no se sube ninguna
-            string imageUrl = "/images/default.png";
+            string imageUrl = "/images/profile_2_638787807624813602.jpg";
 
             if (imgURL != null && imgURL.ContentLength > 0)
             {

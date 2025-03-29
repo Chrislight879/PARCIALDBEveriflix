@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Usuario>
+
+@{
+    ViewBag.Title = "Usuarios a los que sigo";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
+</head>
+<div class="container">
+    <h2>Usuarios a los que sigo</h2>
+    <ul>
+        @foreach (var following in Model)
+        {
+            <li>
+                @following.Username
+                <form action="@Url.Action("UnfollowUser", "User")" method="post" style="display:inline;">
+                    <input type="hidden" name="userIdToUnfollow" value="@following.id_Usuario" />
+                    <button type="submit" class="btn btn-danger">Dejar de seguir</button>
+                </form>
+            </li>
+        }
+    </ul>
+</div>

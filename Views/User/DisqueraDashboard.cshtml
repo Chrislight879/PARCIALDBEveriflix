@@ -8,23 +8,74 @@
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
 </head>
 
-<div class="container">
-    <h2>Bienvenido @ViewBag.UserName!</h2>
-    <p>¡Panel de gestión de tu disquera!</p>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Panel de Información de la Disquera -->
+        <div class="user-panel">
+            <div class="profile-header">
+                <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+                <h2>Bienvenido @ViewBag.UserName!</h2>
+            </div>
 
-    <div class="profile-container">
-        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
-    </div>
+            <div class="user-details">
+                <p><strong>Correo:</strong> @Model.Correo</p>
+                <p><strong>Rol:</strong> Disquera</p>
+                <p><strong>Artistas registrados:</strong> @ViewBag.ArtistCount</p>
+            </div>
+            <div class="social-stats">
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowerCount</div>
+                    <div class="stat-label">Seguidores</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowingCount</div>
+                    <div class="stat-label">Siguiendo</div>
+                </div>
+            </div>
+            <div class="user-actions">
+                <a href="@Url.Action("EditProfile", "User")" class="btn">
+                    <i class="fas fa-user-edit"></i> Editar Perfil
+                </a>
+                <a href="@Url.Action("ManageArtists", "Label")" class="btn">
+                    <i class="fas fa-user-music"></i> Gestionar Artistas
+                </a>
+                <a href="@Url.Action("Analytics", "Label")" class="btn">
+                    <i class="fas fa-chart-line"></i> Estadísticas
+                </a>
+            </div>
+        </div>
 
-    <div class="profile-info">
-        <p><strong>Correo:</strong> @Model.Correo</p>
-        <p><strong>Rol:</strong> Disquera</p>
-        <p><strong>Artistas registrados:</strong> @ViewBag.ArtistCount</p>
-    </div>
+        <!-- Panel de Control de la Disquera -->
+        <div class="control-panel">
+            <div class="control-header">
+                <h2>Panel de Control</h2>
+            </div>
 
-    <div class="label-actions">
-        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
-        <a href="@Url.Action("ManageArtists", "Label")" class="btn btn-primary">Gestionar Artistas</a>
-        <a href="@Url.Action("Analytics", "Label")" class="btn btn-secondary">Estadísticas</a>
+            <div class="control-grid">
+                <div class="control-card">
+                    <h3>Artistas Registrados</h3>
+                    <p>Gestiona los artistas registrados en tu disquera.</p>
+                    <a href="@Url.Action("ManageArtists", "Label")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-users"></i> Gestionar Artistas
+                    </a>
+                </div>
+
+                <div class="control-card">
+                    <h3>Estadísticas</h3>
+                    <p>Accede a las estadísticas de la disquera y sus artistas.</p>
+                    <a href="@Url.Action("Analytics", "Label")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-chart-pie"></i> Ver Estadísticas
+                    </a>
+                </div>
+
+                <div class="control-card">
+                    <h3>Gestionar Contenido</h3>
+                    <p>Controla el contenido multimedia de los artistas.</p>
+                    <a href="@Url.Action("ManageContent", "Label")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-music"></i> Gestionar Contenido
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</body>

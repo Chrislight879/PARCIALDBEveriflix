@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <head>
-    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css"> <!-- Apunta al nuevo archivo CSS -->
 </head>
 <div class="container">
     <h2>Gestión de Usuarios</h2>
@@ -34,7 +34,7 @@
                     <td>@(item.TipoUsuario?.Nombre ?? "Sin tipo")</td>
                     <td>
                         <a href="@Url.Action("EditUser", new { id = item.id_Usuario })" class="btn-primary">Editar</a>
-                        <a href="@Url.Action("DeleteUser", new { id = item.id_Usuario })" class="btn-primary" style="background-color: #d32f2f">Eliminar</a>
+                        <a href="@Url.Action("DeleteUser", new { id = item.id_Usuario })" class="btn-danger">Eliminar</a>
                     </td>
                 </tr>
             }

@@ -3,11 +3,13 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css"> <!-- Apunta al nuevo archivo CSS -->
 </head>
 
-<div class="container">
+<!-- Contenedor general de login y registro -->
+<div class="login-signup-container">
     <h2>Login</h2>
+    <!-- Formulario de login -->
     <form method="post" action="/Auth/Login" class="form-container">
         <div class="form-group">
             <label for="username">Username</label>
@@ -18,7 +20,7 @@
             <input type="password" id="password" name="password" required class="form-control" />
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn-primary">Login</button>
         </div>
         @if (ViewBag.ErrorMessage != null)
         {
@@ -27,5 +29,9 @@
             </div>
         }
     </form>
+
+    <!-- Enlace de registro si el usuario no tiene cuenta -->
     <p>Don't have an account? <a href="/Auth/SignUp">Sign up here</a></p>
 </div>
+
+<!-- Aquí puedes agregar cualquier script que necesites para la funcionalidad de login si es necesario -->

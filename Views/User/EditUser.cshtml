@@ -3,15 +3,20 @@
 @{
     ViewBag.Title = "Editar Usuario";
 }
+
 <head>
-    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
 </head>
+
 
 <h2>Editar Usuario</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
+    <!-- Campo oculto para el Id -->
+    @Html.HiddenFor(model => model.id_Usuario)
 
     <div class="form-group">
         @Html.LabelFor(model => model.Username)
@@ -20,19 +25,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Correo)
-        @Html.EditorFor(model => model.Correo)
-        @Html.ValidationMessageFor(model => model.Correo)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Id_TipoUsuario, "Tipo de Usuario")
-        @Html.DropDownListFor(model => model.Id_TipoUsuario, (SelectList)ViewBag.TiposUsuario, "Selecciona un tipo", new { @class = "form-control" })
+        @Html.LabelFor(model => model.Id_TipoUsuario)
+        @Html.DropDownListFor(model => model.Id_TipoUsuario, (SelectList)ViewBag.TiposUsuario, "Seleccione un tipo", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.Id_TipoUsuario)
     </div>
 
-    <div class="form-group">
-        <input type="submit" value="Actualizar" class="btn btn-primary" />
-        <a href="@Url.Action("ManageUsers")" class="btn btn-secondary">Cancelar</a>
-    </div>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
 }

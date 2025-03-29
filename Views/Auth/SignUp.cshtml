@@ -3,11 +3,13 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css"> <!-- Apunta al archivo CSS que contiene los estilos -->
 </head>
 
-<div class="container">
+<!-- Contenedor general de login y registro -->
+<div class="login-signup-container">
     <h2>Sign Up</h2>
+    <!-- Formulario de registro -->
     <form method="post" action="/Auth/SignUp" enctype="multipart/form-data" class="form-container">
         <div class="form-group">
             <label for="username">Username</label>
@@ -31,12 +33,12 @@
         </div>
         <!-- Campo para seleccionar tipo de usuario -->
         <div class="form-group">
-    <label for="tipoUsuario">Tipo de Usuario</label>
-    @Html.DropDownList("id_TipoUsuario", (SelectList)ViewBag.TiposUsuario, "Seleccione un tipo de usuario", new { @class = "form-control", required = "required" })
+            <label for="tipoUsuario">Tipo de Usuario</label>
+            @Html.DropDownList("id_TipoUsuario", (SelectList)ViewBag.TiposUsuario, "Seleccione un tipo de usuario", new { @class = "form-control", required = "required" })
         </div>
-       
+
         <div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn-primary">Register</button>
         </div>
         @if (ViewBag.ErrorMessage != null)
         {
@@ -45,5 +47,9 @@
             </div>
         }
     </form>
+
+    <!-- Enlace de login si ya tiene cuenta -->
     <p>Already have an account? <a href="/Auth/Login">Login here</a></p>
 </div>
+
+<!-- Aquí puedes agregar cualquier script que necesites para la funcionalidad de registro si es necesario -->

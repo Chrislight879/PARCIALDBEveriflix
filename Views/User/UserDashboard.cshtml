@@ -1,32 +1,60 @@
 ﻿@model PARCIALDBEveriflix.Models.Usuario
 
 @{
-    ViewBag.Title = "User Dashboard";
+    ViewBag.Title = "Dashboard";
+    Layout = null;
 }
 
+<!DOCTYPE html>
+<html>
 <head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Panel de Información del Usuario (izquierda) -->
+        <div class="user-panel">
+            <div class="profile-header">
+                <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")"
+                     alt="Foto de perfil"
+                     class="profile-img" />
+                <h2>Información del Usuario</h2>
+            </div>
 
-<div class="container">
-    <h2>Bienvenido @ViewBag.UserName!</h2>
-    <p>¡Descubre nuevo contenido!</p>
+            <div class="user-details">
+                <p><strong>Nombre:</strong> @Model.Username</p>
+                <p><strong>Correo:</strong> @Model.Correo</p>
+                <p><strong>Rol:</strong> Usuario</p>
+            </div>
 
-    <div class="profile-container">
-        <img src="@Url.Content(Model.ImgURL ?? "~/Content/Images/default-profile.jpg")" alt="Foto de perfil" class="profile-img" />
+            <div class="social-stats">
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowerCount</div>
+                    <div class="stat-label">Seguidores</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">@ViewBag.FollowingCount</div>
+                    <div class="stat-label">Siguiendo</div>
+                </div>
+            </div>
+
+            <div class="user-actions">
+                <a href="@Url.Action("EditProfile", "User")" class="btn">
+                    <i class="fas fa-user-edit"></i> Editar Perfil
+                </a>
+                <a href="@Url.Action("SearchUsers")" class="btn">
+                    <i class="fas fa-search"></i> Buscar Usuarios
+                </a>
+            </div>
+        </div>
+
+        <!-- Espacio vacío en el panel derecho -->
+        <div class="right-panel">
+            <!-- Aquí podrías agregar información adicional si lo necesitas -->
+        </div>
     </div>
-
-    <div class="profile-info">
-        <p><strong>Correo:</strong> @Model.Correo</p>
-    </div>
-
-    <div class="user-actions">
-        <a href="@Url.Action("EditProfile", "User")" class="btn btn-primary">Editar Perfil</a>
-        <a href="@Url.Action("Index", "Favorites")" class="btn btn-secondary">Mis Favoritos</a>
-    </div>
-
-    <div class="recommendations">
-        <h3>Recomendaciones para ti</h3>
-        <!-- Contenido recomendado aquí -->
-    </div>
-</div>
+</body>
+</html>

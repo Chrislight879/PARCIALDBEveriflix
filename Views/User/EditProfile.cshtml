@@ -2,32 +2,57 @@
 @{
     ViewBag.Title = "Editar Perfil";
 }
+
 <head>
-    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
 </head>
+
 <div class="container">
     <h2>Editar Perfil</h2>
+
+    <!-- Mostrar mensajes de éxito/error -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
     @using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
+
+        <!-- Campo oculto para el ID del usuario -->
+        @Html.HiddenFor(model => model.id_Usuario)
+
         <div class="form-group">
             @Html.LabelFor(model => model.Username)
-            @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @readonly = "readonly" })
+            @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Correo)
-            @Html.TextBoxFor(model => model.Correo, new { @class = "form-control" })
-        </div>
+
         <div class="form-group">
             <label for="ImgURL">Imagen de Perfil</label>
             <input type="file" name="ImgURL" class="form-control" />
             @if (!string.IsNullOrEmpty(Model.ImgURL))
             {
-                <div>
+                <div class="mt-2">
                     <img src="@Url.Content(Model.ImgURL)" alt="Foto de perfil actual" class="profile-img" width="100" />
+                    <p class="text-muted">Imagen actual</p>
                 </div>
             }
+            @Html.ValidationMessage("ImgURL", new { @class = "text-danger" })
         </div>
-        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            @Html.ActionLink("Cancelar", "Dashboard", null, new { @class = "btn btn-default" })
+        </div>
     }
 </div>
