@@ -1,11 +1,11 @@
 ﻿@model PARCIALDBEveriflix.Models.Usuario
-
 @{
     ViewBag.Title = "Dashboard de Disquera";
 }
 
 <head>
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -36,10 +36,10 @@
                 <a href="@Url.Action("EditProfile", "User")" class="btn">
                     <i class="fas fa-user-edit"></i> Editar Perfil
                 </a>
-                <a href="@Url.Action("ManageArtists", "Label")" class="btn">
+                <a href="@Url.Action("PerfilDisquera", "Disquera")" class="btn">
                     <i class="fas fa-user-music"></i> Gestionar Artistas
                 </a>
-                <a href="@Url.Action("Analytics", "Label")" class="btn">
+                <a href="@Url.Action("Analytics", "Disquera")" class="btn">
                     <i class="fas fa-chart-line"></i> Estadísticas
                 </a>
             </div>
@@ -55,23 +55,23 @@
                 <div class="control-card">
                     <h3>Artistas Registrados</h3>
                     <p>Gestiona los artistas registrados en tu disquera.</p>
-                    <a href="@Url.Action("ManageArtists", "Label")" class="btn" style="margin-top: 15px;">
+                    <a href="@Url.Action("DisqueraProfile", "Disquera")" class="btn" style="margin-top: 15px;">
                         <i class="fas fa-users"></i> Gestionar Artistas
                     </a>
                 </div>
 
                 <div class="control-card">
-                    <h3>Estadísticas</h3>
-                    <p>Accede a las estadísticas de la disquera y sus artistas.</p>
-                    <a href="@Url.Action("Analytics", "Label")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-chart-pie"></i> Ver Estadísticas
+                    <h3>Nuevas Promesas</h3>
+                    <p>Accede a la lista de artistas independientes.</p>
+                    <a href="@Url.Action("SearchArtists", "Disquera")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-search"></i> Buscar Artistas
                     </a>
                 </div>
 
                 <div class="control-card">
                     <h3>Gestionar Contenido</h3>
                     <p>Controla el contenido multimedia de los artistas.</p>
-                    <a href="@Url.Action("ManageContent", "Label")" class="btn" style="margin-top: 15px;">
+                    <a href="@Url.Action("ManageContent", "Disquera")" class="btn" style="margin-top: 15px;">
                         <i class="fas fa-music"></i> Gestionar Contenido
                     </a>
                 </div>

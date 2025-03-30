@@ -1,0 +1,80 @@
+﻿@model PARCIALDBEveriflix.Models.Disquera
+
+@{
+    ViewBag.Title = "Perfil de Disquera";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/ArtistMusicManagement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<div class="music-management-container">
+    <h2>@Model.Nombre</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Artistas Vinculados</h4>
+            <a href="@Url.Action("SearchArtists")" class="btn btn-outline-success float-right">
+                <i class="fas fa-plus"></i> Vincular Nuevo Artista
+            </a>
+        </div>
+        <div class="card-body">
+            @if (Model.Artistas != null && Model.Artistas.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var artista in Model.Artistas)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="artist-profile-img-container">
+                                        <img src="@(artista.Usuario.ImgURL ?? "/Content/Images/ProfileImages/default-artist.jpg")"
+                                             class="artist-profile-img" alt="@artista.Nombre" />
+                                    </div>
+                                </td>
+                                <td>@artista.Nombre</td>
+                                <td>
+                                    @using (Html.BeginForm("DesvincularArtista", "Disquera", new { id = artista.Id_Artista }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger"
+                                                onclick="return confirm('¿Estás seguro de desvincular a este artista?');">
+                                            <i class="fas fa-unlink"></i> Desvincular
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No hay artistas vinculados actualmente.
+                </div>
+            }
+        </div>
+    </div>
+</div>

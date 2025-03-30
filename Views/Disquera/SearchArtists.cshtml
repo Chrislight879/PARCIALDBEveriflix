@@ -1,0 +1,91 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Artista>
+@{
+    ViewBag.Title = "Buscar Artistas";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/ArtistMusicManagement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<div class="music-management-container">
+    <h2>Buscar Artistas para Vincular</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Artistas Disponibles</h4>
+            <a href="@Url.Action("DisqueraProfile")" class="btn btn-outline-secondary float-right">
+                <i class="fas fa-arrow-left"></i> Volver al Perfil
+            </a>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("SearchArtists", "Disquera", FormMethod.Get))
+            {
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Buscar artistas..." value="@ViewBag.CurrentFilter" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model != null && Model.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var artista in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="artist-profile-img-container">
+                                        <img src="@(artista.Usuario.ImgURL ?? "/Content/Images/ProfileImages/default-artist.jpg")"
+                                             class="artist-profile-img" alt="@artista.Nombre" />
+                                    </div>
+                                </td>
+                                <td>@artista.Nombre</td>
+                                <td>
+                                    @using (Html.BeginForm("VincularArtista", "Disquera", new { id = artista.Id_Artista }, FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-success"
+                                                onclick="return confirm('¿Vincular este artista a tu disquera?');">
+                                            <i class="fas fa-link"></i> Vincular
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No se encontraron artistas disponibles sin disquera.
+                </div>
+            }
+        </div>
+    </div>
+</div>

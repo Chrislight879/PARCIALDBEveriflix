@@ -1,0 +1,264 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Administrar Música";
+    var artista = ViewBag.Artista as PARCIALDBEveriflix.Models.Artista;
+    var albumes = ViewBag.Albumes as List<PARCIALDBEveriflix.Models.Album>;
+    var canciones = ViewBag.Canciones as List<PARCIALDBEveriflix.Models.Cancion>;
+    var disquerasDisponibles = ViewBag.DisquerasDisponibles as List<PARCIALDBEveriflix.Models.Disquera>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Everiflix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/ArtistMusicManagement.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="music-management-container">
+        <h2>Administrar Música</h2>
+
+        <!-- Mensajes de estado -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <!-- Información del Artista -->
+        <div class="card">
+            <div class="card-header">
+                <h4>Perfil de Artista</h4>
+            </div>
+            <div class="card-body">
+                <div class="artist-profile">
+                    <div class="artist-image">
+                        @if (!string.IsNullOrEmpty(artista.Usuario.ImgURL))
+                        {
+                            <img src="@artista.Usuario.ImgURL" class="artist-profile-img" alt="Foto de perfil" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/Images/default-artist.jpg" class="artist-profile-img" alt="Foto de perfil" />
+                        }
+                    </div>
+                    <div class="artist-info">
+                        <h3>@artista.Nombre</h3>
+                        @if (artista.Disquera != null)
+                        {
+                            <p><strong>Disquera:</strong> @artista.Disquera.Nombre</p>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No asociado a ninguna disquera</p>
+                        }
+                        <div class="artist-actions mt-3">
+                            @if (artista.Disquera != null)
+                            {
+                                <a href="@Url.Action("LeaveDisquera", "Artista")" class="btn btn-outline-danger ml-2" onclick="return confirm('¿Estás seguro de que quieres abandonar esta disquera?');">
+                                    <i class="fas fa-sign-out-alt"></i> Abandonar Disquera
+                                </a>
+                            }
+                            else
+                            {
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="disqueraDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-plus"></i> Unirse a Disquera
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="disqueraDropdown">
+                                        @if (disquerasDisponibles != null && disquerasDisponibles.Any())
+                                        {
+                                            foreach (var disquera in disquerasDisponibles)
+                                            {
+                                                <a class="dropdown-item" href="@Url.Action("JoinDisquera", "Artista", new { id = disquera.Id_Disquera })" onclick="return confirm('¿Unirse a @disquera.Nombre?');">
+                                                    @disquera.Nombre
+                                                </a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="dropdown-item text-muted">No hay disqueras disponibles</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Álbumes -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-compact-disc"></i> Mis Álbumes</h4>
+                <a href="@Url.Action("CreateAlbum")" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Nuevo Álbum
+                </a>
+            </div>
+            <div class="card-body">
+                @if (albumes != null && albumes.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Portada</th>
+                                    <th>Nombre</th>
+                                    <th>Canciones</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var album in albumes)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="@(string.IsNullOrEmpty(album.ImgURL) ? "/Content/AlbumCovers/default.jpg" : album.ImgURL)"
+                                                 class="img-thumbnail album-cover" alt="Portada del álbum" />
+                                        </td>
+                                        <td>@album.Nombre</td>
+                                        <td>@(album.Cancions?.Count ?? 0)</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="@Url.Action("EditAlbum", new { id = album.Id_Album })" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-edit"></i> Editar
+                                                </a>
+                                                <a href="@Url.Action("CreateSong")?albumId=@album.Id_Album" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-music"></i> Agregar Canción
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No tienes ningún álbum registrado.
+                        <a href="@Url.Action("CreateAlbum")" class="alert-link">Crea tu primer álbum</a>.
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Sección de Canciones -->
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-music"></i> Mis Canciones</h4>
+                <a href="@Url.Action("CreateSong")" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Nueva Canción
+                </a>
+            </div>
+            <div class="card-body">
+                @if (canciones != null && canciones.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Portada</th>
+                                    <th>Nombre</th>
+                                    <th>Duración</th>
+                                    <th>Álbum</th>
+                                    <th>Género</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cancion in canciones)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="@(string.IsNullOrEmpty(cancion.ImgURL) ? "/Content/SongCovers/default.jpg" : cancion.ImgURL)"
+                                                 class="img-thumbnail song-cover" alt="Portada de la canción" />
+                                        </td>
+                                        <td>@cancion.Nombre</td>
+                                        <td class="song-duration">@cancion.Duracion.ToString(@"mm\:ss")</td>
+                                        <td>
+                                            @if (cancion.Album != null)
+                                            {
+                                                @cancion.Album.Nombre
+                                            }
+                                            else
+                                            {
+                                                <span class="no-association">Sin álbum</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (cancion.GeneroCancion != null)
+                                            {
+                                                @cancion.GeneroCancion.Nombre
+                                            }
+                                            else
+                                            {
+                                                <span class="no-association">Sin género</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="@Url.Action("EditSong", new { id = cancion.Id_Cancion })" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="@Url.Action("DeleteSong", new { id = cancion.Id_Cancion })" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No tienes ninguna canción registrada.
+                        <a href="@Url.Action("CreateSong")" class="alert-link">Agrega tu primera canción</a>.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @section scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Confirmación antes de eliminar
+                $('.btn-danger').click(function (e) {
+                    if (!confirm('¿Estás seguro de que quieres eliminar este elemento?')) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Efecto hover para las filas de la tabla
+                $('.table tbody tr').hover(
+                    function () {
+                        $(this).css('transform', 'translateX(5px)');
+                    },
+                    function () {
+                        $(this).css('transform', 'translateX(0)');
+                    }
+                );
+            });
+        </script>
+    }
+</body>
+</html>

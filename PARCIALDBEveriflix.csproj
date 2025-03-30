@@ -145,7 +145,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ArtistaController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\DisqueraController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -230,6 +232,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ArtistMusicManagement.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -314,10 +317,21 @@
     <Content Include="Views\User\SearchUsers.cshtml" />
     <Content Include="Views\User\FollowersList.cshtml" />
     <Content Include="Views\User\FollowingList.cshtml" />
+    <Content Include="Views\Artista\CreateSong.cshtml" />
+    <Content Include="Views\Artista\CreateAlbum.cshtml" />
+    <Content Include="Views\Artista\EditAlbum.cshtml" />
+    <Content Include="Views\Artista\EditSong.cshtml" />
+    <Content Include="Views\Artista\JoinDisquera.cshtml" />
+    <Content Include="Views\Artista\LeaveDisquera.cshtml" />
+    <Content Include="Views\Artista\ManageMusic.cshtml" />
+    <Content Include="Views\Disquera\DisqueraProfile.cshtml" />
+    <Content Include="Views\Disquera\SearchArtists.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\AlbumCovers\" />
     <Folder Include="Images\ProfileImages\" />
+    <Folder Include="Images\SongCovers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

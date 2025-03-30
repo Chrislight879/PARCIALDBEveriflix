@@ -1,0 +1,19 @@
+﻿@model PARCIALDBEveriflix.Models.Artista
+
+@{
+    ViewBag.Title = "Separarse de una Disquera";
+}
+
+<h2>Separarse de la Disquera</h2>
+
+<p>Estás actualmente vinculado a la disquera: @Model.Disquera?.Nombre</p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-warning">Separarse</button>
+}
+
+<p>
+    @Html.ActionLink("Volver a la lista de Artistas", "Index")
+</p>

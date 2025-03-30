@@ -1,0 +1,24 @@
+﻿@model PARCIALDBEveriflix.Models.Artista
+
+@{
+    ViewBag.Title = "Unirse a una Disquera";
+}
+
+<h2>Unirse a una Disquera</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Id_Disquera)
+        @Html.DropDownListFor(model => model.Id_Disquera, (SelectList)ViewBag.Disqueras, "Seleccione Disquera", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Id_Disquera)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Unirse</button>
+}
+
+<p>
+    @Html.ActionLink("Volver a la lista de Artistas", "Index")
+</p>
