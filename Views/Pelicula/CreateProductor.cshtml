@@ -2,71 +2,198 @@
 
 @{
     ViewBag.Title = "Crear Película (Productor)";
+
+    // Mostrar mensajes de error de TempData
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Éxito!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
 }
 
-<h2>@ViewBag.Title</h2>
-
-@using (Html.BeginForm("CreateProductor", "Pelicula", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Duracion, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Duracion, new { htmlAttributes = new { @class = "form-control", placeholder = "HH:MM:SS" } })
-                @Html.ValidationMessageFor(model => model.Duracion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Id_Categoria, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Id_Categoria", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Id_Categoria, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Id_Clasificacion, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Id_Clasificacion", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Id_Clasificacion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Director", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Id_Director", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Id_Director, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ImgURL, "Imagen de Portada", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="file" name="imagen" class="form-control" />
-                @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Crear" class="btn btn-success" />
-                @Html.ActionLink("Cancelar", "ManageMoviesProductor", null, new { @class = "btn btn-default" })
-            </div>
-        </div>
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">@ViewBag.Title</h4>
     </div>
+    <div class="card-body">
+        @if (ViewBag.Id_Categoria == null || ViewBag.Id_Clasificacion == null || ViewBag.Id_Director == null)
+        {
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> No se pudieron cargar todos los datos necesarios. Por favor intente nuevamente más tarde.
+                @Html.ActionLink("Recargar", "CreateProductor", null, new { @class = "btn btn-sm btn-warning ml-2" })
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm("CreateProductor", "Pelicula", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Nombre)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        <div class="invalid-feedback">
+                            Por favor ingrese el nombre de la película
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Duracion)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Duracion, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @class = "form-control",
+                                placeholder = "HH:MM:SS",
+                                required = "required",
+                                data_val = "true",
+                                data_val_required = "La duración es requerida",
+                                data_val_regex = "Formato inválido (HH:MM:SS)",
+                                data_val_regex_pattern = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
+                            }
+                        })
+                        @Html.ValidationMessageFor(model => model.Duracion, "", new { @class = "text-danger" })
+                        <div class="invalid-feedback">
+                            Por favor ingrese la duración en formato HH:MM:SS (ej. 01:30:00)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Id_Categoria, "Categoría")</label>
+                    <div class="col-md-9">
+                        @Html.DropDownListFor(model => model.Id_Categoria,
+                            (SelectList)ViewBag.Id_Categoria,
+                            "Seleccione una categoría",
+                            new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Id_Categoria, "", new { @class = "text-danger" })
+                        <div class="invalid-feedback">
+                            Por favor seleccione una categoría
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Id_Clasificacion, "Clasificación")</label>
+                    <div class="col-md-9">
+                        @Html.DropDownListFor(model => model.Id_Clasificacion,
+                            (SelectList)ViewBag.Id_Clasificacion,
+                            "Seleccione una clasificación",
+                            new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Id_Clasificacion, "", new { @class = "text-danger" })
+                        <div class="invalid-feedback">
+                            Por favor seleccione una clasificación
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Id_Director, "Director")</label>
+                    <div class="col-md-9">
+                        @if (ViewBag.Id_Director != null && ((IEnumerable<SelectListItem>)ViewBag.Id_Director).Any())
+                        {
+                            @Html.DropDownListFor(model => model.Id_Director,
+                                (IEnumerable<SelectListItem>)ViewBag.Id_Director,
+                                "Seleccione un director (opcional)",
+                                new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            <select class="form-control" disabled>
+                                <option>No hay directores disponibles</option>
+                            </select>
+                            <input type="hidden" name="Id_Director" value="" />
+                        }
+                        @Html.ValidationMessageFor(model => model.Id_Director, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.ImgURL, "Imagen de Portada")</label>
+                    <div class="col-md-9">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="imagen" id="imagen" accept="image/*">
+                            <label class="custom-file-label" for="imagen">Seleccionar archivo...</label>
+                        </div>
+                        <small class="form-text text-muted">Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 2MB</small>
+                        @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" class="btn btn-primary mr-2">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                        @Html.ActionLink("Cancelar", "ManageMoviesProductor", null, new { @class = "btn btn-secondary" })
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        // Validación de formulario con Bootstrap
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Mostrar nombre de archivo seleccionado
+        $('.custom-file-input').on('change', function () {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+
+        // Cerrar automáticamente las alertas después de 5 segundos
+        setTimeout(function () {
+            $('.alert').alert('close');
+        }, 5000);
+
+        // Validación personalizada para el formato de tiempo
+        $.validator.addMethod("timeFormat", function (value, element) {
+            return this.optional(element) || /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/.test(value);
+        }, "Por favor ingrese un formato de tiempo válido (HH:MM:SS)");
+
+        // Formatear automáticamente el campo de tiempo
+        $('#Duracion').on('blur', function () {
+            var time = $(this).val();
+            if (time && time.match(/^\d{1,2}:\d{2}$/)) {
+                $(this).val(time + ':00');
+            } else if (time && time.match(/^\d{1,2}$/)) {
+                $(this).val(time + ':00:00');
+            }
+        });
+    </script>
 }
