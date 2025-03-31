@@ -1,0 +1,58 @@
+﻿@model PARCIALDBEveriflix.Models.Pelicula
+
+@{
+    ViewBag.Title = "Eliminar Película";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="alert alert-warning">
+    <strong>¡Advertencia!</strong> Está a punto de eliminar permanentemente esta película y todo su contenido relacionado.
+</div>
+
+<h3>¿Está seguro que desea eliminar la siguiente película?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+
+        <dt>Duración</dt>
+        <dd>@Model.Duracion.ToString(@"hh\:mm\:ss")</dd>
+
+        <dt>Productor</dt>
+        <dd>@(Model.Productor?.Nombre ?? "No asignado")</dd>
+
+        <dt>Categoría</dt>
+        <dd>@Html.DisplayFor(model => model.Categoria.Nombre)</dd>
+
+        <dt>Clasificación</dt>
+        <dd>@Html.DisplayFor(model => model.Clasificacion.Nombre)</dd>
+
+        <dt>Portada</dt>
+        <dd>
+            <img src="@Url.Content(Model.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
+                 alt="Portada" class="img-thumbnail" style="max-width: 150px;" />
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Confirmar Eliminación" class="btn btn-danger" />
+            @Html.ActionLink("Cancelar", "ManageMoviesDirector", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function() {
+                return confirm('¿Está completamente seguro de que desea eliminar esta película? Esta acción no se puede deshacer.');
+            });
+        });
+    </script>
+}

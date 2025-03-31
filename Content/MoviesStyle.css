@@ -1,0 +1,551 @@
+﻿/* Estilo principal para la vista de gestión de películas */
+.movie-management-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #333; /* Fondo oscuro */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    color: #fff; /* Texto blanco */
+}
+
+    /* Títulos */
+    .movie-management-container h2,
+    .movie-management-container h3,
+    .movie-management-container h4 {
+        color: #b71c1c; /* Rojo más oscuro */
+        margin-bottom: 20px;
+    }
+
+    .movie-management-container h2 {
+        font-size: 2em;
+        text-align: center;
+        border-bottom: 2px solid #b71c1c; /* Borde rojo más oscuro */
+        padding-bottom: 10px;
+    }
+
+    .movie-management-container h3 {
+        font-size: 1.8em;
+        margin-top: 30px;
+    }
+
+    .movie-management-container h4 {
+        font-size: 1.5em;
+    }
+
+/* Tarjetas de películas */
+.movie-card {
+    background-color: #444; /* Fondo oscuro */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+    .movie-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .movie-card .card-header {
+        background-color: #555; /* Fondo ligeramente más claro */
+        border-bottom: 1px solid #b71c1c; /* Borde rojo más oscuro */
+        color: white;
+        font-weight: bold;
+        border-radius: 8px 8px 0 0 !important;
+        padding: 15px;
+    }
+
+    .movie-card .card-body {
+        padding: 20px;
+    }
+
+/* Imágenes de películas */
+.movie-poster {
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #b71c1c;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .movie-poster:hover {
+        transform: scale(1.03);
+        box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4); /* Sombra roja */
+    }
+
+/* Información de películas */
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.movie-meta {
+    margin-bottom: 15px;
+}
+
+.movie-meta-item {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.movie-meta-label {
+    font-weight: bold;
+    color: #b71c1c;
+    margin-right: 10px;
+    min-width: 100px;
+}
+
+.movie-meta-value {
+    color: #ddd;
+}
+
+/* Botones de acción */
+.movie-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-movie {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-movie-primary {
+    background-color: #b71c1c; /* Rojo más oscuro */
+    color: white;
+}
+
+    .btn-movie-primary:hover {
+        background-color: #9e1c1c; /* Rojo aún más oscuro */
+        transform: translateY(-2px);
+    }
+
+.btn-movie-secondary {
+    background-color: #0277bd; /* Azul más oscuro */
+    color: white;
+}
+
+    .btn-movie-secondary:hover {
+        background-color: #01579b; /* Azul aún más oscuro */
+        transform: translateY(-2px);
+    }
+
+.btn-movie-danger {
+    background-color: #9e1c1c; /* Rojo oscuro */
+    color: white;
+}
+
+    .btn-movie-danger:hover {
+        background-color: #8c1616; /* Rojo aún más oscuro */
+        transform: translateY(-2px);
+    }
+
+/* Formularios */
+.movie-form {
+    background-color: #444;
+    padding: 25px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.form-group-movie {
+    margin-bottom: 20px;
+}
+
+    .form-group-movie label {
+        display: block;
+        margin-bottom: 8px;
+        color: #b71c1c;
+        font-weight: bold;
+    }
+
+.form-control-movie {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #555;
+    border: 1px solid #666;
+    border-radius: 6px;
+    color: white;
+    transition: border-color 0.3s;
+}
+
+    .form-control-movie:focus {
+        border-color: #b71c1c;
+        outline: none;
+        background-color: #666;
+    }
+
+/* Selectores */
+.select2-container--default .select2-selection--single {
+    background-color: #555 !important;
+    border: 1px solid #666 !important;
+    border-radius: 6px !important;
+    height: 40px !important;
+}
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: white !important;
+        line-height: 40px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 38px !important;
+    }
+
+/* Alertas */
+.alert-movie {
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.alert-movie-success {
+    background-color: #388e3c; /* Verde más oscuro */
+    color: white;
+}
+
+.alert-movie-danger {
+    background-color: #b71c1c; /* Rojo más oscuro */
+    color: white;
+}
+
+.alert-movie-info {
+    background-color: #0277bd; /* Azul más oscuro */
+    color: white;
+}
+
+/* Duración de películas */
+.movie-duration {
+    font-family: 'Courier New', monospace;
+    color: #bbb;
+    background-color: #555;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .movie-management-container {
+        padding: 15px;
+    }
+
+    .movie-card {
+        margin-bottom: 30px;
+    }
+
+    .movie-info {
+        margin-top: 20px;
+    }
+
+    .movie-actions {
+        flex-direction: column;
+    }
+
+    .btn-movie {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Efectos especiales */
+@keyframes fadeInMovie {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.movie-card {
+    animation: fadeInMovie 0.5s ease-out;
+}
+
+/* Estilo para el campo de imagen */
+.movie-image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.movie-image-preview {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #b71c1c;
+    margin-bottom: 15px;
+    background-color: #555;
+}
+
+.movie-image-upload-label {
+    background-color: #b71c1c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+    .movie-image-upload-label:hover {
+        background-color: #9e1c1c;
+    }
+
+.movie-image-upload-input {
+    display: none;
+}
+
+/* Estilo para las tablas de películas */
+.movie-table {
+    width: 100%;
+    color: white;
+    margin-bottom: 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .movie-table th {
+        background-color: #555;
+        color: #b71c1c;
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 2px solid #b71c1c;
+    }
+
+    .movie-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #555;
+        vertical-align: middle;
+    }
+
+    .movie-table tr:hover {
+        background-color: #666;
+    }
+
+.movie-table-poster {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #b71c1c;
+}
+
+/* Estilo para el modal de confirmación */
+.movie-confirm-modal .modal-content {
+    background-color: #444;
+    border: 2px solid #b71c1c;
+    border-radius: 10px;
+}
+
+.movie-confirm-modal .modal-header {
+    border-bottom: 1px solid #b71c1c;
+    color: white;
+}
+
+.movie-confirm-modal .modal-body {
+    color: #ddd;
+    padding: 20px;
+}
+
+.movie-confirm-modal .modal-footer {
+    border-top: 1px solid #555;
+    padding: 15px;
+}
+
+/* Estilo para el contador de caracteres */
+.movie-char-count {
+    font-size: 0.8em;
+    color: #bbb;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* Estilo para los badges */
+.movie-badge {
+    background-color: #b71c1c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Estilo para los tooltips */
+.tooltip-movie .tooltip-inner {
+    background-color: #b71c1c;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.tooltip-movie .arrow::before {
+    border-bottom-color: #b71c1c !important;
+}
+
+/* Estilo para el paginador */
+.movie-pagination .page-item.active .page-link {
+    background-color: #b71c1c;
+    border-color: #b71c1c;
+}
+
+.movie-pagination .page-link {
+    color: #b71c1c;
+    background-color: #444;
+    border: 1px solid #555;
+}
+
+    .movie-pagination .page-link:hover {
+        color: white;
+        background-color: #666;
+        border-color: #666;
+    }
+
+/* Estilo para el dropdown */
+.dropdown-menu-movie {
+    background-color: #555;
+    border: 1px solid #b71c1c;
+}
+
+.dropdown-item-movie {
+    color: white;
+}
+
+    .dropdown-item-movie:hover {
+        background-color: #666;
+        color: white;
+    }
+
+/* Estilo para el breadcrumb */
+.breadcrumb-movie {
+    background-color: #444;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+.breadcrumb-item-movie.active {
+    color: #bbb;
+}
+
+.breadcrumb-item-movie a {
+    color: #b71c1c;
+    text-decoration: none;
+}
+
+    .breadcrumb-item-movie a:hover {
+        text-decoration: underline;
+    }
+
+/* Estilo para el panel de búsqueda */
+.movie-search-panel {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #b71c1c;
+}
+
+.movie-search-title {
+    color: #b71c1c;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+/* Estilo para el placeholder */
+::placeholder {
+    color: #bbb !important;
+    opacity: 1 !important;
+}
+
+:-ms-input-placeholder {
+    color: #bbb !important;
+}
+
+::-ms-input-placeholder {
+    color: #bbb !important;
+}
+
+
+/* Mejoras de contraste y estilo */
+.control-label {
+    color: #e0e0e0 !important;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.movie-image-upload-label {
+    background-color: #b71c1c;
+    color: white !important;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+    .movie-image-upload-label:hover {
+        background-color: #9e1c1c;
+    }
+
+.movie-image-upload-container {
+    margin-top: 8px;
+}
+
+/* Mejora para selects */
+.form-control-movie {
+    background-color: #555;
+    color: white;
+    border: 1px solid #666;
+    padding: 10px 15px;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+    .form-control-movie:focus {
+        border-color: #b71c1c;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(183, 28, 28, 0.25);
+    }
+
+    /* Estilo para opciones de select */
+    .form-control-movie option {
+        background-color: #444;
+        color: white;
+        padding: 5px;
+    }
+
+/* Texto de validación */
+.field-validation-error {
+    color: #ff6b6b;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Ajustes para el botón de selección de archivo */
+input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}

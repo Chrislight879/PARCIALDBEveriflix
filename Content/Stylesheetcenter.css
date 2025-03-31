@@ -57,7 +57,7 @@ input[type="text"] {
 
 button[type="submit"] {
     padding: 12px 20px;
-    background-color: #f44336; /* Rojo para los botones */
+    background-color: #f443; /* Rojo para los botones */
     color: white;
     border: none;
     border-radius: 6px;

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Pelicula>
+
+@{
+    ViewBag.Title = "Mis Películas (Productor)";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Crear Nueva Película", "CreateProductor", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Portada</th>
+            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Duracion)</th>
+            <th>Director</th>
+            <th>Categoría</th>
+            <th>Clasificación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.ImgURL" alt="Portada" style="max-width: 100px; max-height: 150px;" />
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Duracion)</td>
+                <td>
+                    @if (item.Director != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Director.Nombre)
+                    }
+                    else
+                    {
+                        <span class="text-muted">No asignado</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Categoria.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Clasificacion.Nombre)</td>
+                <td>
+                    @Html.ActionLink("Editar", "EditProductor", new { id = item.Id_pelicula }, new { @class = "btn btn-warning btn-sm" })
+                    @Html.ActionLink("Eliminar", "DeleteProductor", new { id = item.Id_pelicula }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

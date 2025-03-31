@@ -1,0 +1,41 @@
+﻿@model PARCIALDBEveriflix.Models.Pelicula
+
+@{
+    ViewBag.Title = "Eliminar Película";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>¿Estás seguro que deseas eliminar esta película?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Duracion)</dt>
+        <dd>@Html.DisplayFor(model => model.Duracion)</dd>
+
+        <dt>Director</dt>
+        <dd>@(Model.Director?.Nombre ?? "No asignado")</dd>
+
+        <dt>Categoría</dt>
+        <dd>@Html.DisplayFor(model => model.Categoria.Nombre)</dd>
+
+        <dt>Clasificación</dt>
+        <dd>@Html.DisplayFor(model => model.Clasificacion.Nombre)</dd>
+
+        <dt>Portada</dt>
+        <dd><img src="@Model.ImgURL" alt="Portada" style="max-width: 100px;" /></dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            @Html.ActionLink("Volver al listado", "ManageMoviesProductor", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

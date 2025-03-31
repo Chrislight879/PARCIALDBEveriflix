@@ -149,6 +149,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\DisqueraController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PeliculaController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -249,6 +250,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\MoviesStyle.css" />
     <Content Include="Content\StyleSheet1.css" />
     <Content Include="Content\Stylesheetcenter.css" />
     <Content Include="favicon.ico" />
@@ -326,10 +328,19 @@
     <Content Include="Views\Artista\ManageMusic.cshtml" />
     <Content Include="Views\Disquera\DisqueraProfile.cshtml" />
     <Content Include="Views\Disquera\SearchArtists.cshtml" />
+    <Content Include="Views\Pelicula\ManageMoviesProductor.cshtml" />
+    <Content Include="Views\Pelicula\EditProductor.cshtml" />
+    <Content Include="Views\Pelicula\DeleteProductor.cshtml" />
+    <Content Include="Views\Pelicula\CreateProductor.cshtml" />
+    <Content Include="Views\Pelicula\ManageMoviesDirector.cshtml" />
+    <Content Include="Views\Pelicula\CreateDirector.cshtml" />
+    <Content Include="Views\Pelicula\DeleteDirector.cshtml" />
+    <Content Include="Views\Pelicula\EditDirector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\AlbumCovers\" />
+    <Folder Include="Images\MovieCovers\" />
     <Folder Include="Images\ProfileImages\" />
     <Folder Include="Images\SongCovers\" />
   </ItemGroup>
