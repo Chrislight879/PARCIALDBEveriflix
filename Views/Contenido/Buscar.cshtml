@@ -1,0 +1,177 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Contenido>
+
+@{
+    ViewBag.Title = "Buscar Contenido";
+    Layout = null;
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <!-- Agregar Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Agregar Bootstrap para el diseño -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="search-wrapper container mt-5">
+        <div class="row">
+            <!-- Barra de Búsqueda -->
+            <div class="col-12 text-center mb-4">
+                <h2>Buscar Contenido</h2>
+                <form method="get" action="@Url.Action("Buscar", "Contenido")" class="d-flex justify-content-center">
+                    <input type="text" name="searchQuery" class="form-control w-50" placeholder="Buscar película, serie o canción..." />
+                    <button type="submit" class="btn btn-primary ms-3">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Resultados de la búsqueda -->
+            <div class="col-12">
+                <h3>Resultados de búsqueda</h3>
+
+                <!-- Películas -->
+                <div class="content-category">
+                    <h4>Películas</h4>
+                    <div class="row">
+                        @foreach (var contenido in Model.Where(c => c.Pelicula != null))
+                        {
+                            <div class="col-md-4 mb-4">
+                                <div class="content-item card">
+                                    <img src="@Url.Content(contenido.Pelicula.ImgURL ?? "~/Content/Images/default-movie.jpg")"
+                                         class="card-img-top" alt="@contenido.Pelicula.Nombre" />
+                                    <div class="card-body">
+                                        <p class="card-text text-center"><strong>@contenido.Pelicula.Nombre</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Canciones -->
+                <div class="content-category">
+                    <h4>Canciones</h4>
+                    <div class="row">
+                        @foreach (var contenido in Model.Where(c => c.Cancion != null))
+                        {
+                            <div class="col-md-4 mb-4">
+                                <div class="content-item card">
+                                    @{
+                                        // Determinar la URL de la imagen
+                                        var imgUrl = !string.IsNullOrEmpty(contenido.Cancion.ImgURL)
+                                            ? contenido.Cancion.ImgURL
+                                            : (contenido.Cancion.Album != null
+                                                ? contenido.Cancion.Album.ImgURL
+                                                : "~/Content/Images/default-song.jpg");
+                                    }
+                                    <img src="@Url.Content(imgUrl)" class="card-img-top" alt="@contenido.Cancion.Nombre" />
+                                    <div class="card-body">
+                                        <p class="card-text text-center"><strong>@contenido.Cancion.Nombre</strong></p>
+                                        @if (contenido.Cancion.Artista != null)
+                                        {
+                                            <p class="card-text text-center"><em>Artista: @contenido.Cancion.Artista.Nombre</em></p>
+                                        }
+                                        @if (contenido.Cancion.Album != null)
+                                        {
+                                            <p class="card-text text-center"><em>Álbum: @contenido.Cancion.Album.Nombre</em></p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Series -->
+                <div class="content-category">
+                    <h4>Series</h4>
+                    <div class="row">
+                        @foreach (var contenido in Model.Where(c => c.Serie != null))
+                        {
+                            <div class="col-md-4 mb-4">
+                                <div class="content-item card">
+                                    <img src="@Url.Content(contenido.Serie.ImgURL ?? "~/Content/Images/default-series.jpg")"
+                                         class="card-img-top" alt="@contenido.Serie.Nombre" />
+                                    <div class="card-body">
+                                        <p class="card-text text-center"><strong>@contenido.Serie.Nombre</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Estilos personalizados -->
+    <style>
+        /* Estilo para la barra de búsqueda */
+        .search-wrapper {
+            background-color: #f8f9fa;
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .search-wrapper h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .content-category h4 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .content-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .content-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .content-item img {
+            max-height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            text-align: center;
+        }
+
+        .card-text {
+            color: #495057;
+            font-size: 1rem;
+        }
+
+        /* Estilo para el formulario de búsqueda */
+        .form-control {
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        /* Diseño responsivo */
+        @@media (max-width: 768px) {
+            .content-item {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</body>

@@ -1,0 +1,395 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Temporada>
+@{
+    ViewBag.Title = "Administrar Temporadas - " + (ViewBag.SerieNombre ?? "Serie sin nombre");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    long idSerie = ViewBag.IdSerie;
+    var serie = ViewBag.Serie as PARCIALDBEveriflix.Models.Serie;
+    string nombreSerie = serie?.Nombre ?? "Serie sin nombre";
+
+    // URLs para evitar problemas con @ en Razor
+    var popperUrl = "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js";
+    var bootstrapJsUrl = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/MoviesStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<div class="movie-management-container">
+    <h2>Administrar Temporadas - @nombreSerie</h2>
+
+    <!-- Info de la serie -->
+    <div class="series-info">
+        <img src="@Url.Content(serie?.ImgURL ?? "/Content/Images/SeriesCovers/default.jpg")"
+             class="series-poster"
+             alt="@nombreSerie">
+        <div>
+            <h3>@nombreSerie</h3>
+            <p><strong>Categoría:</strong> @(serie?.Categoria?.Nombre ?? "N/A")</p>
+            <p><strong>Temporadas:</strong> @Model.Count()</p>
+            <p><strong>Productor:</strong> @(serie?.Productor?.Nombre ?? "No asignado")</p>
+        </div>
+    </div>
+
+    <!-- Mensajes -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <i class="fas fa-check-circle"></i> <strong>Éxito!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Botón de añadir -->
+    <div class="mb-4">
+        <a href="@Url.Action("CreateTemporada", new { idSerie = idSerie })" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nueva Temporada
+        </a>
+    </div>
+
+    <!-- Tabla de temporadas -->
+    <div class="table-responsive">
+        <table class="table movie-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Capítulos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var temporada in Model)
+                {
+                    <tr>
+                        <td>@temporada.Nombre</td>
+                        <td>@temporada.Capituloes.Count</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="@Url.Action("EditTemporada", new { id = temporada.Id_Temporada })"
+                                   class="btn btn-outline-danger"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Editar temporada">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+
+                                <form action="@Url.Action("DeleteTemporada", new { id = temporada.Id_Temporada })"
+                                      method="post"
+                                      style="display: inline-block;"
+                                      onsubmit="return confirm('¿Seguro que quieres eliminar esta temporada?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn btn-danger"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Eliminar temporada">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+
+                                <a href="@Url.Action("ManageCapitulos", new { idTemporada = temporada.Id_Temporada })"
+                                   class="btn btn-primary"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Gestionar capítulos">
+                                    <i class="fas fa-list"></i> Capítulos
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Popper.js -->
+    <script src="@popperUrl"></script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="@bootstrapJsUrl"></script>
+
+    <script>
+        // Auto-cierre de alertas después de 5 segundos
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+
+            // Inicializa tooltips con Bootstrap 5
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl, {
+                    trigger: 'hover'
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    .movie-management-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 40px;
+        background-color: #111;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(183, 28, 28, 0.15);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #333;
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+        .movie-management-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #b71c1c, #8c1616);
+        }
+
+        .movie-management-container h2 {
+            font-size: 2.4em;
+            text-align: center;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            position: relative;
+            color: #ff5252;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+        }
+
+            .movie-management-container h2::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 150px;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, #b71c1c, transparent);
+            }
+
+        .movie-management-container h3 {
+            color: #ff5252;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .movie-management-container .alert {
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: none;
+            padding: 15px 25px;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .movie-management-container .alert-success {
+            background: linear-gradient(to right, #388e3c, #4caf50);
+            color: white;
+        }
+
+        .movie-management-container .alert-danger {
+            background: linear-gradient(to right, #8c1616, #b71c1c);
+            color: white;
+        }
+
+        .movie-management-container .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            margin: 5px;
+            letter-spacing: 0.5px;
+            font-size: 0.85em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 100px;
+        }
+
+        .movie-management-container .btn-primary {
+            background: linear-gradient(to right, #b71c1c, #d32f2f);
+            color: white;
+        }
+
+            .movie-management-container .btn-primary:hover {
+                background: linear-gradient(to right, #d32f2f, #b71c1c);
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+            }
+
+        .movie-management-container .btn-outline-danger {
+            border: 2px solid #b71c1c;
+            color: #b71c1c;
+            background-color: transparent;
+            transition: all 0.3s;
+        }
+
+            .movie-management-container .btn-outline-danger:hover {
+                background: linear-gradient(to right, #b71c1c, #d32f2f);
+                color: white;
+                border-color: transparent;
+            }
+
+        .movie-management-container .btn-danger {
+            background: linear-gradient(to right, #8c1616, #b71c1c);
+            color: white;
+        }
+
+            .movie-management-container .btn-danger:hover {
+                background: linear-gradient(to right, #b71c1c, #8c1616);
+                box-shadow: 0 5px 15px rgba(140, 22, 22, 0.4);
+            }
+
+        .movie-management-container .table {
+            width: 100%;
+            color: #fff;
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.95em;
+        }
+
+            .movie-management-container .table th {
+                background: linear-gradient(to right, #b71c1c, #8c1616);
+                color: white;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                padding: 16px 20px;
+                text-transform: uppercase;
+                font-size: 0.9em;
+                border: none;
+                text-shadow: 0 0 5px rgba(140, 22, 22, 0.5);
+            }
+
+            .movie-management-container .table td {
+                padding: 14px 20px;
+                vertical-align: middle;
+                border-bottom: 1px solid #333;
+                background-color: #1a1a1a;
+                transition: all 0.3s;
+            }
+
+            .movie-management-container .table tr:hover td {
+                background-color: #222;
+                transform: scale(1.01);
+            }
+
+            .movie-management-container .table tr:last-child td {
+                border-bottom: none;
+            }
+
+    .series-info {
+        display: flex;
+        margin-bottom: 30px;
+        gap: 30px;
+        align-items: center;
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        border: 1px solid #333;
+    }
+
+    .series-poster {
+        width: 180px;
+        height: 270px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: all 0.4s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border: 3px solid #333;
+    }
+
+        .series-poster:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(183, 28, 28, 0.4);
+            border-color: #b71c1c;
+        }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    @@media (max-width: 992px) {
+        .movie-management-container {
+            padding: 30px;
+        }
+
+        .series-poster {
+            width: 150px;
+            height: 225px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .movie-management-container {
+            padding: 20px;
+            width: 98%;
+        }
+
+            .movie-management-container h2 {
+                font-size: 1.8em;
+            }
+
+        .series-info {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .series-poster {
+            width: 120px;
+            height: 180px;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+        .movie-management-container .btn {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

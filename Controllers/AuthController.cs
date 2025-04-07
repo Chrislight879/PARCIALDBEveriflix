@@ -9,14 +9,14 @@ public class AuthController : Controller
 {
     private EveryflixDBEntities db = new EveryflixDBEntities();
 
-    // Acción para mostrar la página de inicio de sesión (GET)
+    // LOGIN GET
     [HttpGet]
     public ActionResult Login()
     {
         return View();
     }
 
-    // Acción para iniciar sesión (POST)
+    // LOGIN POST
     [HttpPost]
     public ActionResult Login(string username, string password)
     {
@@ -45,29 +45,29 @@ public class AuthController : Controller
         }
     }
 
-    // Acción para mostrar la página de registro (GET)
+    // SIGNUP GET
     [HttpGet]
     public ActionResult SignUp()
     {
-        // Enviar los tipos de usuario disponibles a la vista (excluyendo el Administrador)
+        // ENIVAR TIPOS DE USUARIO MENOS ADMIN
         ViewBag.TiposUsuario = new SelectList(db.TipoUsuarios.Where(t => t.id_TipoUsuario != 1), "id_TipoUsuario", "Nombre");
         return View();
     }
 
-    // Acción para registrar un nuevo usuario (POST)
+    // SIGNUP POST
     [HttpPost]
     public ActionResult SignUp(string username, string correo, string password, int id_TipoUsuario, HttpPostedFileBase imgURL)
     {
         if (ModelState.IsValid)
         {
-            // Validar que el tipo de usuario no sea Administrador (ID = 1)
+            // NO DEJAR REGISTRARSE COMO ADMINISTRADOR(ID = 1)
             if (id_TipoUsuario == 1)
             {
                 ViewBag.ErrorMessage = "No puedes registrarte como Administrador.";
                 ViewBag.TiposUsuario = new SelectList(db.TipoUsuarios.Where(t => t.id_TipoUsuario != 1), "id_TipoUsuario", "Nombre");
                 return View();
             }
-            // Imagen por defecto si no se sube ninguna
+            // IMAGEN POR DEFECTO
             string imageUrl = "/images/profile_2_638787807624813602.jpg";
 
             if (imgURL != null && imgURL.ContentLength > 0)
@@ -95,7 +95,7 @@ public class AuthController : Controller
                 Username = username,
                 Correo = correo,
                 Password = PasswordHelper.HashPassword(password),
-                Id_TipoUsuario = id_TipoUsuario, // Se asigna el tipo de usuario seleccionado
+                Id_TipoUsuario = id_TipoUsuario, // ASIGNAR TIPO DE USUARIO SELECCIONADO
                 ImgURL = imageUrl
             };
 
@@ -104,8 +104,6 @@ public class AuthController : Controller
 
             return RedirectToAction("Login");
         }
-
-        // Si hay errores, recargar los tipos de usuario para que se muestren en la vista
         ViewBag.TiposUsuario = new SelectList(db.TipoUsuarios.Where(t => t.id_TipoUsuario != 1), "id_TipoUsuario", "Nombre");
         return View();
     }

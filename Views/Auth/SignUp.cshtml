@@ -3,53 +3,166 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css"> <!-- Apunta al archivo CSS que contiene los estilos -->
+    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<!-- Contenedor general de login y registro -->
 <div class="login-signup-container">
     <h2>Sign Up</h2>
-    <!-- Formulario de registro -->
+
     <form method="post" action="/Auth/SignUp" enctype="multipart/form-data" class="form-container">
         <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="correo">Correo</label>
-            <input type="email" id="correo" name="correo" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="imgURL">Profile Image</label>
-            <input type="file" id="imgURL" name="imgURL" class="form-control" />
-        </div>
-        <!-- Campo para seleccionar tipo de usuario -->
-        <div class="form-group">
-            <label for="tipoUsuario">Tipo de Usuario</label>
-            @Html.DropDownList("id_TipoUsuario", (SelectList)ViewBag.TiposUsuario, "Seleccione un tipo de usuario", new { @class = "form-control", required = "required" })
+            <label for="username" class="form-label">
+                <i class="fas fa-user"></i> Username
+            </label>
+            <input type="text" id="username" name="username" required class="form-control" placeholder="Enter your username" />
         </div>
 
-        <div>
-            <button type="submit" class="btn-primary">Register</button>
+        <div class="form-group">
+            <label for="correo" class="form-label">
+                <i class="fas fa-envelope"></i> Email
+            </label>
+            <input type="email" id="correo" name="correo" required class="form-control" placeholder="Enter your email" />
         </div>
+
+        <div class="form-group">
+            <label for="password" class="form-label">
+                <i class="fas fa-lock"></i> Password
+            </label>
+            <input type="password" id="password" name="password" required class="form-control" placeholder="Create a password" />
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword" class="form-label">
+                <i class="fas fa-lock"></i> Confirm Password
+            </label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required class="form-control" placeholder="Confirm your password" />
+        </div>
+
+        <div class="form-group">
+            <label for="imgURL" class="form-label">
+                <i class="fas fa-camera"></i> Profile Image
+            </label>
+            <div class="file-upload-wrapper">
+                <input type="file" id="imgURL" name="imgURL" class="form-control file-input" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="tipoUsuario" class="form-label">
+                <i class="fas fa-user-tag"></i> User Type
+            </label>
+            @Html.DropDownList("id_TipoUsuario", (SelectList)ViewBag.TiposUsuario, "Select user type", new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+        </div>
+
         @if (ViewBag.ErrorMessage != null)
         {
             <div class="error-message">
-                @ViewBag.ErrorMessage
+                <i class="fas fa-exclamation-circle"></i> @ViewBag.ErrorMessage
             </div>
         }
     </form>
 
-    <!-- Enlace de login si ya tiene cuenta -->
-    <p>Already have an account? <a href="/Auth/Login">Login here</a></p>
+    <p class="login-link">Already have an account? <a href="/Auth/Login" class="login-anchor">Login here</a></p>
 </div>
 
-<!-- Aquí puedes agregar cualquier script que necesites para la funcionalidad de registro si es necesario -->
+<style>
+    /* Estilos específicos para registro */
+    .login-signup-container {
+        max-width: 500px;
+        margin: 40px auto;
+    }
+
+    .form-label {
+        color: #ff5252;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-control {
+        background-color: #222;
+        border: 1px solid #333;
+        color: white;
+        border-radius: 6px;
+        padding: 12px 15px;
+        width: 100%;
+        transition: all 0.3s;
+        margin-bottom: 20px;
+    }
+
+        .form-control:focus {
+            background-color: #2a2a2a;
+            border-color: #b71c1c;
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(183, 28, 28, 0.25);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+    .file-upload-wrapper {
+        position: relative;
+    }
+
+    .file-input {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .form-actions {
+        margin-top: 25px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 14px;
+        font-size: 1.1em;
+    }
+
+    .error-message {
+        background: linear-gradient(to right, #8c1616, #b71c1c);
+        color: white;
+        padding: 12px 15px;
+        border-radius: 6px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 25px;
+        color: #aaa;
+    }
+
+    .login-anchor {
+        color: #ff5252;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+        .login-anchor:hover {
+            text-decoration: underline;
+            color: #d32f2f;
+        }
+
+    @@media (max-width: 768px) {
+        .login-signup-container {
+            padding: 20px;
+            margin: 20px auto;
+        }
+    }
+</style>

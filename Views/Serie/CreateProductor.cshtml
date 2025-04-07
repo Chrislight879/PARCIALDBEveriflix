@@ -1,0 +1,453 @@
+﻿@model PARCIALDBEveriflix.Models.Serie
+@{
+    ViewBag.Title = "Crear Serie (Productor)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/MoviesStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilo base mejorado */
+        body {
+            background-color: #121212 !important;
+            color: #e0e0e0 !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Contenedor principal */
+        .series-management-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #1e1e1e !important;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Layout de dos columnas */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Columna derecha para la imagen */
+        .image-column {
+            grid-column: 2;
+            grid-row: 1 / span 6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Títulos */
+        .series-management-container h2 {
+            color: #ff5252 !important;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+            font-size: 1.8rem;
+        }
+
+        /* Tarjeta del formulario */
+        .card {
+            background-color: #252525 !important;
+            border: none !important;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #b71c1c, #8c1616) !important;
+            color: white !important;
+            border-bottom: none !important;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
+
+            .card-header h4 {
+                margin: 0;
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Grupos de formulario */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        /* Etiquetas mejoradas */
+        .form-label {
+            color: #ff5252 !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Campos de entrada */
+        .form-control {
+            background-color: #333 !important;
+            color: white !important;
+            border: 1px solid #444 !important;
+            border-radius: 6px;
+            padding: 12px 15px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                background-color: #3a3a3a !important;
+                border-color: #ff5252 !important;
+                box-shadow: 0 0 0 0.2rem rgba(183, 28, 28, 0.25) !important;
+                color: white !important;
+            }
+
+        /* Selectores sin triángulo */
+        .form-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: none;
+            background-color: #333 !important;
+            color: white !important;
+            border: 1px solid #444 !important;
+            padding: 12px 15px;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        /* Área de imagen */
+        .image-upload {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            border: 2px dashed #444;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            background-color: #252525;
+        }
+
+            .image-upload:hover {
+                border-color: #ff5252;
+            }
+
+            .image-upload i {
+                font-size: 3rem;
+                color: #444;
+                margin-bottom: 15px;
+            }
+
+            .image-upload span {
+                color: #888;
+                text-align: center;
+            }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* Botones */
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #b71c1c;
+                transform: translateY(-2px);
+            }
+
+        .btn-secondary {
+            background-color: #444;
+            color: white;
+        }
+
+            .btn-secondary:hover {
+                background-color: #333;
+            }
+
+        /* Mensajes de error */
+        .text-danger, .invalid-feedback {
+            color: #ff6b6b !important;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #ff5252 !important;
+        }
+
+        /* Alertas */
+        .alert {
+            border-radius: 4px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background-color: #8c1616 !important;
+            color: white !important;
+        }
+
+        .alert-success {
+            background-color: #388e3c !important;
+            color: white !important;
+        }
+
+        .alert-warning {
+            background-color: #ff9800 !important;
+            color: white !important;
+        }
+
+        /* Texto de ayuda */
+        .form-text {
+            color: #888 !important;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-column {
+                grid-column: 1;
+                grid-row: auto;
+                margin-top: 30px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<div class="series-management-container">
+    <h2>@ViewBag.Title</h2>
+
+    <!-- Mensajes de alerta -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <i class="fas fa-check-circle"></i> <strong>Éxito!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <h4><i class="fas fa-tv"></i> Nueva Serie</h4>
+        </div>
+        <div class="card-body">
+            @if (ViewBag.Id_Categoria == null || ViewBag.Id_Clasificacion == null || ViewBag.Id_Director == null)
+            {
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> No se pudieron cargar todos los datos necesarios. Por favor intente nuevamente más tarde.
+                    @Html.ActionLink("<i class='fas fa-sync-alt'></i> Recargar", "CreateProductor", null, new { @class = "btn btn-sm btn-warning ml-2" })
+                </div>
+            }
+            else
+            {
+                using (Html.BeginForm("CreateProductor", "Serie", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation", novalidate = "novalidate" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-grid">
+                        <!-- Columna izquierda - Campos del formulario -->
+                        <div class="form-column">
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label class="form-label">@Html.LabelFor(model => model.Nombre)</label>
+                                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", required = "required", placeholder = "Ej: Stranger Things" } })
+                                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "invalid-feedback" })
+                                <div class="invalid-feedback">
+                                    Por favor ingrese el nombre de la serie
+                                </div>
+                            </div>
+
+                            <!-- Categoría -->
+                            <div class="form-group">
+                                <label class="form-label">@Html.LabelFor(model => model.Id_Categoria, "Categoría")</label>
+                                @Html.DropDownListFor(model => model.Id_Categoria,
+                                    (SelectList)ViewBag.Id_Categoria,
+                                    "Seleccione una categoría",
+                                    new { @class = "form-select", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Id_Categoria, "", new { @class = "invalid-feedback" })
+                                <div class="invalid-feedback">
+                                    Por favor seleccione una categoría
+                                </div>
+                            </div>
+
+                            <!-- Clasificación -->
+                            <div class="form-group">
+                                <label class="form-label">@Html.LabelFor(model => model.Id_Clasificacion, "Clasificación")</label>
+                                @Html.DropDownListFor(model => model.Id_Clasificacion,
+                                    (SelectList)ViewBag.Id_Clasificacion,
+                                    "Seleccione una clasificación",
+                                    new { @class = "form-select", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Id_Clasificacion, "", new { @class = "invalid-feedback" })
+                                <div class="invalid-feedback">
+                                    Por favor seleccione una clasificación
+                                </div>
+                            </div>
+
+                            <!-- Director -->
+                            <div class="form-group">
+                                <label class="form-label">@Html.LabelFor(model => model.Id_Director, "Director")</label>
+                                @if (ViewBag.Id_Director != null && ((IEnumerable<SelectListItem>)ViewBag.Id_Director).Any())
+                                {
+                                    @Html.DropDownListFor(model => model.Id_Director,
+                                        (IEnumerable<SelectListItem>)ViewBag.Id_Director,
+                                        "Seleccione un director",
+                                        new { @class = "form-select" })
+                                }
+                                else
+                                {
+                                    <select class="form-select" disabled>
+                                        <option>No hay directores disponibles</option>
+                                    </select>
+                                    <input type="hidden" name="Id_Director" value="" />
+                                }
+                                @Html.ValidationMessageFor(model => model.Id_Director, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- Columna derecha - Imagen -->
+                        <div class="image-column">
+                            <label class="form-label">@Html.LabelFor(model => model.ImgURL, "Imagen de Portada")</label>
+                            <div class="image-upload" id="imageUpload">
+                                <i class="fas fa-camera"></i>
+                                <span>Haz clic para seleccionar una imagen</span>
+                                <img src="/Content/Images/SeriesCovers/default.jpg" class="image-preview" id="imagePreview">
+                                <input type="file" name="imagen" id="imagen" accept="image/*" style="display: none;">
+                            </div>
+                            <small class="form-text">Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 2MB</small>
+                            @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar Serie
+                        </button>
+                        @Html.ActionLink("Cancelar", "ManageSeriesProductor", null, new { @class = "btn btn-secondary" })
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        // Validación de formulario con Bootstrap
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Manejo de la imagen
+        document.getElementById('imageUpload').addEventListener('click', function () {
+            document.getElementById('imagen').click();
+        });
+
+        document.getElementById('imagen').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                    document.querySelector('#imageUpload i').style.display = 'none';
+                    document.querySelector('#imageUpload span').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Cerrar automáticamente las alertas después de 5 segundos
+        setTimeout(function () {
+            $('.alert').alert('close');
+        }, 5000);
+
+        // Validación para el año
+        $('#AnioInicio').on('blur', function () {
+            const currentYear = new Date().getFullYear();
+            const inputYear = parseInt($(this).val());
+
+            if (inputYear < 1900 || inputYear > currentYear) {
+                $(this).addClass('is-invalid');
+                $(this).next('.invalid-feedback').text(`Por favor ingrese un año entre 1900 y ${currentYear}`);
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+    </script>
+}

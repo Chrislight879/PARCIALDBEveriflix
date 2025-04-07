@@ -451,19 +451,54 @@ public class ArtistaController : Controller
         {
             try
             {
-                var cancion = db.Cancions.Find(id);
+                // Cargar la canción con su contenido relacionado
+                var cancion = db.Cancions
+                    .Include(c => c.Contenidoes) // Cargar los contenidos relacionados
+                    .FirstOrDefault(c => c.Id_Cancion == id);
+
                 if (cancion == null || cancion.Id_Artista != artista.Id_Artista)
                 {
                     TempData["ErrorMessage"] = "Canción no encontrada o no tienes permiso";
                     return RedirectToAction("ManageMusic");
                 }
 
+                // Eliminar todas las votaciones relacionadas a los contenidos de esta canción
+                foreach (var contenido in cancion.Contenidoes.ToList())
+                {
+                    // Eliminar votaciones donde el contenido aparece en cualquier campo Id_ContenidoX
+                    var votaciones = db.VotacionContenidoes
+                        .Where(v => v.Id_Contenido1 == contenido.Id_Contenido ||
+                                   v.Id_Contenido2 == contenido.Id_Contenido ||
+                                   v.Id_Contenido3 == contenido.Id_Contenido ||
+                                   v.Id_Contenido4 == contenido.Id_Contenido)
+                        .ToList();
+
+                    if (votaciones.Any())
+                    {
+                        db.VotacionContenidoes.RemoveRange(votaciones);
+                        db.SaveChanges();
+                    }
+
+                    // Eliminar los votos directos
+                    var votosDirectos = db.Votoes.Where(v => v.Id_Contenido == contenido.Id_Contenido).ToList();
+                    if (votosDirectos.Any())
+                    {
+                        db.Votoes.RemoveRange(votosDirectos);
+                        db.SaveChanges();
+                    }
+
+                    // Finalmente eliminar el contenido
+                    db.Contenidoes.Remove(contenido);
+                    db.SaveChanges();
+                }
+
+                // Ahora eliminar la canción
                 db.Cancions.Remove(cancion);
 
                 if (db.SaveChanges() > 0)
                 {
                     transaction.Commit();
-                    TempData["SuccessMessage"] = "Canción eliminada correctamente";
+                    TempData["SuccessMessage"] = "Canción y todos sus datos relacionados eliminados correctamente";
                 }
                 else
                 {
@@ -474,13 +509,123 @@ public class ArtistaController : Controller
             catch (Exception ex)
             {
                 transaction.Rollback();
-                TempData["ErrorMessage"] = "Error al eliminar: " + ex.Message;
+                TempData["ErrorMessage"] = $"Error al eliminar: {(ex.InnerException ?? ex).Message}";
+                System.Diagnostics.Debug.WriteLine($"Error completo: {ex.ToString()}");
             }
         }
 
         return RedirectToAction("ManageMusic");
     }
+    [AuthorizeArtista]
+    public ActionResult DeleteAlbum(long id)
+    {
+        var album = db.Albums.Find(id);
+        var artista = GetCurrentArtista();
 
+        if (album == null || album.Id_Artista != artista?.Id_Artista)
+        {
+            TempData["ErrorMessage"] = "Álbum no encontrado o no tienes permiso";
+            return RedirectToAction("ManageMusic");
+        }
+
+        return View(album);
+    }
+
+    [HttpPost, ActionName("DeleteAlbum")]
+    [ValidateAntiForgeryToken]
+    [AuthorizeArtista]
+    public ActionResult DeleteAlbumConfirmed(long id)
+    {
+        var artista = GetCurrentArtista();
+        if (artista == null) return RedirectToAction("ManageMusic");
+
+        using (var transaction = db.Database.BeginTransaction())
+        {
+            try
+            {
+                // Cargar el álbum con sus canciones y contenidos relacionados
+                var album = db.Albums
+                    .Include(a => a.Cancions)
+                    .Include(a => a.Cancions.Select(c => c.Contenidoes))
+                    .FirstOrDefault(a => a.Id_Album == id);
+
+                if (album == null || album.Id_Artista != artista.Id_Artista)
+                {
+                    TempData["ErrorMessage"] = "Álbum no encontrado o no tienes permiso";
+                    return RedirectToAction("ManageMusic");
+                }
+
+                // Eliminar todas las relaciones de las canciones del álbum
+                foreach (var cancion in album.Cancions.ToList())
+                {
+                    // Eliminar votaciones relacionadas a los contenidos de esta canción
+                    foreach (var contenido in cancion.Contenidoes.ToList())
+                    {
+                        var votaciones = db.VotacionContenidoes
+                            .Where(v => v.Id_Contenido1 == contenido.Id_Contenido ||
+                                       v.Id_Contenido2 == contenido.Id_Contenido ||
+                                       v.Id_Contenido3 == contenido.Id_Contenido ||
+                                       v.Id_Contenido4 == contenido.Id_Contenido)
+                            .ToList();
+
+                        if (votaciones.Any())
+                        {
+                            db.VotacionContenidoes.RemoveRange(votaciones);
+                            db.SaveChanges();
+                        }
+
+                        // Eliminar votos directos
+                        var votosDirectos = db.Votoes.Where(v => v.Id_Contenido == contenido.Id_Contenido).ToList();
+                        if (votosDirectos.Any())
+                        {
+                            db.Votoes.RemoveRange(votosDirectos);
+                            db.SaveChanges();
+                        }
+
+                        // Eliminar el contenido
+                        db.Contenidoes.Remove(contenido);
+                        db.SaveChanges();
+                    }
+
+                    // Eliminar la canción
+                    db.Cancions.Remove(cancion);
+                    db.SaveChanges();
+                }
+
+                // Eliminar la imagen del álbum si existe
+                if (!string.IsNullOrEmpty(album.ImgURL) && album.ImgURL != "/Content/Images/AlbumCovers/default.jpg")
+                {
+                    var imagePath = Server.MapPath(album.ImgURL);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                // Finalmente eliminar el álbum
+                db.Albums.Remove(album);
+
+                if (db.SaveChanges() > 0)
+                {
+                    transaction.Commit();
+                    TempData["SuccessMessage"] = "Álbum y todas sus canciones eliminados correctamente";
+                }
+                else
+                {
+                    transaction.Rollback();
+                    TempData["ErrorMessage"] = "No se pudo eliminar el álbum";
+                }
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                TempData["ErrorMessage"] = $"Error al eliminar: {(ex.InnerException ?? ex).Message}";
+                System.Diagnostics.Debug.WriteLine($"Error completo: {ex.ToString()}");
+            }
+        }
+
+        return RedirectToAction("ManageMusic");
+    }
     [AuthorizeArtista]
     public ActionResult JoinDisquera(long id)
     {

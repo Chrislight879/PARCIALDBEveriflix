@@ -6,6 +6,13 @@
 
 <head>
     <link rel="stylesheet" href="~/Content/StyleSheet1.css">
+    <!-- Agregar Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Agregar Bootstrap para el modal -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Agregar jQuery para el modal -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -22,6 +29,7 @@
                 <p><strong>Rol:</strong> Productor</p>
                 <p><strong>Proyectos activos:</strong> @ViewBag.ActiveProjects</p>
             </div>
+
             <div class="social-stats">
                 <div class="stat-item">
                     <div class="stat-value">@ViewBag.FollowerCount</div>
@@ -37,12 +45,13 @@
                 <a href="@Url.Action("EditProfile", "User")" class="btn">
                     <i class="fas fa-user-edit"></i> Editar Perfil
                 </a>
-                <a href="@Url.Action("MyProductions", "Producer")" class="btn">
-                    <i class="fas fa-music"></i> Mis Producciones
+                <a href="@Url.Action("SearchUsers")" class="btn">
+                    <i class="fas fa-search"></i> Buscar Usuarios
                 </a>
-                <a href="@Url.Action("Create", "Project")" class="btn">
-                    <i class="fas fa-plus-circle"></i> Nuevo Proyecto
-                </a>
+                <!-- Botón para eliminar cuenta -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                    <i class="fas fa-trash-alt"></i> Eliminar Cuenta
+                </button>
             </div>
         </div>
 
@@ -54,29 +63,128 @@
 
             <div class="control-grid">
                 <div class="control-card">
-                    <h3>Mis Proyectos</h3>
-                    <p>Gestiona los proyectos  en los que estás trabajando.</p>
+                    <h3>Mis Peliculas</h3>
+                    <p>Gestiona los peliculas en los que estás trabajando.</p>
                     <a href="@Url.Action("ManageMoviesProductor", "Pelicula")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-music"></i> Gestionar Proyectos
+                        <i class="fas fa-film"></i> Gestionar Proyectos
                     </a>
                 </div>
 
-                <div class="control-card">
-                    <h3>Mis Producciones</h3>
-                    <p>Visualiza y edita las producciones musicales que has realizado.</p>
-                    <a href="@Url.Action("CreateProductor", "Pelicula")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-music"></i> Ver Producciones
-                    </a>
-                </div>
 
                 <div class="control-card">
-                    <h3>Reportes de Producciones</h3>
-                    <p>Genera reportes y estadísticas sobre tus producciones.</p>
-                    <a href="@Url.Action("Reports", "Producer")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-chart-bar"></i> Ver Reportes
+                    <h3>Mis Series</h3>
+                    <p>Administra las series que has producido.</p>
+                    <a href="@Url.Action("ManageSeriesProductor", "Serie")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-tv"></i> Ver Series
+                    </a>
+                </div>
+                <div class="control-card">
+                    <h3>Buscar Contenido</h3>
+                    <p>Realiza una búsqueda de películas, series o canciones</p>
+                    <a href="@Url.Action("Buscar", "Contenido")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-search"></i> Buscar Contenido
                     </a>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title text-danger" id="confirmDeleteModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro que deseas eliminar tu cuenta permanentemente? Esta acción no se puede deshacer.</p>
+                    <p class="fw-semibold">Se eliminará:</p>
+                    <ul class="mb-3">
+                        <li>Tu perfil de productor completo</li>
+                        <li>Todos tus proyectos en producción</li>
+                        <li>Tus películas y series producidas</li>
+                        <li>Tus relaciones con seguidores</li>
+                        <li>Todos los datos asociados a tu cuenta</li>
+                    </ul>
+                    <div class="alert alert-warning mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Esta acción eliminará permanentemente tu perfil y todo su contenido. Por favor, confirma tu decisión.
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    @using (Html.BeginForm("DeleteUser", "User", new { id = Model.id_Usuario }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-2"></i>
+                            Eliminar Todo
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estilos personalizados -->
+    <style>
+        /* Estilo para el botón de eliminar */
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            transition: all 0.2s ease;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+        /* Estilo para la lista en el modal */
+        .modal-body ul {
+            padding-left: 1.5rem;
+            color: #495057;
+        }
+
+        .modal-body li {
+            position: relative;
+            padding-left: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+            .modal-body li:before {
+                content: "•";
+                color: #dc3545;
+                font-weight: bold;
+                position: absolute;
+                left: -12px;
+            }
+
+        /* Estilo para el alert de advertencia */
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+            font-size: 0.875rem;
+        }
+
+        /* Ajustes para el dashboard de productor */
+        .user-actions .btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .control-card .btn {
+            width: 100%;
+        }
+
+        /* Ajustes específicos para íconos */
+        .fa-film, .fa-video, .fa-tv {
+            margin-right: 5px;
+        }
+    </style>
 </body>

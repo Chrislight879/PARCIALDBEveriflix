@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <div class="music-management-container">
-        <h2>Editar Álbum</h2>
+    <div class="container music-management-container">
+        <h2>@ViewBag.Title</h2>
 
         @using (Html.BeginForm("EditAlbum", "Artista", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -23,15 +23,19 @@
             @Html.HiddenFor(model => model.Id_Album)
             @Html.HiddenFor(model => model.Id_Artista)
 
+            <!-- Campo Nombre del Álbum -->
             <div class="form-group">
-                @Html.LabelFor(model => model.Nombre)
-                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Nombre)
+                @Html.LabelFor(model => model.Nombre, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", style = "height: 50px;" })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "error-message" })
             </div>
 
+            <!-- Campo Imagen del Álbum -->
             <div class="form-group">
-                <label for="imagen">Cambiar imagen del álbum</label>
-                <input type="file" name="imagen" id="imagen" class="form-control" />
+                <label for="imagen" class="form-label">
+                    <i class="fas fa-image"></i> Cambiar imagen del álbum
+                </label>
+                <input type="file" name="imagen" id="imagen" class="form-control" style="height: 50px;" />
                 @if (!string.IsNullOrEmpty(Model.ImgURL))
                 {
                     <div class="mt-2">
@@ -41,9 +45,12 @@
                 }
             </div>
 
+            <!-- Botón para actualizar álbum -->
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Actualizar Álbum</button>
-                @Html.ActionLink("Cancelar", "ManageMusic", null, new { @class = "btn btn-secondary" })
+                <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">
+                    <i class="fas fa-save"></i> Actualizar Álbum
+                </button>
+                @Html.ActionLink("Cancelar", "ManageMusic", null, new { @class = "btn btn-secondary", style = "padding: 10px 20px;" })
             </div>
         }
     </div>

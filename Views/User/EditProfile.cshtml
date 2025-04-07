@@ -5,54 +5,75 @@
 
 <head>
     <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<div class="container">
-    <h2>Editar Perfil</h2>
+<div class="container" style="max-width: 900px; margin: 30px auto; padding: 30px; background-color: #111; border-radius: 12px; box-shadow: 0 8px 25px rgba(183, 28, 28, 0.15); position: relative; overflow: hidden;">
+    <h2 style="color: #ff5252; text-align: center; margin-bottom: 30px; padding-bottom: 15px; position: relative; font-size: 2em;">Editar Perfil</h2>
 
-    <!-- Mostrar mensajes de éxito/error -->
+    <!-- Mensajes de éxito/error -->
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
+        <div class="alert alert-success" style="padding: 15px 25px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); background: linear-gradient(to right, #388e3c, #4caf50); color: white;">
+            <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
         </div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
+        <div class="alert alert-danger" style="padding: 15px 25px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); background: linear-gradient(to right, #8c1616, #b71c1c); color: white;">
+            <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
         </div>
     }
 
-    @using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data", style = "display: flex; flex-wrap: wrap; gap: 20px;" }))
     {
         @Html.AntiForgeryToken()
 
-        <!-- Campo oculto para el ID del usuario -->
         @Html.HiddenFor(model => model.id_Usuario)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Username)
-            @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        <!-- Columna izquierda (Nombre de usuario y botones) -->
+        <div style="flex: 1; min-width: 300px;">
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label class="form-label" style="color: #ff5252; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-user"></i> Nombre de usuario
+                </label>
+                @Html.TextBoxFor(model => model.Username, new
+                {
+                    @class = "form-control",
+                    style = "background-color: #222; border: 1px solid #333; color: white; border-radius: 6px; padding: 12px 15px; width: 100%; transition: all 0.3s;",
+                    placeholder = "Ingrese su nombre de usuario"
+                })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "error-message", style = "color: #ff5252; font-size: 0.9em; margin-top: 5px; display: block;" })
+            </div>
+
+            <div class="form-actions" style="display: flex; gap: 15px; margin-top: 30px;">
+                <button type="submit" class="btn-save" style="background: linear-gradient(to right, #b71c1c, #d32f2f); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+                <a href="@Url.Action("Dashboard")" class="btn-cancel" style="background: linear-gradient(to right, #555, #666); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="ImgURL">Imagen de Perfil</label>
-            <input type="file" name="ImgURL" class="form-control" />
-            @if (!string.IsNullOrEmpty(Model.ImgURL))
-            {
-                <div class="mt-2">
-                    <img src="@Url.Content(Model.ImgURL)" alt="Foto de perfil actual" class="profile-img" width="100" />
-                    <p class="text-muted">Imagen actual</p>
+        <!-- Columna derecha (Imagen de perfil) -->
+        <div style="flex: 1; min-width: 300px;">
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label class="form-label" style="color: #ff5252; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-camera"></i> Imagen de Perfil
+                </label>
+                <div class="file-upload-wrapper" style="position: relative;">
+                    <input type="file" name="ImgURL" class="form-control file-input" style="padding: 10px; cursor: pointer; background-color: #222; border: 1px solid #333; color: white; border-radius: 6px; width: 100%;" />
                 </div>
-            }
-            @Html.ValidationMessage("ImgURL", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            @Html.ActionLink("Cancelar", "Dashboard", null, new { @class = "btn btn-default" })
+                @if (!string.IsNullOrEmpty(Model.ImgURL))
+                {
+                    <div class="current-image-container" style="text-align: center; margin: 20px 0;">
+                        <img src="@Url.Content(Model.ImgURL)" alt="Foto de perfil actual" class="profile-img-preview" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #b71c1c; margin: 15px auto; display: block; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);" />
+                        <p class="current-image-text" style="color: #aaa; font-size: 0.9em; margin-top: 10px;">Imagen actual</p>
+                    </div>
+                }
+                @Html.ValidationMessage("ImgURL", new { @class = "error-message", style = "color: #ff5252; font-size: 0.9em; margin-top: 5px; display: block;" })
+            </div>
         </div>
     }
 </div>

@@ -4,40 +4,369 @@
     ViewBag.Title = "Gestión de Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<head>
-    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css"> <!-- Apunta al nuevo archivo CSS -->
-</head>
-<div class="container">
-    <h2>Gestión de Usuarios</h2>
 
-    <div class="admin-actions">
-        <a href="@Url.Action("Dashboard")" class="btn-primary">
-            ← Volver al Dashboard
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PARCIALDBEveriflix</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos personalizados -->
+    <style>
+        :root {
+            --primary-red: #dc3545;
+            --dark-red: #b71c1c;
+            --dark-bg: #121212;
+            --darker-bg: #1e1e1e;
+            --card-bg: #2d2d2d;
+            --border-color: #333;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        h2 {
+            color: var(--primary-red);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Tabla de usuarios - Versión negra */
+        .user-table {
+            width: 100%;
+            background-color: #000000;
+            color: white !important;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-top: 1.5rem;
+        }
+
+            .user-table thead th {
+                background-color: #000000;
+                color: white !important ;
+                padding: 1rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .user-table tbody td {
+                color: white !important; /* Establecer color blanco para el texto */
+                padding: 0.75rem 1rem;
+                vertical-align: middle;
+                border-top: 1px solid var(--border-color);
+                background-color: #000000;
+            }
+
+            .user-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .user-table tbody tr:hover td {
+                background-color: #1a1a1a;
+            }
+
+        /* Botones */
+        .btn-back {
+            background-color: #495057;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+            .btn-back:hover {
+                background-color: #5a6268;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background-color: #0277bd;
+            color: white;
+            border: none;
+        }
+
+            .btn-edit:hover {
+                background-color: #0288d1;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(2, 119, 189, 0.3);
+            }
+
+        .btn-delete {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+        }
+
+            .btn-delete:hover {
+                background-color: var(--dark-red);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(183, 28, 28, 0.3);
+            }
+
+        /* Badges */
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+
+        .bg-purple {
+            background-color: #6f42c1;
+        }
+
+        /* Modal */
+        .modal-content {
+            background-color: var(--card-bg);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            color: var(--primary-red);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+        }
+
+        .btn-close-white {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        /* Alertas */
+        .alert {
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.15);
+            border-color: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+
+        .alert-info {
+            background-color: rgba(23, 162, 184, 0.15);
+            border-color: rgba(23, 162, 184, 0.3);
+            color: #17a2b8;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h2>
+
+        <a href="@Url.Action("Dashboard")" class="btn-back">
+            <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
         </a>
+
+        <div class="table-responsive">
+            <table class="table user-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-user me-1"></i> Nombre</th>
+                        <th><i class="fas fa-envelope me-1"></i> Correo</th>
+                        <th><i class="fas fa-tag me-1"></i> Tipo</th>
+                        <th><i class="fas fa-cogs me-1"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Username</td>
+                            <td>@item.Correo</td>
+                            <td>
+                                <span class="badge
+                                    @(item.Id_TipoUsuario == 1 ? "bg-danger" :
+                                      item.Id_TipoUsuario == 2 ? "bg-primary" :
+                                      item.Id_TipoUsuario == 4 ? "bg-info" :
+                                      item.Id_TipoUsuario == 5 ? "bg-warning text-dark" :
+                                      item.Id_TipoUsuario == 6 ? "bg-purple" : "bg-secondary")">
+                                    @(item.TipoUsuario?.Nombre ?? "Sin tipo")
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="@Url.Action("EditUser", new { id = item.id_Usuario })" class="btn btn-action btn-edit">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <button type="button" class="btn btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.id_Usuario">
+                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Tipo</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Username)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                    <td>@(item.TipoUsuario?.Nombre ?? "Sin tipo")</td>
-                    <td>
-                        <a href="@Url.Action("EditUser", new { id = item.id_Usuario })" class="btn-primary">Editar</a>
-                        <a href="@Url.Action("DeleteUser", new { id = item.id_Usuario })" class="btn-danger">Eliminar</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+    <!-- Modales de confirmación -->
+    @foreach (var item in Model)
+    {
+        <div class="modal fade" id="deleteModal-@item.id_Usuario" tabindex="-1" aria-labelledby="deleteModalLabel-@item.id_Usuario" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel-@item.id_Usuario">
+                            <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                            Confirmar Eliminación
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Estás seguro que deseas eliminar permanentemente al usuario <strong class="text-white">@item.Username</strong>?</p>
+                        <p class="fw-semibold">Tipo: <span class="text-white">@(item.TipoUsuario?.Nombre ?? "Sin tipo")</span></p>
+
+                        @if (item.Id_TipoUsuario == 4) // Disquera
+                        {
+                            <div class="alert alert-info mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Los artistas asociados a esta disquera se conservarán como independientes.
+                            </div>
+                        }
+                        else if (item.Id_TipoUsuario == 2) // Artista
+                        {
+                            <p class="fw-semibold">Se eliminará:</p>
+                            <ul>
+                                <li>Todas sus canciones y archivos asociados</li>
+                                <li>Sus álbumes y sus imágenes</li>
+                                <li>Sus relaciones con seguidores</li>
+                            </ul>
+                        }
+                        else if (item.Id_TipoUsuario == 5) // Productor
+                        {
+                            <p class="fw-semibold">Se eliminará:</p>
+                            <ul>
+                                <li>Sus proyectos de producción</li>
+                                <li>Sus relaciones con seguidores</li>
+                            </ul>
+                        }
+                        else if (item.Id_TipoUsuario == 6) // Director
+                        {
+                            <p class="fw-semibold">Se eliminará:</p>
+                            <ul>
+                                <li>Sus proyectos de dirección</li>
+                                <li>Sus relaciones con seguidores</li>
+                            </ul>
+                        }
+
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Esta acción es irreversible. Todos los datos asociados se perderán permanentemente.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Cancelar
+                        </button>
+                        <form action="@Url.Action("DeleteUser", "User", new { id = item.id_Usuario })" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-1"></i> Confirmar Eliminación
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Solución para modales atascados
+            $('.modal').on('show.bs.modal', function () {
+                $('.modal-backdrop').remove(); // Eliminar backdrops duplicados
+            });
+
+            // Limpiar modales al cerrarse
+            $('.modal').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+                $('.modal-backdrop').remove();
+            });
+
+            // Forzar cierre de modales previos
+            $('[data-bs-toggle="modal"]').click(function () {
+                var targetModal = $(this).data('bs-target');
+                $('.modal').not(targetModal).modal('hide');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,57 +1,305 @@
 ﻿@model PARCIALDBEveriflix.Models.Pelicula
-
 @{
-    ViewBag.Title = "Eliminar Película";
+    ViewBag.Title = "Eliminar Película (Director)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<head>
+    <link rel="stylesheet" href="~/Content/MoviesStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilo base mejorado */
+        body {
+            background-color: #121212 !important;
+            color: #e0e0e0 !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
 
-<div class="alert alert-warning">
-    <strong>¡Advertencia!</strong> Está a punto de eliminar permanentemente esta película y todo su contenido relacionado.
-</div>
+        /* Contenedor principal */
+        .movie-management-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #1e1e1e !important;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
 
-<h3>¿Está seguro que desea eliminar la siguiente película?</h3>
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
-        <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+        /* Layout de dos columnas */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
 
-        <dt>Duración</dt>
-        <dd>@Model.Duracion.ToString(@"hh\:mm\:ss")</dd>
+        /* Columna derecha para la imagen */
+        .image-column {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        <dt>Productor</dt>
-        <dd>@(Model.Productor?.Nombre ?? "No asignado")</dd>
+        /* Títulos */
+        .movie-management-container h2 {
+            color: #ff5252 !important;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+            font-size: 1.8rem;
+        }
 
-        <dt>Categoría</dt>
-        <dd>@Html.DisplayFor(model => model.Categoria.Nombre)</dd>
+        /* Tarjeta del formulario */
+        .card {
+            background-color: #252525 !important;
+            border: none !important;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
 
-        <dt>Clasificación</dt>
-        <dd>@Html.DisplayFor(model => model.Clasificacion.Nombre)</dd>
+        .card-header {
+            background: linear-gradient(135deg, #b71c1c, #8c1616) !important;
+            color: white !important;
+            border-bottom: none !important;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
 
-        <dt>Portada</dt>
-        <dd>
-            <img src="@Url.Content(Model.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
-                 alt="Portada" class="img-thumbnail" style="max-width: 150px;" />
-        </dd>
-    </dl>
+            .card-header h4 {
+                margin: 0;
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+        .card-body {
+            padding: 25px;
+        }
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Confirmar Eliminación" class="btn btn-danger" />
-            @Html.ActionLink("Cancelar", "ManageMoviesDirector", null, new { @class = "btn btn-default" })
+        /* Alertas */
+        .alert {
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            grid-column: 1 / -1;
+        }
+
+        .alert-warning {
+            background-color: #ff9800 !important;
+            color: white !important;
+        }
+
+        /* Detalles de la película */
+        .movie-details {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        dl {
+            margin-bottom: 0;
+        }
+
+        dt {
+            color: #ff5252;
+            font-weight: 600;
+            padding: 8px 0;
+        }
+
+        dd {
+            padding: 8px 0;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+
+        /* Portada de película */
+        .movie-cover {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 8px;
+            border: 3px solid #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Botones */
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background-color: #d32f2f !important;
+            color: white !important;
+        }
+
+            .btn-danger:hover {
+                background-color: #b71c1c !important;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(183, 28, 28, 0.3);
+            }
+
+        .btn-secondary {
+            background-color: #444 !important;
+            color: white !important;
+        }
+
+            .btn-secondary:hover {
+                background-color: #333 !important;
+                transform: translateY(-2px);
+            }
+
+        /* Texto de confirmación */
+        .confirmation-text {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: #ff5252;
+            font-weight: 500;
+            grid-column: 1 / -1;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-column {
+                grid-column: 1;
+                grid-row: auto;
+                margin-top: 30px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<div class="movie-management-container">
+    <h2>@ViewBag.Title</h2>
+
+    <div class="card">
+        <div class="card-header">
+            <h4><i class="fas fa-trash-alt"></i> Confirmación de Eliminación</h4>
         </div>
-    }
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> <strong>¡Advertencia!</strong> Está a punto de eliminar permanentemente esta película y todo su contenido relacionado.
+            </div>
+
+            <h5 class="confirmation-text">¿Está seguro que desea eliminar la siguiente película?</h5>
+
+            <div class="form-grid">
+                <!-- Columna izquierda - Detalles de la película -->
+                <div class="form-column">
+                    <div class="movie-details">
+                        <dl>
+                            <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+                            <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+
+                            <dt>Duración</dt>
+                            <dd class="movie-duration">@Model.Duracion.ToString(@"hh\:mm\:ss")</dd>
+
+                            <dt>Director</dt>
+                            <dd>@(Model.Director?.Nombre ?? "No asignado")</dd>
+
+                            <dt>Categoría</dt>
+                            <dd>@Html.DisplayFor(model => model.Categoria.Nombre)</dd>
+
+                            <dt>Clasificación</dt>
+                            <dd>@Html.DisplayFor(model => model.Clasificacion.Nombre)</dd>
+
+                            <dt>Productor</dt>
+                            <dd>@(Model.Productor?.Nombre ?? "No asignado")</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Columna derecha - Imagen -->
+                <div class="image-column">
+                    <img src="@Url.Content(Model.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
+                         alt="Portada de la película"
+                         class="movie-cover" />
+                </div>
+            </div>
+
+            @using (Html.BeginForm("DeleteDirector", "Pelicula", FormMethod.Post, new { id = "deleteForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id_pelicula)
+
+                <div class="form-actions">
+                    <button type="button" id="confirmDelete" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> Confirmar Eliminación
+                    </button>
+                    @Html.ActionLink("Cancelar", "ManageMoviesDirector", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @section Scripts {
+    <!-- jQuery debe ir PRIMERO -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Luego SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        $(document).ready(function() {
-            $('form').submit(function() {
-                return confirm('¿Está completamente seguro de que desea eliminar esta película? Esta acción no se puede deshacer.');
+        $(document).ready(function () {
+            $('#confirmDelete').click(function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: '¿ESTÁ COMPLETAMENTE SEGURO?',
+                    text: "¡Esta acción eliminará permanentemente la película y todo su contenido relacionado!",
+                    icon: 'warning',
+                    imageUrl: '@Url.Content(Model.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")',
+                    imageWidth: 200,
+                    imageAlt: 'Portada de la película',
+                    showCancelButton: true,
+                    confirmButtonColor: '#b71c1c',
+                    cancelButtonColor: '#333',
+                    confirmButtonText: '<i class="fas fa-trash"></i> Sí, eliminar',
+                    cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
+                    background: '#1a1a1a',
+                    color: '#fff',
+                    backdrop: `
+                        rgba(183,28,28,0.4)
+                        url("/Content/Images/animations/rip.gif")
+                        center top
+                        no-repeat
+                    `
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#deleteForm').submit();
+                    }
+                });
             });
         });
     </script>

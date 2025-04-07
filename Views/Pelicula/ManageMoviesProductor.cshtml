@@ -1,81 +1,86 @@
 ﻿@model IEnumerable<PARCIALDBEveriflix.Models.Pelicula>
-
 @{
     ViewBag.Title = "Mis Películas - Productor: " + ViewBag.NombreProductor;
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Asegúrate de tener tu layout
 }
 
-<h2>@ViewBag.Title</h2>
+<head>
+    <link rel="stylesheet" href="@Url.Content("~/Content/MoviesStyle.css")"> <!-- Con helper -->
+</head>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Error!</strong> @TempData["ErrorMessage"]
+<div class="movie-management-container">
+    <h2>@ViewBag.Title</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Éxito!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="mb-4">
+        @Html.ActionLink("Crear Nueva Película", "CreateProductor", null, new { @class = "btn btn-primary" })
     </div>
-}
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Éxito!</strong> @TempData["SuccessMessage"]
-    </div>
-}
-
-<p>
-    @Html.ActionLink("Crear Nueva Película", "CreateProductor", null, new { @class = "btn btn-primary" })
-</p>
-
-@if (Model != null && Model.Any())
-{
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Portada</th>
-                    <th>@Html.DisplayNameFor(model => model.Nombre)</th>
-                    <th>Duración</th>
-                    <th>Director</th>
-                    <th>Categoría</th>
-                    <th>Clasificación</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            <img src="@Url.Content(item.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
-                                 alt="Portada de @item.Nombre"
-                                 class="img-thumbnail"
-                                 style="max-width: 100px; max-height: 150px;" />
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                        <td>@item.Duracion.ToString(@"hh\:mm\:ss")</td>
-                        <td>
-                            @(item.Director?.Nombre ?? "No asignado")
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.Categoria.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Clasificacion.Nombre)</td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                @Html.ActionLink("Editar", "EditProductor", new { id = item.Id_pelicula }, new { @class = "btn btn-warning" })
-                                @Html.ActionLink("Eliminar", "DeleteProductor", new { id = item.Id_pelicula }, new { @class = "btn btn-danger" })
-                            </div>
-                        </td>
+                        <th>Portada</th>
+                        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                        <th>Duración</th>
+                        <th>Director</th>
+                        <th>Categoría</th>
+                        <th>Clasificación</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-else
-{
-    <div class="alert alert-info">
-        No tienes películas registradas. @Html.ActionLink("Crea tu primera película", "CreateProductor").
-    </div>
-}
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@Url.Content(item.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
+                                     alt="Portada de @item.Nombre"
+                                     class="movie-cover img-thumbnail" />
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td class="movie-duration">@item.Duracion.ToString(@"hh\:mm\:ss")</td>
+                            <td>
+                                @(item.Director?.Nombre ?? "No asignado")
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Categoria.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Clasificacion.Nombre)</td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Editar", "EditProductor", new { id = item.Id_pelicula }, new { @class = "btn btn-outline-danger" })
+                                    @Html.ActionLink("Eliminar", "DeleteProductor", new { id = item.Id_pelicula }, new { @class = "btn btn-danger" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No tienes películas registradas. @Html.ActionLink("Crea tu primera película", "CreateProductor", null, new { @class = "text-warning" }).
+        </div>
+    }
+</div>
 
 @section Scripts {
     <script>
@@ -84,6 +89,266 @@ else
             setTimeout(function () {
                 $('.alert').alert('close');
             }, 5000);
+
+            // Tooltips para las imágenes
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 }
+
+<style>
+    body {
+        background-color: #000 !important;
+        color: #fff !important;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+/* Contenedor principal - usando los estilos de music-management-container */
+.movie-management-container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 40px;
+    background-color: #111;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(183, 28, 28, 0.15);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #333;
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.movie-management-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #b71c1c, #8c1616);
+}
+
+/* Títulos - usando los estilos mejorados con efecto neón */
+.movie-management-container h2 {
+    font-size: 2.4em;
+    text-align: center;
+    padding-bottom: 15px;
+    margin-bottom: 40px;
+    position: relative;
+    color: #ff5252;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+}
+
+.movie-management-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #b71c1c, transparent);
+}
+
+/* Alertas - usando los estilos mejorados */
+.movie-management-container .alert {
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: none;
+    padding: 15px 25px;
+    font-weight: 500;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.movie-management-container .alert-success {
+    background: linear-gradient(to right, #388e3c, #4caf50);
+    color: white;
+}
+
+.movie-management-container .alert-danger {
+    background: linear-gradient(to right, #8c1616, #b71c1c);
+    color: white;
+}
+
+.movie-management-container .alert-info {
+    background: linear-gradient(to right, #0277bd, #0288d1);
+    color: white;
+}
+
+/* Botones - usando los estilos cinematográficos mejorados */
+.movie-management-container .btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+    margin: 5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.movie-management-container .btn-primary {
+    background: linear-gradient(to right, #b71c1c, #d32f2f);
+    color: white;
+}
+
+.movie-management-container .btn-primary:hover {
+    background: linear-gradient(to right, #d32f2f, #b71c1c);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+}
+
+.movie-management-container .btn-outline-danger {
+    border: 2px solid #b71c1c;
+    color: #b71c1c;
+    background-color: transparent;
+    transition: all 0.3s;
+}
+
+.movie-management-container .btn-outline-danger:hover {
+    background: linear-gradient(to right, #b71c1c, #d32f2f);
+    color: white;
+    border-color: transparent;
+}
+
+.movie-management-container .btn-danger {
+    background: linear-gradient(to right, #8c1616, #b71c1c);
+    color: white;
+}
+
+.movie-management-container .btn-danger:hover {
+    background: linear-gradient(to right, #b71c1c, #8c1616);
+    box-shadow: 0 5px 15px rgba(140, 22, 22, 0.4);
+}
+
+/* Tabla - usando los estilos premium mejorados */
+.movie-management-container .table {
+    width: 100%;
+    color: #fff;
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.95em;
+}
+
+.movie-management-container .table th {
+    background: linear-gradient(to right, #b71c1c, #8c1616);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 16px 20px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    border: none;
+    text-shadow: 0 0 5px rgba(140, 22, 22, 0.5);
+}
+
+.movie-management-container .table td {
+    padding: 14px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #333;
+    background-color: #1a1a1a;
+    transition: all 0.3s;
+}
+
+.movie-management-container .table tr:hover td {
+    background-color: #222;
+    transform: scale(1.01);
+}
+
+.movie-management-container .table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Portadas de películas - adaptado de album-cover */
+.movie-cover {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: all 0.4s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 3px solid #333;
+}
+
+.movie-cover:hover {
+    transform: scale(1.08) rotate(1deg);
+    box-shadow: 0 8px 25px rgba(183, 28, 28, 0.4);
+    border-color: #b71c1c;
+}
+
+/* Duración de película */
+.movie-duration {
+    font-family: 'Courier New', monospace;
+    color: #ff5252;
+    font-weight: bold;
+}
+
+/* Grupo de botones */
+.btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* Responsive */
+@@media (max-width: 992px) {
+    .movie-management-container {
+        padding: 30px;
+    }
+
+    .movie-cover {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@@media (max-width: 768px) {
+    .movie-management-container {
+        padding: 20px;
+        width: 98%;
+    }
+
+    .movie-management-container h2 {
+        font-size: 1.8em;
+    }
+
+    .movie-management-container .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .movie-cover {
+        width: 60px;
+        height: 60px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+}
+
+/* Animaciones */
+@@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>

@@ -5,29 +5,133 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <head>
-    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css"> <!-- Apunta al nuevo archivo CSS -->
+    <link rel="stylesheet" href="~/Content/Stylesheetcenter.css">
 </head>
 
 <div class="container">
     <h2>Eliminar Usuario</h2>
 
-    <div class="alert-message">
-        ¿Está seguro que desea eliminar este usuario?
+    <div class="alert alert-danger" style="background: linear-gradient(to right, #8c1616, #b71c1c); color: white; padding: 15px 25px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+        <i class="fas fa-exclamation-triangle"></i> ¿Está seguro que desea eliminar este usuario permanentemente?
     </div>
 
-    <div class="profile-info">
-        <p><strong>Nombre:</strong> @Model.Username</p>
-        <p><strong>Correo:</strong> @Model.Correo</p>
-        <p><strong>Tipo:</strong> @(Model.TipoUsuario?.Nombre ?? "Sin tipo")</p>
+    <div class="user-details-card">
+        <div class="user-detail">
+            <span class="detail-label">Nombre:</span>
+            <span class="detail-value">@Model.Username</span>
+        </div>
+        <div class="user-detail">
+            <span class="detail-label">Correo:</span>
+            <span class="detail-value">@Model.Correo</span>
+        </div>
+        <div class="user-detail">
+            <span class="detail-label">Tipo:</span>
+            <span class="detail-value">@(Model.TipoUsuario?.Nombre ?? "Sin tipo")</span>
+        </div>
     </div>
 
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            <input type="submit" value="Confirmar Eliminación" class="btn-primary" style="background-color: #d32f2f" />
-            <a href="@Url.Action("ManageUsers")" class="btn-primary" style="background-color: #666">Cancelar</a>
+        <div class="form-actions">
+            <button type="submit" class="btn-danger">
+                <i class="fas fa-trash-alt"></i> Confirmar Eliminación
+            </button>
+            <a href="@Url.Action("ManageUsers")" class="btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
         </div>
     }
 </div>
+
+<style>
+    /* Estilos específicos para eliminación */
+    .user-details-card {
+        background-color: #1a1a1a;
+        border-left: 4px solid #b71c1c;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .user-detail {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .detail-label {
+        color: #ff5252;
+        font-weight: 600;
+        min-width: 100px;
+        display: inline-block;
+    }
+
+    .detail-value {
+        color: #fff;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-danger {
+        background: linear-gradient(to right, #8c1616, #b71c1c);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-danger:hover {
+            background: linear-gradient(to right, #b71c1c, #8c1616);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(140, 22, 22, 0.4);
+        }
+
+        .btn-danger i {
+            margin-right: 8px;
+        }
+
+    .btn-secondary {
+        background: linear-gradient(to right, #555, #666);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #666, #555);
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary i {
+            margin-right: 8px;
+        }
+
+    @@media (max-width: 768px) {
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-danger, .btn-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>

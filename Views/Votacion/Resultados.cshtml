@@ -1,0 +1,364 @@
+﻿@model PARCIALDBEveriflix.Models.VotacionContenido
+@{
+    ViewBag.Title = "Resultados: " + Model.Nombre;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Funciones auxiliares para obtener imagen y nombre
+    string GetImageUrl(PARCIALDBEveriflix.Models.Contenido contenido)
+    {
+        if (contenido == null) return "/Content/Images/default.jpg";
+        if (contenido.Pelicula != null) return contenido.Pelicula.ImgURL ?? "/Content/Images/default-movie.jpg";
+        if (contenido.Serie != null) return contenido.Serie.ImgURL ?? "/Content/Images/default-series.jpg";
+        if (contenido.Cancion != null) return contenido.Cancion.ImgURL ?? "/Content/Images/default-song.jpg";
+        return "/Content/Images/default.jpg";
+    }
+
+    string GetName(PARCIALDBEveriflix.Models.Contenido contenido)
+    {
+        if (contenido == null) return "Contenido no disponible";
+        if (contenido.Pelicula != null) return contenido.Pelicula.Nombre;
+        if (contenido.Serie != null) return contenido.Serie.Nombre;
+        if (contenido.Cancion != null) return contenido.Cancion.Nombre;
+        return "Contenido no disponible";
+    }
+
+    // Obtener contenidos y votos
+    var contenidos = new List<PARCIALDBEveriflix.Models.Contenido>
+{
+        Model.Contenido,
+        Model.Contenido1,
+        Model.Contenido2,
+        Model.Contenido3
+    }.Where(c => c != null).ToList();
+
+    var votos = Model.Votoes
+        .Where(v => v.Id_VotacionContenido == Model.Id_VotacionContenido)
+        .GroupBy(v => v.Id_Contenido)
+        .ToDictionary(g => g.Key, g => g.Count());
+
+    var totalVotos = votos.Values.Sum();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #e50914;
+            --primary-dark: #b1060f;
+            --dark: #141414;
+            --dark-light: #222;
+            --gray: #757575;
+            --light: #f5f5f5;
+            --success: #28a745;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .results-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--dark-light);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .results-title {
+            font-size: 2.2rem;
+            margin: 0;
+            color: var(--light);
+        }
+
+        .results-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .results-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .chart-container {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .results-details {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .results-list {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+            .result-item:hover {
+                background: rgba(255,255,255,0.1);
+                transform: translateY(-2px);
+            }
+
+        .result-image {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 20px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-name {
+            font-size: 1.1rem;
+            margin: 0 0 5px 0;
+            color: var(--light);
+        }
+
+        .progress-container {
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            transition: width 0.6s ease;
+        }
+
+        .vote-count {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .total-votes {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .total-number {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-back:hover {
+                background: var(--primary-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(229, 9, 20, 0.3);
+            }
+
+        @@media (max-width: 768px) {
+            .results-content {
+                flex-direction: column;
+            }
+
+            .chart-container, .results-details {
+                width: 100%;
+            }
+
+            .results-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="results-wrapper">
+        <div class="results-header">
+            <h1 class="results-title">
+                <i class="fas fa-chart-pie"></i> @ViewBag.Title
+            </h1>
+            <p class="results-subtitle">
+                <i class="fas fa-tag"></i> @Model.TipoContenido.Nombre
+            </p>
+        </div>
+
+        <div class="results-content">
+            <div class="chart-container">
+                <canvas id="resultsChart"></canvas>
+            </div>
+
+            <div class="results-details">
+                <div class="results-list">
+                    <h3 style="color: var(--light); margin-bottom: 20px;">
+                        <i class="fas fa-list-ol"></i> Detalle de Votos
+                    </h3>
+
+                    @foreach (var contenido in contenidos)
+                    {
+                        var votosContenido = votos.ContainsKey(contenido.Id_Contenido) ? votos[contenido.Id_Contenido] : 0;
+                        var porcentaje = totalVotos > 0 ? Math.Round((votosContenido * 100.0) / totalVotos, 1) : 0;
+
+                        <div class="result-item">
+                            <img src="@GetImageUrl(contenido)" class="result-image" alt="@GetName(contenido)" />
+                            <div class="result-info">
+                                <h4 class="result-name">@GetName(contenido)</h4>
+                                <div class="progress-container">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @porcentaje%"></div>
+                                    </div>
+                                    <div class="vote-count">
+                                        @votosContenido votos (@porcentaje%)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="total-votes">
+                    <span>Total de votos: </span>
+                    <span class="total-number">@totalVotos</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="@Url.Action("Index")" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver a votaciones
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('resultsChart').getContext('2d');
+
+            var colors = [
+                '#e50914', '#b1060f', '#8c0b0b', '#ff5252',
+                '#ff6b6b', '#ff8a8a', '#ffb3b3', '#ffd8d8'
+            ];
+
+            var chartData = {
+                labels: [
+                    @foreach (var contenido in contenidos) {
+                        <text>'@GetName(contenido)',</text>
+                    }
+                ],
+                datasets: [{
+                    data: [
+                        @foreach (var contenido in contenidos) {
+                            var votosContenido = votos.ContainsKey(contenido.Id_Contenido) ? votos[contenido.Id_Contenido] : 0;
+                            <text>@votosContenido,</text>
+                        }
+                    ],
+                    backgroundColor: colors.slice(0, @contenidos.Count),
+                    borderWidth: 0,
+                    hoverOffset: 15
+                }]
+            };
+
+            var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: 'white',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleFont: {
+                                family: 'Poppins',
+                                size: 16
+                            },
+                            bodyFont: {
+                                family: 'Poppins',
+                                size: 14
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    var label = context.label || '';
+                                    var value = context.raw || 0;
+                                    var total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    var percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} votos (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%',
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@ namespace PARCIALDBEveriflix.Controllers
     {
         private EveryflixDBEntities db = new EveryflixDBEntities();
 
-        // Método seguro para verificar el tipo de usuario
+        // METODO PARA VERIFICAR UN ADMIN
         private bool IsAdminUser()
         {
             if (Session["UserType"] == null)
@@ -31,54 +31,53 @@ namespace PARCIALDBEveriflix.Controllers
                 }
                 else if (int.TryParse(Session["UserType"].ToString(), out userType))
                 {
-                    // Conversión exitosa
+                    // CONVERSION DEL USUARIO ID
                 }
                 else
                 {
                     return false;
                 }
 
-                return userType == 1; // 1 = Administrador
+                return userType == 1; // 1 = ADMIN
             }
             catch
             {
                 return false;
             }
         }
-       
+
         public ActionResult EditUser(long id)
         {
-            // Verificar si el usuario actual es el administrador
+            // VERIFICACION SI ES UN ADMIN
             var usuario = db.Usuarios.FirstOrDefault(u => u.id_Usuario == id);
             if (usuario == null)
             {
                 return HttpNotFound();
             }
 
-            // Cargar los tipos de usuario disponibles (si es necesario)
+            // CARGAR TODOS LOS USUARIOS DE TODOS TIPOS
             ViewBag.TiposUsuario = new SelectList(db.TipoUsuarios, "Id_TipoUsuario", "Nombre");
 
             return View(usuario);
         }
 
         [HttpPost]
-    
+
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                // Encontrar el usuario que se está editando
+                // LLEVAR EL ID DE USUARIO A EDITAR
                 var existingUser = db.Usuarios.FirstOrDefault(u => u.id_Usuario == usuario.id_Usuario);
 
                 if (existingUser != null)
                 {
-                    // Solo el administrador puede cambiar el tipo de usuario
                     existingUser.Id_TipoUsuario = usuario.Id_TipoUsuario;
 
-                    // Guardar los cambios en la base de datos
+                    // GUARDAR
                     db.SaveChanges();
-                    return RedirectToAction("ManageUsers");// O cualquier otra vista a la que redirijas
+                    return RedirectToAction("ManageUsers");
                 }
                 else
                 {
@@ -86,22 +85,22 @@ namespace PARCIALDBEveriflix.Controllers
                 }
             }
 
-            // Si la validación del modelo falla, vuelve a mostrar el formulario
+            // EN CASO DE FALLO MOSTRAR FORMULARIO
             ViewBag.TiposUsuario = new SelectList(db.TipoUsuarios, "Id_TipoUsuario", "Nombre", usuario.Id_TipoUsuario);
             return View(usuario);
         }
 
-        // Acción para editar perfil
+        // GET PARA EDITAR PERFIL
 
         [HttpGet]
         public ActionResult EditProfile(int? id)
         {
             if (Session["UserId"] == null)
             {
-                return RedirectToAction("Login", "Auth"); // Si no está logueado, redirigir al login
+                return RedirectToAction("Login", "Auth"); // DEVOLVER A LOGIN SI NO HAY USUARIO LOGUEADO
             }
 
-            // Si el id es null, usamos el id del usuario logueado
+            // LLENAR EL ID CON EL USUARIO LOGUEADO
             int userId = id ?? Convert.ToInt32(Session["UserId"]);
 
             var usuario = db.Usuarios.FirstOrDefault(u => u.id_Usuario == userId);
@@ -110,7 +109,7 @@ namespace PARCIALDBEveriflix.Controllers
                 return RedirectToAction("Login", "Auth");
             }
 
-            // Si es un admin, puede editar cualquier perfil
+            // ADMIN PUEDE EDITAR CUALQUIER USUARIO
             if (IsAdminUser())
             {
                 ViewBag.IsAdmin = true;
@@ -118,10 +117,14 @@ namespace PARCIALDBEveriflix.Controllers
 
             return View(usuario);
         }
+
+        // POST PARA EDITAR PERFIL
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditProfile(Usuario updatedUser, HttpPostedFileBase ImgURL)
         {
+
+            // REDIRECCIONAR A LOGIN EN CASO NO ESTAR LOGUEADO
             if (Session["UserId"] == null)
             {
                 return RedirectToAction("Login", "Auth");
@@ -129,6 +132,7 @@ namespace PARCIALDBEveriflix.Controllers
 
             try
             {
+                // OBTENER EL USUARIO A EDITAR
                 int userId = Convert.ToInt32(Session["UserId"]);
                 var currentUser = db.Usuarios.FirstOrDefault(u => u.id_Usuario == userId);
 
@@ -137,7 +141,7 @@ namespace PARCIALDBEveriflix.Controllers
                     return RedirectToAction("Login", "Auth");
                 }
 
-                // Determinar qué usuario estamos editando
+                // EDICION DESDE LA VISTA DE ADMIN
                 Usuario usuarioAEditar;
                 if (IsAdminUser() && updatedUser.id_Usuario != userId)
                 {
@@ -153,24 +157,24 @@ namespace PARCIALDBEveriflix.Controllers
                     usuarioAEditar = currentUser;
                 }
 
-                // Validar modelo
+                // VALIDAR MODELO
                 if (string.IsNullOrWhiteSpace(updatedUser.Username))
                 {
                     ModelState.AddModelError("Username", "El nombre de usuario no puede estar vacío");
                     return View(usuarioAEditar);
                 }
 
-                // Verificar si el username ya existe
+                // VERIFICAR SI EL NOMBRE DE USUARIO YA EXISTE
                 if (db.Usuarios.Any(u => u.Username == updatedUser.Username && u.id_Usuario != usuarioAEditar.id_Usuario))
                 {
                     ModelState.AddModelError("Username", "Este nombre de usuario ya está en uso");
                     return View(usuarioAEditar);
                 }
 
-                // Actualizar username
+                // ACTUALIZAR USERNAME
                 usuarioAEditar.Username = updatedUser.Username;
 
-                // Manejo de imagen
+                // MANEJO PARA LA IMAGEN DE PERFIL
                 if (ImgURL != null && ImgURL.ContentLength > 0)
                 {
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
@@ -182,7 +186,7 @@ namespace PARCIALDBEveriflix.Controllers
                         return View(usuarioAEditar);
                     }
 
-                    // Crear directorio si no existe
+                    // CREAR DIRECTORIO EN CASO DE NO EXISTIR
                     var imagesPath = Server.MapPath("~/images");
                     if (!Directory.Exists(imagesPath))
                     {
@@ -193,7 +197,7 @@ namespace PARCIALDBEveriflix.Controllers
                     var imageUrl = "/images/" + fileName;
                     var path = Path.Combine(imagesPath, fileName);
 
-                    // Eliminar imagen anterior si existe
+                    // ELIMINAR IMAGEN ANTERIOR
                     if (!string.IsNullOrEmpty(usuarioAEditar.ImgURL))
                     {
                         var oldPath = Server.MapPath(usuarioAEditar.ImgURL);
@@ -207,13 +211,13 @@ namespace PARCIALDBEveriflix.Controllers
                     usuarioAEditar.ImgURL = imageUrl;
                 }
 
-                // Guardar cambios
+                // GUARDAR CAMBIOS
                 db.Entry(usuarioAEditar).State = EntityState.Modified;
                 int changes = db.SaveChanges();
 
                 if (changes > 0)
                 {
-                    // Actualizar sesión si es el usuario actual
+                    // ACTUALIZAR SESION DEL USUARIO LOGUEADO
                     if (usuarioAEditar.id_Usuario == userId)
                     {
                         Session["Username"] = usuarioAEditar.Username;
@@ -234,60 +238,64 @@ namespace PARCIALDBEveriflix.Controllers
                 return View(db.Usuarios.Find(Convert.ToInt32(Session["UserId"])));
             }
         }
-        // Acción para mostrar el Dashboard del usuario
+        // MOSTRAR DASHBOARD PARA USUARIOS
         public ActionResult Dashboard()
         {
             if (Session["UserType"] == null || Session["Username"] == null)
             {
-                return RedirectToAction("Login", "Auth"); // Si no están en sesión, redirigir al login
+                return RedirectToAction("Login", "Auth"); // REDIRIGIR SI NO ESTA LOGUEADO
             }
 
-            // Obtener el ID del usuario desde la sesión
+            // OBTENER ID DE USUARIO PARA LA SESION
             int userId = Convert.ToInt32(Session["UserId"]);
             var usuario = db.Usuarios.FirstOrDefault(u => u.id_Usuario == userId);
 
             if (usuario == null)
             {
-                return RedirectToAction("Login", "Auth"); // Si no se encuentra el usuario, redirigir a login
+                return RedirectToAction("Login", "Auth"); // SI NO ENCONTRAR ID REDIRIGIR A LOGIN
             }
 
             ViewBag.UserName = usuario.Username;
 
+            // CASO SWITCH PARA MOSTRAR DASBOARD DEPENDIENDO DEL TIPO USUARIO
             int userType = Convert.ToInt32(Session["UserType"]);
 
             switch (userType)
             {
-                case 1: // Administrador
+                case 1: // ADMINISTRADOR
+                    //CARGAR FOLLOWS Y FOLLOWERS
                     ViewBag.FollowerCount = db.Seguidors.Count(s => s.Id_UsuarioSiguiendo == userId);
                     ViewBag.FollowingCount = db.Seguidors.Count(s => s.Id_UsuarioSeguidor == userId);
-                    return View("AdminDashboard", usuario); // Redirigir al Dashboard del Administrador
+                    return View("AdminDashboard", usuario); // RETORNA ADMIN DASHBOARD
 
-                case 2: // Artista
+                case 2: // ARTISTA
+                    //CARGAR EL ARTISTA DEL USUARIO LOGUEADO
                     var artista = db.Artistas.FirstOrDefault(a => a.Id_Usuario == userId);
                     if (artista != null)
-                    {
+                    {  //CARGAR FOLLOWS Y FOLLOWERS
                         ViewBag.FollowerCount = db.Seguidors.Count(s => s.Id_UsuarioSiguiendo == userId);
                         ViewBag.FollowingCount = db.Seguidors.Count(s => s.Id_UsuarioSeguidor == userId);
                         ViewBag.ArtistaInfo = artista;
                     }
-                    // Obtener lista de usuarios que sigue el usuario
+                    //LISTA DE USUARIOS QUE SIGUEN AL USUARIO
                     ViewBag.FollowingList = db.Seguidors
                                               .Where(s => s.Id_UsuarioSeguidor == userId)
-                                              .Select(s => s.Usuario1) // Obtenemos la información del usuario seguido
+                                              .Select(s => s.Usuario1) // INFORMACION DE USUARIO SEGUIDO
                                               .ToList();
-                    return View("ArtistDashboard", usuario); // Redirigir al Dashboard del Artista
+                    return View("ArtistDashboard", usuario); // REDIRIGIR AL DASHBOARD DE ARTISTA
 
-                case 3: // Usuario normal
+                case 3: // USUARIO COMUN
                     ViewBag.FollowerCount = db.Seguidors.Count(s => s.Id_UsuarioSiguiendo == userId);
                     ViewBag.FollowingCount = db.Seguidors.Count(s => s.Id_UsuarioSeguidor == userId);
-                    // Obtener lista de usuarios que sigue el usuario
+                    // LISTA DE FOLLOWERS DEL USUARIO
                     ViewBag.FollowingList = db.Seguidors
                                               .Where(s => s.Id_UsuarioSeguidor == userId)
-                                              .Select(s => s.Usuario1) // Obtenemos la información del usuario seguido
+                                              .Select(s => s.Usuario1) //INFORMACION DE USUARIO SEGUIDO
                                               .ToList();
-                    return View("UserDashboard", usuario); // Redirigir al Dashboard del Usuario
+                    return View("UserDashboard", usuario); // REDIRIGIR AL DASBOARD DE USUARIO COMUN
 
-                case 4: // Disquera
+                case 4: // DISQUERA
+                    //CARGAR LA DISQUERA DEL USUARIO LOGUEADO
                     var disquera = db.Disqueras.FirstOrDefault(d => d.Id_Usuario == userId);
                     if (disquera != null)
                     {
@@ -295,14 +303,14 @@ namespace PARCIALDBEveriflix.Controllers
                         ViewBag.FollowingCount = db.Seguidors.Count(s => s.Id_UsuarioSeguidor == userId);
                         ViewBag.DisqueraInfo = disquera;
                     }
-                    // Obtener lista de usuarios que sigue el usuario
+                    // LISTA DE FOLLOWERS DEL USUARIO LOGUEADO
                     ViewBag.FollowingList = db.Seguidors
                                               .Where(s => s.Id_UsuarioSeguidor == userId)
-                                              .Select(s => s.Usuario1) // Obtenemos la información del usuario seguido
+                                              .Select(s => s.Usuario1) // INFORMACION DEL USUARIO SEGUIDO
                                               .ToList();
-                    return View("DisqueraDashboard", usuario); // Redirigir al Dashboard de la Disquera
+                    return View("DisqueraDashboard", usuario); // RETORNA AL DASHBOARD DE DISQUERA
 
-                case 5: // Productor
+                case 5: // PRODUCTOR
                     var productor = db.Productors.FirstOrDefault(p => p.Id_Usuario == userId);
                     if (productor != null)
                     {
@@ -310,14 +318,14 @@ namespace PARCIALDBEveriflix.Controllers
                         ViewBag.FollowingCount = db.Seguidors.Count(s => s.Id_UsuarioSeguidor == userId);
                         ViewBag.ProductorInfo = productor;
                     }
-                    // Obtener lista de usuarios que sigue el usuario
+                    // LISTA DE FOLLOWERS DE USUARIO LOGUEADO
                     ViewBag.FollowingList = db.Seguidors
                                               .Where(s => s.Id_UsuarioSeguidor == userId)
-                                              .Select(s => s.Usuario1) // Obtenemos la información del usuario seguido
+                                              .Select(s => s.Usuario1) // INFORMACION DE USUARIO SEGUIDO
                                               .ToList();
-                    return View("ProductorDashboard", usuario); // Redirigir al Dashboard del Productor
+                    return View("ProductorDashboard", usuario); // RETORNAR A DASHBOARD
 
-                case 6: // Director
+                case 6: // DIRECTOR
                     var director = db.Directors.FirstOrDefault(d => d.Id_Usuario == userId);
                     if (director != null)
                     {
@@ -490,41 +498,242 @@ namespace PARCIALDBEveriflix.Controllers
             return View(following);
         }
         // Accion GET para mostrar una confirmación de eliminación
-        public ActionResult DeleteUser(long id)
-        {
-            var usuarioAEliminar = db.Usuarios.Find(id);
-            if (usuarioAEliminar == null)
-            {
-                TempData["ErrorMessage"] = "Usuario no encontrado.";
-                return RedirectToAction("ManageUsers");
-            }
-
-            return View(usuarioAEliminar);  // Puedes mostrar una vista de confirmación
-        }
-
+        // Acción GET para mostrar la confirmación de eliminación
         [HttpPost, ActionName("DeleteUser")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            var usuarioAEliminar = db.Usuarios.Find(id);
-            if (usuarioAEliminar == null)
+            using (var transaction = db.Database.BeginTransaction())
             {
-                TempData["ErrorMessage"] = "Usuario no encontrado.";
-                return RedirectToAction("ManageUsers");
+                try
+                {
+                    // Obtener usuario con todas sus relaciones
+                    var usuario = db.Usuarios
+                        .Include(u => u.Artistas)
+                        .Include(u => u.Disqueras)
+                        .Include(u => u.Productors)
+                        .Include(u => u.Directors)
+                        .Include(u => u.Seguidors) // Los que él sigue
+                        .Include(u => u.Seguidors1) // Los que lo siguen
+                        .Include(u => u.Votoes) // Votos del usuario
+                        .FirstOrDefault(u => u.id_Usuario == id);
+
+                    if (usuario == null)
+                    {
+                        TempData["ErrorMessage"] = "Usuario no encontrado";
+                        return RedirectToAction("ManageUsers");
+                    }
+
+                    // 1. Eliminar relaciones de seguidores
+                    var seguidores = db.Seguidors
+                        .Where(s => s.Id_UsuarioSeguidor == id || s.Id_UsuarioSiguiendo == id)
+                        .ToList();
+                    db.Seguidors.RemoveRange(seguidores);
+
+                    // 2. Eliminar votos del usuario
+                    var votos = db.Votoes.Where(v => v.Id_Usuario == id).ToList();
+                    db.Votoes.RemoveRange(votos);
+
+                    // 3. Manejar cada tipo de usuario específico
+                    switch (usuario.Id_TipoUsuario)
+                    {
+                        case 2: // Artista
+                            var artista = db.Artistas
+                                .Include(a => a.Albums)
+                                .Include(a => a.Cancions)
+                                .FirstOrDefault(a => a.Id_Usuario == id);
+
+                            if (artista != null)
+                            {
+                                // Eliminar canciones y sus archivos
+                                foreach (var cancion in artista.Cancions.ToList())
+                                {
+
+                                    // Eliminar imagen de canción
+                                    if (!string.IsNullOrEmpty(cancion.ImgURL) && !cancion.ImgURL.Contains("default"))
+                                    {
+                                        var imgPath = Server.MapPath(cancion.ImgURL);
+                                        if (System.IO.File.Exists(imgPath))
+                                        {
+                                            System.IO.File.Delete(imgPath);
+                                        }
+                                    }
+                                    db.Cancions.Remove(cancion);
+                                }
+
+                                // Eliminar álbumes y sus imágenes
+                                foreach (var album in artista.Albums.ToList())
+                                {
+                                    if (!string.IsNullOrEmpty(album.ImgURL) && !album.ImgURL.Contains("default"))
+                                    {
+                                        var imgPath = Server.MapPath(album.ImgURL);
+                                        if (System.IO.File.Exists(imgPath))
+                                        {
+                                            System.IO.File.Delete(imgPath);
+                                        }
+                                    }
+                                    db.Albums.Remove(album);
+                                }
+
+                                db.Artistas.Remove(artista);
+                            }
+                            break;
+
+                        case 4: // Disquera
+                            var disquera = db.Disqueras.FirstOrDefault(d => d.Id_Usuario == id);
+                            if (disquera != null)
+                            {
+                                // Actualizar artistas que pertenecían a esta disquera
+                                var artistas = db.Artistas.Where(a => a.Id_Disquera == disquera.Id_Disquera).ToList();
+                                foreach (var art in artistas)
+                                {
+                                    art.Id_Disquera = null;
+                                }
+                                db.Disqueras.Remove(disquera);
+                            }
+                            break;
+
+                        case 5: // Productor
+                            var productor = db.Productors
+                                .Include(p => p.Series)
+                                .Include(p => p.Peliculas)
+                                .FirstOrDefault(p => p.Id_Usuario == id);
+
+                            if (productor != null)
+                            {
+                                // Eliminar series relacionadas
+                                foreach (var serie in productor.Series.ToList())
+                                {
+                                    EliminarSerieCompleta(serie.Id_Serie);
+                                }
+
+                                // Eliminar películas relacionadas
+                                foreach (var pelicula in productor.Peliculas.ToList())
+                                {
+                                    EliminarPelicula(pelicula.Id_pelicula);
+                                }
+
+                                db.Productors.Remove(productor);
+                            }
+                            break;
+
+                        case 6: // Director
+                            var director = db.Directors
+                                .Include(d => d.Series)
+                                .Include(d => d.Peliculas)
+                                .FirstOrDefault(d => d.Id_Usuario == id);
+
+                            if (director != null)
+                            {
+                                // Eliminar series relacionadas
+                                foreach (var serie in director.Series.ToList())
+                                {
+                                    EliminarSerieCompleta(serie.Id_Serie);
+                                }
+
+                                // Eliminar películas relacionadas
+                                foreach (var pelicula in director.Peliculas.ToList())
+                                {
+                                    EliminarPelicula(pelicula.Id_pelicula);
+                                }
+
+                                db.Directors.Remove(director);
+                            }
+                            break;
+                    }
+
+                    // 4. Eliminar imagen de perfil
+                    if (!string.IsNullOrEmpty(usuario.ImgURL) && !usuario.ImgURL.Contains("default-profile"))
+                    {
+                        var imagePath = Server.MapPath(usuario.ImgURL);
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+
+                    // 5. Eliminar el usuario
+                    db.Usuarios.Remove(usuario);
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                    // Si el usuario se está eliminando a sí mismo, cerrar sesión
+                    if (Session["UserId"] != null && Convert.ToInt64(Session["UserId"]) == id)
+                    {
+                        Session.Clear();
+                        TempData["SuccessMessage"] = "Tu cuenta y todo tu contenido han sido eliminados permanentemente.";
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    TempData["SuccessMessage"] = "Usuario y todo su contenido relacionado eliminados correctamente.";
+                    return RedirectToAction("ManageUsers");
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    System.Diagnostics.Debug.WriteLine($"Error al eliminar usuario: {ex}");
+                    TempData["ErrorMessage"] = $"Error al eliminar el usuario: {ex.Message}";
+                    return RedirectToAction("DeleteUser", new { id = id });
+                }
             }
-
-            // Eliminar los seguidores relacionados con el usuario
-            var seguidores = db.Seguidors.Where(s => s.Id_UsuarioSeguidor == id).ToList();
-            db.Seguidors.RemoveRange(seguidores);
-                
-            // Ahora eliminar el usuario
-            db.Usuarios.Remove(usuarioAEliminar);
-            db.SaveChanges();
-
-            TempData["SuccessMessage"] = "Usuario eliminado correctamente.";
-            return RedirectToAction("ManageUsers");
         }
 
-    }
+        // Métodos auxiliares para eliminar contenido relacionado
+        private void EliminarSerieCompleta(long serieId)
+        {
+            var serie = db.Series
+                .Include(s => s.Temporadas)
+                .Include(s => s.Contenidoes)
+                .FirstOrDefault(s => s.Id_Serie == serieId);
 
+            if (serie != null)
+            {
+                // Eliminar capítulos
+                foreach (var temporada in serie.Temporadas.ToList())
+                {
+                    var capitulos = db.Capituloes.Where(c => c.Id_Temporada == temporada.Id_Temporada).ToList();
+                    db.Capituloes.RemoveRange(capitulos);
+                    db.Temporadas.Remove(temporada);
+                }
+
+                // Eliminar imagen de serie
+                if (!string.IsNullOrEmpty(serie.ImgURL) && !serie.ImgURL.Contains("default"))
+                {
+                    var imgPath = Server.MapPath(serie.ImgURL);
+                    if (System.IO.File.Exists(imgPath))
+                    {
+                        System.IO.File.Delete(imgPath);
+                    }
+                }
+
+                // Eliminar contenido relacionado
+                db.Contenidoes.RemoveRange(serie.Contenidoes);
+                db.Series.Remove(serie);
+            }
+        }
+
+        private void EliminarPelicula(long peliculaId)
+        {
+            var pelicula = db.Peliculas
+                .Include(p => p.Contenidoes)
+                .FirstOrDefault(p => p.Id_pelicula == peliculaId);
+
+            if (pelicula != null)
+            {
+                // Eliminar imagen de película
+                if (!string.IsNullOrEmpty(pelicula.ImgURL) && !pelicula.ImgURL.Contains("default"))
+                {
+                    var imgPath = Server.MapPath(pelicula.ImgURL);
+                    if (System.IO.File.Exists(imgPath))
+                    {
+                        System.IO.File.Delete(imgPath);
+                    }
+                }
+
+                // Eliminar contenido relacionado
+                db.Contenidoes.RemoveRange(pelicula.Contenidoes);
+                db.Peliculas.Remove(pelicula);
+            }
+        }
+    }
 }

@@ -1,0 +1,591 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.VotacionContenido>
+@{
+    ViewBag.Title = "Votaciones Activas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e50914;
+            --secondary-color: #b1060f;
+            --dark-color: #141414;
+            --light-dark: #222;
+            --gray-color: #757575;
+            --light-color: #f5f5f5;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+            color: white;
+        }
+
+        .voting-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .voting-card {
+            background-color: var(--light-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+            .voting-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .voting-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .voting-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .voting-category {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .voting-options {
+            padding: 15px;
+        }
+
+        .voting-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+            .voting-option:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+        .option-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .option-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .option-details {
+            flex: 1;
+        }
+
+        .option-name {
+            font-size: 15px;
+            font-weight: 500;
+            margin: 0 0 3px 0;
+        }
+
+        .option-votes {
+            font-size: 12px;
+            color: var(--gray-color);
+            margin: 0;
+        }
+
+        /* Estilos para los botones de voto */
+        .btn-vote {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .btn-vote:hover {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+        .btn-selected {
+            background-color: var(--success-color) !important;
+            color: white !important;
+            border-color: var(--success-color) !important;
+            cursor: default;
+        }
+
+        .btn-change {
+            background-color: var(--warning-color);
+            color: #212529;
+            border-color: var(--warning-color);
+        }
+
+            .btn-change:hover {
+                background-color: #e0a800;
+                color: #212529;
+                border-color: #d39e00;
+            }
+
+        .btn-disabled {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: var(--gray-color) !important;
+            border-color: var(--gray-color) !important;
+            cursor: not-allowed;
+        }
+
+        .voting-footer {
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-results {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .btn-results:hover {
+                opacity: 0.9;
+                color: white;
+            }
+
+        .alert {
+            border-radius: 6px;
+            margin-bottom: 25px;
+            padding: 12px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #dff0d8;
+            border-left-color: var(--success-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(229, 9, 20, 0.2);
+            color: #f8d7da;
+            border-left-color: var(--primary-color);
+        }
+
+        .alert-info {
+            background-color: rgba(23, 162, 184, 0.2);
+            color: #d1ecf1;
+            border-left-color: #17a2b8;
+        }
+
+        .vote-form {
+            margin: 0;
+            display: inline;
+        }
+
+        .admin-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.3s;
+        }
+
+            .admin-btn:hover {
+                opacity: 0.9;
+                color: white;
+            }
+
+        @@media (max-width: 768px) {
+            .voting-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-poll"></i> @ViewBag.Title
+            </h1>
+            @if (Session["UserType"] != null && Session["UserType"].ToString() == "1")
+            {
+                <a href="@Url.Action("Create")" class="admin-btn">
+                    <i class="fas fa-plus"></i> Nueva Votación
+                </a>
+            }
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+            </div>
+        }
+
+        @if (TempData["Info"] != null)
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> @TempData["Info"]
+            </div>
+        }
+
+        <div class="voting-grid">
+            @foreach (var votacion in Model)
+            {
+                <div class="voting-card">
+                    <div class="voting-header">
+                        <h3 class="voting-title">@votacion.Nombre</h3>
+                        <span class="voting-category">@votacion.TipoContenido.Nombre</span>
+                    </div>
+
+                    <div class="voting-options">
+                        <!-- Opción 1 -->
+                        @if (votacion.Id_Contenido1 != null)
+                        {
+                            <div class="voting-option">
+                                <div class="option-info">
+                                    <img src="@GetContenidoImage(votacion.Contenido)" class="option-image" />
+                                    <div class="option-details">
+                                        <h4 class="option-name">@GetContenidoName(votacion.Contenido)</h4>
+                                        <p class="option-votes">@GetVotosCount(ViewBag.VotosPorVotacion, votacion.Id_VotacionContenido, votacion.Id_Contenido1)</p>
+                                    </div>
+                                </div>
+                                @if (Session["UserId"] != null)
+                                {
+                                    var yaVoto = ViewBag.VotosUsuario != null && ViewBag.VotosUsuario.Contains(votacion.Id_VotacionContenido);
+                                    var votoActual = yaVoto && ViewBag.VotosActuales != null && ViewBag.VotosActuales.ContainsKey(votacion.Id_VotacionContenido) ? ViewBag.VotosActuales[votacion.Id_VotacionContenido] : null;
+
+                                    if (yaVoto && votoActual?.Id_Contenido == votacion.Id_Contenido1)
+                                    {
+                                        <span class="btn-vote btn-selected">
+                                            <i class="fas fa-check-circle"></i> Tu voto
+                                        </span>
+                                    }
+                                    else if (yaVoto)
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido1 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote btn-change">
+                                                <i class="fas fa-exchange-alt"></i> Cambiar voto
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido1 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote">
+                                                <i class="fas fa-vote-yea"></i> Votar
+                                            </button>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Auth", new { returnUrl = Request.Url.PathAndQuery })" class="btn-vote">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </a>
+                                }
+                            </div>
+                        }
+
+                        <!-- Opción 2 -->
+                        @if (votacion.Id_Contenido2 != null)
+                        {
+                            <div class="voting-option">
+                                <div class="option-info">
+                                    <img src="@GetContenidoImage(votacion.Contenido1)" class="option-image" />
+                                    <div class="option-details">
+                                        <h4 class="option-name">@GetContenidoName(votacion.Contenido1)</h4>
+                                        <p class="option-votes">@GetVotosCount(ViewBag.VotosPorVotacion, votacion.Id_VotacionContenido, votacion.Id_Contenido2)</p>
+                                    </div>
+                                </div>
+                                @if (Session["UserId"] != null)
+                                {
+                                    var yaVoto = ViewBag.VotosUsuario != null && ViewBag.VotosUsuario.Contains(votacion.Id_VotacionContenido);
+                                    var votoActual = yaVoto && ViewBag.VotosActuales != null && ViewBag.VotosActuales.ContainsKey(votacion.Id_VotacionContenido) ? ViewBag.VotosActuales[votacion.Id_VotacionContenido] : null;
+
+                                    if (yaVoto && votoActual?.Id_Contenido == votacion.Id_Contenido2)
+                                    {
+                                        <span class="btn-vote btn-selected">
+                                            <i class="fas fa-check-circle"></i> Tu voto
+                                        </span>
+                                    }
+                                    else if (yaVoto)
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido2 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote btn-change">
+                                                <i class="fas fa-exchange-alt"></i> Cambiar voto
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido2 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote">
+                                                <i class="fas fa-vote-yea"></i> Votar
+                                            </button>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Auth", new { returnUrl = Request.Url.PathAndQuery })" class="btn-vote">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </a>
+                                }
+                            </div>
+                        }
+
+                        <!-- Opción 3 -->
+                        @if (votacion.Id_Contenido3 != null)
+                        {
+                            <div class="voting-option">
+                                <div class="option-info">
+                                    <img src="@GetContenidoImage(votacion.Contenido2)" class="option-image" />
+                                    <div class="option-details">
+                                        <h4 class="option-name">@GetContenidoName(votacion.Contenido2)</h4>
+                                        <p class="option-votes">@GetVotosCount(ViewBag.VotosPorVotacion, votacion.Id_VotacionContenido, votacion.Id_Contenido3)</p>
+                                    </div>
+                                </div>
+                                @if (Session["UserId"] != null)
+                                {
+                                    var yaVoto = ViewBag.VotosUsuario != null && ViewBag.VotosUsuario.Contains(votacion.Id_VotacionContenido);
+                                    var votoActual = yaVoto && ViewBag.VotosActuales != null && ViewBag.VotosActuales.ContainsKey(votacion.Id_VotacionContenido) ? ViewBag.VotosActuales[votacion.Id_VotacionContenido] : null;
+
+                                    if (yaVoto && votoActual?.Id_Contenido == votacion.Id_Contenido3)
+                                    {
+                                        <span class="btn-vote btn-selected">
+                                            <i class="fas fa-check-circle"></i> Tu voto
+                                        </span>
+                                    }
+                                    else if (yaVoto)
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido3 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote btn-change">
+                                                <i class="fas fa-exchange-alt"></i> Cambiar voto
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido3 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote">
+                                                <i class="fas fa-vote-yea"></i> Votar
+                                            </button>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Auth", new { returnUrl = Request.Url.PathAndQuery })" class="btn-vote">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </a>
+                                }
+                            </div>
+                        }
+
+                        <!-- Opción 4 -->
+                        @if (votacion.Id_Contenido4 != null)
+                        {
+                            <div class="voting-option">
+                                <div class="option-info">
+                                    <img src="@GetContenidoImage(votacion.Contenido3)" class="option-image" />
+                                    <div class="option-details">
+                                        <h4 class="option-name">@GetContenidoName(votacion.Contenido3)</h4>
+                                        <p class="option-votes">@GetVotosCount(ViewBag.VotosPorVotacion, votacion.Id_VotacionContenido, votacion.Id_Contenido4)</p>
+                                    </div>
+                                </div>
+                                @if (Session["UserId"] != null)
+                                {
+                                    var yaVoto = ViewBag.VotosUsuario != null && ViewBag.VotosUsuario.Contains(votacion.Id_VotacionContenido);
+                                    var votoActual = yaVoto && ViewBag.VotosActuales != null && ViewBag.VotosActuales.ContainsKey(votacion.Id_VotacionContenido) ? ViewBag.VotosActuales[votacion.Id_VotacionContenido] : null;
+
+                                    if (yaVoto && votoActual?.Id_Contenido == votacion.Id_Contenido4)
+                                    {
+                                        <span class="btn-vote btn-selected">
+                                            <i class="fas fa-check-circle"></i> Tu voto
+                                        </span>
+                                    }
+                                    else if (yaVoto)
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido4 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote btn-change">
+                                                <i class="fas fa-exchange-alt"></i> Cambiar voto
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("Votar", "Votacion", new { id = votacion.Id_VotacionContenido, contenidoId = votacion.Id_Contenido4 }, FormMethod.Post, new { @class = "vote-form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-vote">
+                                                <i class="fas fa-vote-yea"></i> Votar
+                                            </button>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Auth", new { returnUrl = Request.Url.PathAndQuery })" class="btn-vote">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="voting-footer">
+                        <a href="@Url.Action("Resultados", new { id = votacion.Id_VotacionContenido })" class="btn-results">
+                            <i class="fas fa-chart-bar"></i> Ver Resultados
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+@functions {
+    string GetContenidoImage(PARCIALDBEveriflix.Models.Contenido contenido)
+    {
+        if (contenido == null) return "/Content/Images/default.jpg";
+
+        if (contenido.Pelicula != null)
+            return contenido.Pelicula.ImgURL ?? "/Content/Images/default-movie.jpg";
+        if (contenido.Serie != null)
+            return contenido.Serie.ImgURL ?? "/Content/Images/default-series.jpg";
+        if (contenido.Cancion != null)
+            return contenido.Cancion.ImgURL ?? "/Content/Images/default-song.jpg";
+
+        return "/Content/Images/default.jpg";
+    }
+
+    string GetContenidoName(PARCIALDBEveriflix.Models.Contenido contenido)
+    {
+        if (contenido == null) return "Contenido no disponible";
+
+        if (contenido.Pelicula != null) return contenido.Pelicula.Nombre;
+        if (contenido.Serie != null) return contenido.Serie.Nombre;
+        if (contenido.Cancion != null) return contenido.Cancion.Nombre;
+
+        return "Contenido no disponible";
+    }
+
+    string GetVotosCount(dynamic votosPorVotacion, long votacionId, long? contenidoId)
+    {
+        if (votosPorVotacion == null || contenidoId == null) return "0 votos";
+
+        var votos = votosPorVotacion.ContainsKey(votacionId) ? votosPorVotacion[votacionId] : null;
+
+        if (votos != null && votos.ContainsKey(contenidoId.Value))
+        {
+            return $"{votos[contenidoId.Value]} voto(s)";
+        }
+        return "0 votos";
+    }
+}

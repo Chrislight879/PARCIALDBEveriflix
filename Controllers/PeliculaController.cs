@@ -470,20 +470,29 @@ public class PeliculaController : Controller
         }
     }
     // GET: Editar (Productor) - Versión mejorada
+    // GET: Pelicula/EditProductor/5
     public ActionResult EditProductor(long? id)
     {
         if (!EsUsuarioPermitido() || (long)Session["UserType"] != 5 || id == null)
         {
-            TempData["ErrorMessage"] = "No tiene permisos para editar esta película";
+            TempData["ErrorMessage"] = "Acceso denegado. Solo los productores pueden editar películas.";
             return RedirectToAction("ManageMoviesProductor");
         }
 
         long userId = (long)Session["UserId"];
+        var productor = db.Productors.FirstOrDefault(p => p.Id_Usuario == userId);
+
+        if (productor == null)
+        {
+            TempData["ErrorMessage"] = "No tiene un perfil de productor válido";
+            return RedirectToAction("CompleteProfile", "Account");
+        }
+
         var pelicula = db.Peliculas
             .Include(p => p.Categoria)
             .Include(p => p.Clasificacion)
             .Include(p => p.Director)
-            .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Productor == userId);
+            .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Productor == productor.Id_Productor);
 
         if (pelicula == null)
         {
@@ -491,9 +500,7 @@ public class PeliculaController : Controller
             return HttpNotFound();
         }
 
-        // Cargar listas con los valores actuales de la película
         CargarListasParaProductor(pelicula);
-
         return View(pelicula);
     }
 
@@ -503,14 +510,22 @@ public class PeliculaController : Controller
     {
         if (!EsUsuarioPermitido() || (long)Session["UserType"] != 5)
         {
-            TempData["ErrorMessage"] = "No tiene permisos para realizar esta acción";
-            return RedirectToAction("ManageMoviesProductor");
+            TempData["ErrorMessage"] = "Acceso denegado. Solo los productores pueden editar películas.";
+            return RedirectToAction("Index", "Home");
         }
 
-        // Verificar que el usuario es el dueño de la película
         long userId = (long)Session["UserId"];
+        var productor = db.Productors.FirstOrDefault(p => p.Id_Usuario == userId);
+
+        if (productor == null)
+        {
+            TempData["ErrorMessage"] = "No tiene un perfil de productor válido";
+            return RedirectToAction("CompleteProfile", "Account");
+        }
+
+        // Obtener la película original para asegurar que pertenece al productor
         var peliculaOriginal = db.Peliculas.AsNoTracking()
-            .FirstOrDefault(p => p.Id_pelicula == pelicula.Id_pelicula && p.Id_Productor == userId);
+            .FirstOrDefault(p => p.Id_pelicula == pelicula.Id_pelicula && p.Id_Productor == productor.Id_Productor);
 
         if (peliculaOriginal == null)
         {
@@ -518,12 +533,18 @@ public class PeliculaController : Controller
             return HttpNotFound();
         }
 
+        // Validaciones adicionales
+        if (pelicula.Duracion == TimeSpan.Zero)
+        {
+            ModelState.AddModelError("Duracion", "La duración no puede ser cero");
+        }
+
         if (ModelState.IsValid)
         {
             try
             {
                 // Mantener valores que no deben cambiar
-                pelicula.Id_Productor = userId;
+                pelicula.Id_Productor = productor.Id_Productor; // Siempre el productor logueado
                 pelicula.Id_TipoContenido = peliculaOriginal.Id_TipoContenido;
 
                 // Procesar imagen si se subió una nueva
@@ -538,10 +559,7 @@ public class PeliculaController : Controller
                     pelicula.ImgURL = peliculaOriginal.ImgURL;
                 }
 
-                // Adjuntar la entidad al contexto y marcar como modificada
-                db.Peliculas.Attach(pelicula);
                 db.Entry(pelicula).State = EntityState.Modified;
-
                 db.SaveChanges();
 
                 TempData["SuccessMessage"] = "Película actualizada exitosamente";
@@ -549,17 +567,17 @@ public class PeliculaController : Controller
             }
             catch (DbEntityValidationException ex)
             {
-                foreach (var error in ex.EntityValidationErrors)
+                foreach (var eve in ex.EntityValidationErrors)
                 {
-                    foreach (var validationError in error.ValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
                     {
-                        ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
+                        ModelState.AddModelError(ve.PropertyName, ve.ErrorMessage);
                     }
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Ocurrió un error al guardar los cambios: " + ex.Message);
+                ModelState.AddModelError("", "Error al guardar los cambios: " + ex.Message);
             }
         }
 
@@ -677,20 +695,29 @@ public class PeliculaController : Controller
         return View(pelicula);
     }
     // GET: Eliminar (Productor) - Versión mejorada
+    // GET: Pelicula/DeleteProductor/5
     public ActionResult DeleteProductor(long? id)
     {
         if (!EsUsuarioPermitido() || (long)Session["UserType"] != 5 || id == null)
         {
-            TempData["ErrorMessage"] = "No tiene permisos para realizar esta acción";
+            TempData["ErrorMessage"] = "Acceso denegado. Solo los productores pueden eliminar películas.";
             return RedirectToAction("ManageMoviesProductor");
         }
 
         long userId = (long)Session["UserId"];
+        var productor = db.Productors.FirstOrDefault(p => p.Id_Usuario == userId);
+
+        if (productor == null)
+        {
+            TempData["ErrorMessage"] = "No tiene un perfil de productor válido";
+            return RedirectToAction("CompleteProfile", "Account");
+        }
+
         var pelicula = db.Peliculas
             .Include(p => p.Categoria)
             .Include(p => p.Clasificacion)
             .Include(p => p.Director)
-            .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Productor == userId);
+            .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Productor == productor.Id_Productor);
 
         if (pelicula == null)
         {
@@ -701,14 +728,13 @@ public class PeliculaController : Controller
         return View(pelicula);
     }
 
-    // POST: Eliminar (Productor) - Versión mejorada
     [HttpPost, ActionName("DeleteProductor")]
     [ValidateAntiForgeryToken]
     public ActionResult DeleteConfirmedProductor(long id)
     {
         if (!EsUsuarioPermitido() || (long)Session["UserType"] != 5)
         {
-            TempData["ErrorMessage"] = "No tiene permisos para realizar esta acción";
+            TempData["ErrorMessage"] = "Acceso denegado. Solo los productores pueden eliminar películas.";
             return RedirectToAction("ManageMoviesProductor");
         }
 
@@ -717,9 +743,18 @@ public class PeliculaController : Controller
             try
             {
                 long userId = (long)Session["UserId"];
+                var productor = db.Productors.FirstOrDefault(p => p.Id_Usuario == userId);
+
+                if (productor == null)
+                {
+                    TempData["ErrorMessage"] = "No tiene un perfil de productor válido";
+                    return RedirectToAction("ManageMoviesProductor");
+                }
+
+                // Obtener la película con sus relaciones básicas
                 var pelicula = db.Peliculas
-                    .Include(p => p.Contenidoes) // Incluir contenido relacionado
-                    .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Productor == userId);
+                    .Include(p => p.Contenidoes)
+                    .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Productor == productor.Id_Productor);
 
                 if (pelicula == null)
                 {
@@ -727,34 +762,68 @@ public class PeliculaController : Controller
                     return HttpNotFound();
                 }
 
-                // Eliminar contenido relacionado
-                if (pelicula.Contenidoes != null && pelicula.Contenidoes.Any())
+                // 1. Buscar y eliminar votaciones relacionadas
+                var votacionesRelacionadas = db.VotacionContenidoes
+                    .Where(v => v.Id_Contenido1 == pelicula.Id_pelicula ||
+                               v.Id_Contenido2 == pelicula.Id_pelicula ||
+                               v.Id_Contenido3 == pelicula.Id_pelicula ||
+                               v.Id_Contenido4 == pelicula.Id_pelicula)
+                    .ToList();
+
+                foreach (var votacion in votacionesRelacionadas)
                 {
-                    db.Contenidoes.RemoveRange(pelicula.Contenidoes);
+                    // Eliminar primero los votos asociados
+                    var votos = db.Votoes.Where(v => v.Id_VotacionContenido == votacion.Id_VotacionContenido);
+                    db.Votoes.RemoveRange(votos);
+
+                    // Luego eliminar la votación
+                    db.VotacionContenidoes.Remove(votacion);
                 }
 
-                // Eliminar la película
+                // 2. Eliminar los contenidos relacionados
+                foreach (var contenido in pelicula.Contenidoes.ToList())
+                {
+                    db.Contenidoes.Remove(contenido);
+                }
+
+                // 3. Eliminar la película
                 db.Peliculas.Remove(pelicula);
                 db.SaveChanges();
 
-                // Eliminar la imagen asociada (si no es la imagen por defecto)
-                EliminarImagenAnterior(pelicula.ImgURL);
+                // 4. Eliminar la imagen asociada (si no es la imagen por defecto)
+                if (!pelicula.ImgURL.Equals("/Content/Images/MovieCovers/default.jpg", StringComparison.OrdinalIgnoreCase))
+                {
+                    var rutaImagen = Server.MapPath(pelicula.ImgURL);
+                    if (System.IO.File.Exists(rutaImagen))
+                    {
+                        System.IO.File.Delete(rutaImagen);
+                    }
+                }
 
                 transaction.Commit();
 
                 TempData["SuccessMessage"] = "Película eliminada exitosamente";
                 return RedirectToAction("ManageMoviesProductor");
             }
+            catch (DbEntityValidationException ex)
+            {
+                transaction.Rollback();
+                var errorMessages = ex.EntityValidationErrors
+                    .SelectMany(x => x.ValidationErrors)
+                    .Select(x => x.ErrorMessage);
+                var fullErrorMessage = string.Join("; ", errorMessages);
+                TempData["ErrorMessage"] = $"Error de validación: {fullErrorMessage}";
+                return RedirectToAction("DeleteProductor", new { id = id });
+            }
             catch (Exception ex)
             {
                 transaction.Rollback();
-                System.Diagnostics.Debug.WriteLine($"Error al eliminar película: {ex}");
-                TempData["ErrorMessage"] = $"Error al eliminar la película: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"Error completo al eliminar película: {ex}");
+                TempData["ErrorMessage"] = $"Error al eliminar la película: {ex.InnerException?.Message ?? ex.Message}";
                 return RedirectToAction("DeleteProductor", new { id = id });
             }
         }
     }
-
     // GET: Eliminar (Director) - Versión mejorada
     public ActionResult DeleteDirector(long? id)
     {
@@ -787,14 +856,13 @@ public class PeliculaController : Controller
         return View(pelicula);
     }
 
-    // POST: Eliminar (Director) - Versión mejorada
     [HttpPost, ActionName("DeleteDirector")]
     [ValidateAntiForgeryToken]
     public ActionResult DeleteConfirmedDirector(long id)
     {
         if (!EsUsuarioPermitido() || (long)Session["UserType"] != 6)
         {
-            TempData["ErrorMessage"] = "No tiene permisos para realizar esta acción";
+            TempData["ErrorMessage"] = "Acceso denegado. Solo los directores pueden eliminar películas.";
             return RedirectToAction("ManageMoviesDirector");
         }
 
@@ -804,14 +872,16 @@ public class PeliculaController : Controller
             {
                 long userId = (long)Session["UserId"];
                 var director = db.Directors.FirstOrDefault(d => d.Id_Usuario == userId);
+
                 if (director == null)
                 {
                     TempData["ErrorMessage"] = "No tiene un perfil de director válido";
                     return RedirectToAction("ManageMoviesDirector");
                 }
 
+                // Obtener la película con sus relaciones básicas
                 var pelicula = db.Peliculas
-                    .Include(p => p.Contenidoes) // Incluir contenido relacionado
+                    .Include(p => p.Contenidoes) // Usar la propiedad de navegación correcta (plural)
                     .FirstOrDefault(p => p.Id_pelicula == id && p.Id_Director == director.Id_Director);
 
                 if (pelicula == null)
@@ -820,29 +890,64 @@ public class PeliculaController : Controller
                     return HttpNotFound();
                 }
 
-                // Eliminar contenido relacionado
-                if (pelicula.Contenidoes != null && pelicula.Contenidoes.Any())
+                // 1. Buscar y eliminar votaciones relacionadas con esta película
+                var votacionesRelacionadas = db.VotacionContenidoes
+                    .Where(v => v.Id_Contenido1 == pelicula.Id_pelicula ||
+                               v.Id_Contenido2 == pelicula.Id_pelicula ||
+                               v.Id_Contenido3 == pelicula.Id_pelicula ||
+                               v.Id_Contenido4 == pelicula.Id_pelicula)
+                    .ToList();
+
+                foreach (var votacion in votacionesRelacionadas)
                 {
-                    db.Contenidoes.RemoveRange(pelicula.Contenidoes);
+                    // Eliminar primero los votos asociados a esta votación
+                    var votos = db.Votoes.Where(v => v.Id_VotacionContenido == votacion.Id_VotacionContenido);
+                    db.Votoes.RemoveRange(votos);
+
+                    // Luego eliminar la votación
+                    db.VotacionContenidoes.Remove(votacion);
                 }
 
-                // Eliminar la película
+                // 2. Eliminar los contenidos relacionados (usando la propiedad de navegación plural)
+                foreach (var contenido in pelicula.Contenidoes.ToList())
+                {
+                    db.Contenidoes.Remove(contenido);
+                }
+
+                // 3. Eliminar la película
                 db.Peliculas.Remove(pelicula);
                 db.SaveChanges();
 
-                // Eliminar la imagen asociada (si no es la imagen por defecto)
-                EliminarImagenAnterior(pelicula.ImgURL);
+                // 4. Eliminar la imagen asociada (si no es la imagen por defecto)
+                if (!pelicula.ImgURL.Equals("/Content/Images/MovieCovers/default.jpg", StringComparison.OrdinalIgnoreCase))
+                {
+                    var rutaImagen = Server.MapPath(pelicula.ImgURL);
+                    if (System.IO.File.Exists(rutaImagen))
+                    {
+                        System.IO.File.Delete(rutaImagen);
+                    }
+                }
 
                 transaction.Commit();
 
                 TempData["SuccessMessage"] = "Película eliminada exitosamente";
                 return RedirectToAction("ManageMoviesDirector");
             }
+            catch (DbEntityValidationException ex)
+            {
+                transaction.Rollback();
+                var errorMessages = ex.EntityValidationErrors
+                    .SelectMany(x => x.ValidationErrors)
+                    .Select(x => x.ErrorMessage);
+                var fullErrorMessage = string.Join("; ", errorMessages);
+                TempData["ErrorMessage"] = $"Error de validación: {fullErrorMessage}";
+                return RedirectToAction("DeleteDirector", new { id = id });
+            }
             catch (Exception ex)
             {
                 transaction.Rollback();
-                System.Diagnostics.Debug.WriteLine($"Error al eliminar película: {ex}");
-                TempData["ErrorMessage"] = $"Error al eliminar la película: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"Error completo al eliminar película: {ex}");
+                TempData["ErrorMessage"] = $"Error al eliminar la película: {ex.InnerException?.Message ?? ex.Message}";
                 return RedirectToAction("DeleteDirector", new { id = id });
             }
         }
@@ -851,24 +956,36 @@ public class PeliculaController : Controller
 
     private void CargarListasParaProductor(Pelicula pelicula = null)
     {
-        // Categorías y clasificaciones
-        ViewBag.Id_Categoria = new SelectList(db.Categorias.ToList(), "Id_Categoria", "Nombre", pelicula?.Id_Categoria);
-        ViewBag.Id_Clasificacion = new SelectList(db.Clasificacions.ToList(), "Id_Clasificacion", "Nombre", pelicula?.Id_Clasificacion);
+        try
+        {
+            // Cargar categorías
+            var categorias = db.Categorias.AsNoTracking().OrderBy(c => c.Nombre).ToList();
+            ViewBag.Id_Categoria = new SelectList(categorias, "Id_Categoria", "Nombre", pelicula?.Id_Categoria);
 
-        // Directores (para que el productor pueda asignar)
-        var directores = db.Directors
-            .Select(d => new SelectListItem
-            {
-                Value = d.Id_Director.ToString(),
-                Text = d.Nombre,
-                Selected = pelicula != null && pelicula.Id_Director == d.Id_Director
-            })
-            .ToList();
+            // Cargar clasificaciones
+            var clasificaciones = db.Clasificacions.AsNoTracking().OrderBy(c => c.Nombre).ToList();
+            ViewBag.Id_Clasificacion = new SelectList(clasificaciones, "Id_Clasificacion", "Nombre", pelicula?.Id_Clasificacion);
 
-        directores.Insert(0, new SelectListItem { Value = "", Text = "No asignar director" });
-        ViewBag.Id_Director = directores;
+            // Cargar directores - Versión corregida para usar SelectList
+            var directores = db.Directors.AsNoTracking().OrderBy(d => d.Nombre).ToList();
+
+            // Crear SelectList y agregar opción vacía
+            var selectListDirectores = new SelectList(directores, "Id_Director", "Nombre", pelicula?.Id_Director);
+
+            // Convertir a lista para agregar el ítem vacío
+            var listaDirectores = selectListDirectores.ToList();
+            listaDirectores.Insert(0, new SelectListItem { Value = "", Text = "No asignar director" });
+
+            ViewBag.Id_Director = new SelectList(listaDirectores, "Value", "Text", pelicula?.Id_Director);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error en CargarListasParaProductor: {ex.Message}");
+            ViewBag.Id_Categoria = new SelectList(new List<Categoria>(), "Id_Categoria", "Nombre");
+            ViewBag.Id_Clasificacion = new SelectList(new List<Clasificacion>(), "Id_Clasificacion", "Nombre");
+            ViewBag.Id_Director = new SelectList(new List<SelectListItem>(), "Value", "Text");
+        }
     }
-
     private void CargarListasParaDirector(Pelicula pelicula = null)
     {
         try

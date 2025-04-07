@@ -147,10 +147,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ArtistaController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\ContenidoController.cs" />
     <Compile Include="Controllers\DisqueraController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PeliculaController.cs" />
+    <Compile Include="Controllers\SerieController.cs" />
+    <Compile Include="Controllers\TemporadaController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VotacionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -336,12 +340,35 @@
     <Content Include="Views\Pelicula\CreateDirector.cshtml" />
     <Content Include="Views\Pelicula\DeleteDirector.cshtml" />
     <Content Include="Views\Pelicula\EditDirector.cshtml" />
+    <Content Include="Views\Serie\ManageSeriesProductor.cshtml" />
+    <Content Include="Views\Serie\ManageSeriesDirector.cshtml" />
+    <Content Include="Views\Serie\CreateProductor.cshtml" />
+    <Content Include="Views\Serie\CreateDirector.cshtml" />
+    <Content Include="Views\Serie\EditProductor.cshtml" />
+    <Content Include="Views\Serie\EditDirector.cshtml" />
+    <Content Include="Views\Serie\DeleteProductor.cshtml" />
+    <Content Include="Views\Serie\DeleteDirector.cshtml" />
+    <Content Include="Views\Temporada\ManageSeasons.cshtml" />
+    <Content Include="Views\Temporada\CreateTemporada.cshtml" />
+    <Content Include="Views\Temporada\EditTemporada.cshtml" />
+    <Content Include="Views\Temporada\DeleteTemporada.cshtml" />
+    <Content Include="Views\Temporada\ManageCapitulos.cshtml" />
+    <Content Include="Views\Temporada\CreateCapitulo.cshtml" />
+    <Content Include="Views\Temporada\EditCapitulo.cshtml" />
+    <Content Include="Views\Temporada\DeleteCapitulo.cshtml" />
+    <Content Include="Views\Contenido\Buscar.cshtml" />
+    <Content Include="Views\Votacion\Index.cshtml" />
+    <Content Include="Views\Votacion\Create.cshtml" />
+    <Content Include="Views\Votacion\Resultados.cshtml" />
+    <Content Include="Views\Artista\DeleteSong.cshtml" />
+    <Content Include="Views\Artista\DeleteAlbum.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\AlbumCovers\" />
     <Folder Include="Images\MovieCovers\" />
     <Folder Include="Images\ProfileImages\" />
+    <Folder Include="Images\SerieCovers\" />
     <Folder Include="Images\SongCovers\" />
   </ItemGroup>
   <ItemGroup>

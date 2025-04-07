@@ -65,29 +65,34 @@
                     </a>
                 </div>
 
+
+                <!-- Nuevo botón para acceder a la vista de búsqueda -->
                 <div class="control-card">
-                    <h3>Administrar Contenido</h3>
-                    <p>Controla el contenido multimedia</p>
-                    <a href="@Url.Action("ManageContent", "Admin")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-film"></i> Acceder
+                    <h3>Buscar Contenido</h3>
+                    <p>Realiza una búsqueda de películas, series o canciones</p>
+                    <a href="@Url.Action("Buscar", "Contenido")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-search"></i> Buscar Contenido
                     </a>
                 </div>
 
+                <!-- Nuevo botón para Crear Votación -->
                 <div class="control-card">
-                    <h3>Configuración del Sitio</h3>
-                    <p>Ajustes generales de la plataforma</p>
-                    <a href="@Url.Action("SiteSettings", "Admin")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-cog"></i> Acceder
+                    <h3>Crear Votación</h3>
+                    <p>Crea una nueva votación para contenidos</p>
+                    <a href="@Url.Action("Create", "Votacion")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-vote-yea"></i> Crear Votación
+                    </a>
+                </div>
+                <div class="control-card">
+                    <h3>Ver Votaciones</h3>
+                    <p>Consulta y participa en votaciones existentes</p>
+                    <a href="@Url.Action("Index", "Votacion")" class="btn" style="margin-top: 15px;">
+                        <i class="fas fa-poll"></i> Ver Votaciones
                     </a>
                 </div>
 
-                <div class="control-card">
-                    <h3>Reportes Estadísticos</h3>
-                    <p>Genera reportes y análisis</p>
-                    <a href="@Url.Action("Reports", "Admin")" class="btn" style="margin-top: 15px;">
-                        <i class="fas fa-chart-bar"></i> Acceder
-                    </a>
-                </div>
+
+
             </div>
         </div>
     </div>

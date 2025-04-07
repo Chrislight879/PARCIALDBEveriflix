@@ -17,6 +17,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/Content/ArtistMusicManagement.css" rel="stylesheet" />
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="music-management-container">
@@ -125,7 +127,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            <img src="@(string.IsNullOrEmpty(album.ImgURL) ? "/Content/AlbumCovers/default.jpg" : album.ImgURL)"
+                                            <img src="@(string.IsNullOrEmpty(album.ImgURL) ? "/Content/Images/AlbumCovers/default.jpg" : album.ImgURL)"
                                                  class="img-thumbnail album-cover" alt="Portada del álbum" />
                                         </td>
                                         <td>@album.Nombre</td>
@@ -137,6 +139,9 @@
                                                 </a>
                                                 <a href="@Url.Action("CreateSong")?albumId=@album.Id_Album" class="btn btn-success btn-sm">
                                                     <i class="fas fa-music"></i> Agregar Canción
+                                                </a>
+                                                <a href="@Url.Action("DeleteAlbum", new { id = album.Id_Album })" class="btn btn-danger btn-sm btn-delete">
+                                                    <i class="fas fa-trash"></i> Eliminar
                                                 </a>
                                             </div>
                                         </td>
@@ -184,7 +189,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            <img src="@(string.IsNullOrEmpty(cancion.ImgURL) ? "/Content/SongCovers/default.jpg" : cancion.ImgURL)"
+                                            <img src="@(string.IsNullOrEmpty(cancion.ImgURL) ? "/Content/Images/SongCovers/default.jpg" : cancion.ImgURL)"
                                                  class="img-thumbnail song-cover" alt="Portada de la canción" />
                                         </td>
                                         <td>@cancion.Nombre</td>
@@ -214,7 +219,7 @@
                                                 <a href="@Url.Action("EditSong", new { id = cancion.Id_Cancion })" class="btn btn-primary btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="@Url.Action("DeleteSong", new { id = cancion.Id_Cancion })" class="btn btn-danger btn-sm">
+                                                <a href="@Url.Action("DeleteSong", new { id = cancion.Id_Cancion })" class="btn btn-danger btn-sm btn-delete">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>
@@ -239,13 +244,59 @@
     @section scripts {
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function () {
-                // Confirmación antes de eliminar
-                $('.btn-danger').click(function (e) {
-                    if (!confirm('¿Estás seguro de que quieres eliminar este elemento?')) {
-                        e.preventDefault();
-                    }
+                // Confirmación antes de eliminar con SweetAlert2
+                $('.btn-delete').click(function (e) {
+                    e.preventDefault();
+                    var deleteUrl = $(this).attr('href');
+                    var itemType = $(this).closest('table').find('th').eq(1).text().toLowerCase(); // "Nombre" -> "álbum" o "canción"
+
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "¡Esta acción eliminará permanentemente este " + itemType + " y todo su contenido relacionado!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar',
+                        background: '#1a1a1a',
+                        color: '#fff',
+                        backdrop: `
+                                    rgba(183,28,28,0.4)
+                                    url("/Content/Images/animations/rip.gif")
+                                    center top
+                                    no-repeat
+                                `
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = deleteUrl;
+                        }
+                    });
+                });
+
+                // Confirmación para abandonar disquera
+                $('a[href*="LeaveDisquera"]').click(function (e) {
+                    e.preventDefault();
+                    var leaveUrl = $(this).attr('href');
+
+                    Swal.fire({
+                        title: 'Abandonar Disquera',
+                        text: "¿Estás seguro de que quieres abandonar la disquera actual?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Sí, abandonar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = leaveUrl;
+                        }
+                    });
                 });
 
                 // Efecto hover para las filas de la tabla

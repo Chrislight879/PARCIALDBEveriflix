@@ -1,82 +1,88 @@
 ﻿@model IEnumerable<PARCIALDBEveriflix.Models.Pelicula>
-
 @{
     ViewBag.Title = "Mis Películas - Director: " + ViewBag.NombreDirector;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<head>
+    <link rel="stylesheet" href="~/Content/MoviesStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 
-<!-- Mensajes de alerta (mantenemos el mismo código) -->
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Error!</strong> @TempData["ErrorMessage"]
-    </div>
-}
+<div class="movie-management-container">
+    <h2>@ViewBag.Title</h2>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Éxito!</strong> @TempData["SuccessMessage"]
-    </div>
-}
+    <!-- Mensajes de alerta -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
 
-<p>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <i class="fas fa-check-circle"></i> <strong>Éxito!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
+
+<div class="mb-4">
     @Html.ActionLink("Crear Nueva Película", "CreateDirector", null, new { @class = "btn btn-primary" })
-</p>
+</div>
 
-@if (Model != null && Model.Any())
-{
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Portada</th>
-                    <th>@Html.DisplayNameFor(model => model.Nombre)</th>
-                    <th>Duración</th>
-                    <th>Productor</th>
-                    <th>Categoría</th>
-                    <th>Clasificación</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table movie-table">
+                <thead>
                     <tr>
-                        <td>
-                            <img src="@Url.Content(item.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
-                                 alt="Portada de @item.Nombre"
-                                 class="img-thumbnail"
-                                 style="max-width: 100px; max-height: 150px;" />
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Duracion)</td>
-                        <td>
-                            @(item.Productor?.Nombre ?? "No asignado")
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.Categoria.Nombre)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Clasificacion.Nombre)</td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                @Html.ActionLink("Editar", "EditDirector", new { id = item.Id_pelicula }, new { @class = "btn btn-warning" })
-                                @Html.ActionLink("Eliminar", "DeleteDirector", new { id = item.Id_pelicula }, new { @class = "btn btn-danger" })
-                            </div>
-                        </td>
+                        <th>Portada</th>
+                        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                        <th>Duración</th>
+                        <th>Productor</th>
+                        <th>Categoría</th>
+                        <th>Clasificación</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-else
-{
-    <div class="alert alert-info">
-        No tienes películas registradas. @Html.ActionLink("Crea tu primera película", "CreateDirector").
-    </div>
-}
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@Url.Content(item.ImgURL ?? "/Content/Images/MovieCovers/default.jpg")"
+                                     alt="Portada de @item.Nombre"
+                                     class="movie-cover img-thumbnail" />
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td class="movie-duration">@item.Duracion.ToString(@"hh\:mm\:ss")</td>
+                            <td>
+                                @(item.Productor?.Nombre ?? "No asignado")
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Categoria.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Clasificacion.Nombre)</td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Editar", "EditDirector", new { id = item.Id_pelicula }, new { @class = "btn btn-outline-danger" })
+                                    @Html.ActionLink("Eliminar", "DeleteDirector", new { id = item.Id_pelicula }, new { @class = "btn btn-danger" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No tienes películas registradas. @Html.ActionLink("Crea tu primera película", "CreateDirector", null, new { @class = "text-warning" }).
+        </div>
+    }
+</div>
 
 @section Scripts {
     <script>
@@ -85,6 +91,12 @@ else
             setTimeout(function () {
                 $('.alert').alert('close');
             }, 5000);
+
+            // Tooltips para botones de acción
+            $('[title]').tooltip({
+                placement: 'top',
+                trigger: 'hover'
+            });
         });
     </script>
 }

@@ -1,0 +1,390 @@
+﻿@model IEnumerable<PARCIALDBEveriflix.Models.Capitulo>
+@{
+    ViewBag.Title = "Capítulos - " + ViewBag.TemporadaNombre + " - " + ViewBag.SerieNombre;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .movie-management-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 40px;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(183, 28, 28, 0.15);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #333;
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+        .movie-management-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #b71c1c, #8c1616);
+        }
+
+        .movie-management-container h2 {
+            font-size: 2.4em;
+            text-align: center;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+            position: relative;
+            color: #ff5252;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+        }
+
+            .movie-management-container h2::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 150px;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, #b71c1c, transparent);
+            }
+
+    .temporada-info {
+        display: flex;
+        margin-bottom: 30px;
+        gap: 30px;
+        align-items: center;
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        border: 1px solid #333;
+    }
+
+    .serie-poster {
+        width: 180px;
+        height: 270px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: all 0.4s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border: 3px solid #333;
+    }
+
+        .serie-poster:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(183, 28, 28, 0.4);
+            border-color: #b71c1c;
+        }
+
+    .alert {
+        border-radius: 8px;
+        margin-bottom: 25px;
+        border: none;
+        padding: 15px 25px;
+        font-weight: 500;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-success {
+        background: linear-gradient(to right, #388e3c, #4caf50);
+        color: white;
+    }
+
+    .alert-danger {
+        background: linear-gradient(to right, #8c1616, #b71c1c);
+        color: white;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: none;
+        margin: 5px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, #b71c1c, #d32f2f);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #d32f2f, #b71c1c);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+        }
+
+    .btn-outline-info {
+        border: 2px solid #0288d1;
+        color: #0288d1;
+        background-color: transparent;
+        transition: all 0.3s;
+    }
+
+        .btn-outline-info:hover {
+            background: linear-gradient(to right, #0288d1, #0277bd);
+            color: white;
+            border-color: transparent;
+        }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        color: #fff;
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.95em;
+    }
+
+        .table th {
+            background: linear-gradient(to right, #b71c1c, #8c1616);
+            color: white;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 16px 20px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            border: none;
+            text-shadow: 0 0 5px rgba(140, 22, 22, 0.5);
+        }
+
+        .table td {
+            padding: 14px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid #333;
+            background-color: #1a1a1a;
+            transition: all 0.3s;
+        }
+
+        .table tr:hover td {
+            background-color: #222;
+            transform: scale(1.01);
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .btn-outline-danger {
+        border: 2px solid #b71c1c;
+        color: #b71c1c;
+        background-color: transparent;
+        transition: all 0.3s;
+    }
+
+        .btn-outline-danger:hover {
+            background: linear-gradient(to right, #b71c1c, #d32f2f);
+            color: white;
+            border-color: transparent;
+        }
+
+    .btn-danger {
+        background: linear-gradient(to right, #8c1616, #b71c1c);
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background: linear-gradient(to right, #b71c1c, #8c1616);
+            box-shadow: 0 5px 15px rgba(140, 22, 22, 0.4);
+        }
+
+    @@media (max-width: 992px) {
+        .movie-management-container {
+            padding: 30px;
+        }
+
+        .serie-poster {
+            width: 150px;
+            height: 225px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .movie-management-container {
+            padding: 20px;
+            width: 98%;
+        }
+
+            .movie-management-container h2 {
+                font-size: 1.8em;
+            }
+
+        .temporada-info {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .serie-poster {
+            width: 120px;
+            height: 180px;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="movie-management-container">
+    <h2>@ViewBag.SerieNombre - @ViewBag.TemporadaNombre</h2>
+
+    <!-- Info de la temporada con imagen de la serie -->
+    <div class="temporada-info">
+        <img src="@Url.Content(ViewBag.SerieImagen)"
+             class="serie-poster"
+             alt="Portada de @ViewBag.SerieNombre">
+        <div>
+            <h3>@ViewBag.TemporadaNombre</h3>
+            <p><strong>Serie:</strong> @ViewBag.SerieNombre</p>
+            <p><strong>Total Capítulos:</strong> @Model.Count()</p>
+        </div>
+    </div>
+
+    <!-- Mensajes -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <i class="fas fa-check-circle"></i> <strong>Éxito!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <i class="fas fa-exclamation-circle"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Botones de acción -->
+    <div class="mb-4">
+        <a href="@Url.Action("CreateCapitulo", new { idTemporada = ViewBag.IdTemporada })" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Capítulo
+        </a>
+        <a href="@Url.Action("ManageSeasons", new { idSerie = ViewBag.IdSerie })" class="btn btn-outline-info">
+            <i class="fas fa-arrow-left"></i> Volver a Temporadas
+        </a>
+    </div>
+
+    <!-- Tabla de capítulos -->
+    <div class="table-responsive">
+        <table class="table movie-table">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Nombre</th>
+                    <th>Duración</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int counter = 1; }
+                @foreach (var capitulo in Model)
+                {
+                    <tr>
+                        <td>@counter</td>
+                        <td>@capitulo.Nombre</td>
+                        <td>@capitulo.Duracion.ToString(@"hh\:mm")</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="@Url.Action("EditCapitulo", new { id = capitulo.Id_Capitulo })"
+                                   class="btn btn-outline-danger"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Editar capítulo">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+
+                                <a href="@Url.Action("DeleteCapitulo", new { id = capitulo.Id_Capitulo })"
+                                   class="btn btn-danger"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Eliminar capítulo">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+
+    <script>
+        // Inicializar tooltips
+        $(document).ready(function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Auto-cierre de alertas después de 5 segundos
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
+}

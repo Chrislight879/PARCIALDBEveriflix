@@ -2,75 +2,146 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Asegura que el padding y el borde no afecten el tamaño */
+    box-sizing: border-box;
 }
 
-/* Estilos comunes para vistas centradas */
+/* Estilos base para el body con tema cinematográfico */
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #1c1c1c; /* Fondo negro */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000 !important;
     color: #fff;
     min-height: 100vh;
     display: flex;
-    justify-content: center; /* Centrado horizontal */
-    align-items: center; /* Centrado vertical */
+    justify-content: center;
+    align-items: center;
     padding: 20px;
 }
 
+/* Títulos con estilo de cine */
 h2 {
-    color: #f44336; /* Rojo para los títulos */
-    margin-bottom: 20px;
-    font-size: 1.8em;
+    color: #ff5252;
+    margin-bottom: 25px;
+    font-size: 2.4em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    padding-bottom: 15px;
+    position: relative;
 }
 
-/* Contenedor de la vista de Login, Sign Up y búsqueda */
-.container {
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #b71c1c, transparent);
+    }
+
+/* Contenedores principales con estilo de cine */
+.container,
+.container-general,
+.login-signup-container {
     width: 100%;
     max-width: 800px;
-    background-color: #333; /* Fondo gris oscuro */
-    border-radius: 10px;
+    background-color: #111;
+    border-radius: 12px;
     padding: 40px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(183, 28, 28, 0.15);
     text-align: center;
     margin: auto;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #333;
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Estilo para la búsqueda de usuarios */
+    .container::before,
+    .container-general::before,
+    .login-signup-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #b71c1c, #8c1616);
+    }
+
+/* Formularios de estilo cine */
 form {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
 }
 
-input[type="text"] {
-    padding: 12px;
+input[type="text"],
+input.form-control {
+    padding: 12px 15px;
     border-radius: 6px;
     width: 80%;
     max-width: 500px;
     margin-right: 10px;
-    background-color: #444; /* Fondo gris oscuro */
+    background-color: #222;
     color: white;
     font-size: 1em;
-    border: 1px solid #f44336; /* Borde rojo */
+    border: 1px solid #b71c1c;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-
-button[type="submit"] {
-    padding: 12px 20px;
-    background-color: #f443; /* Rojo para los botones */
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-    button[type="submit"]:hover {
-        background-color: #d32f2f; /* Rojo más oscuro en hover */
+    input[type="text"]:focus,
+    input.form-control:focus {
+        background-color: #2a2a2a;
+        border-color: #ff5252;
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(183, 28, 28, 0.25);
     }
 
-/* Estilo de los elementos de la lista */
+/* Botones cinematográficos */
+button[type="submit"],
+.btn-primary,
+.btn-danger {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+    margin: 5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+button[type="submit"],
+.btn-primary {
+    background: linear-gradient(to right, #b71c1c, #d32f2f);
+    color: white;
+}
+
+    button[type="submit"]:hover,
+    .btn-primary:hover {
+        background: linear-gradient(to right, #d32f2f, #b71c1c);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+    }
+
+.btn-danger {
+    background: linear-gradient(to right, #8c1616, #b71c1c);
+    color: white;
+}
+
+    .btn-danger:hover {
+        background: linear-gradient(to right, #b71c1c, #8c1616);
+        box-shadow: 0 5px 15px rgba(140, 22, 22, 0.4);
+        transform: translateY(-3px);
+    }
+
+/* Listas de usuarios con estilo premium */
 ul {
     list-style: none;
     padding: 0;
@@ -82,38 +153,38 @@ li {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    padding: 10px;
-    background-color: #444; /* Fondo gris oscuro */
-    border-radius: 6px;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border-left: 3px solid #b71c1c;
+    transition: all 0.3s;
 }
 
-    li button {
-        margin-left: 10px;
+    li:hover {
+        background-color: #222;
+        transform: translateX(5px);
     }
 
-button.btn-danger {
-    background-color: #f44336; /* Rojo para los botones de eliminar */
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
+/* Estilo para imagen de perfil */
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #b71c1c;
+    margin-bottom: 20px;
+    transition: all 0.4s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-    button.btn-danger:hover {
-        background-color: #d32f2f; /* Rojo más oscuro en hover */
+    .profile-img:hover {
+        transform: scale(1.08) rotate(1deg);
+        box-shadow: 0 8px 25px rgba(183, 28, 28, 0.4);
+        border-color: #ff5252;
     }
 
-button.btn-primary {
-    background-color: #f44336; /* Rojo para el botón primario */
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-    button.btn-primary:hover {
-        background-color: #d32f2f; /* Rojo más oscuro en hover */
-    }
-
-/* Estilo de los campos del formulario */
+/* Estilo para los campos del formulario */
 .form-container {
     display: flex;
     flex-direction: column;
@@ -122,52 +193,132 @@ button.btn-primary {
 
 .form-group {
     margin-bottom: 20px;
-    width: 100%; /* Aseguramos que el contenedor ocupe todo el espacio */
+    width: 100%;
 }
 
 label {
     font-size: 1.1em;
-    color: #f44336; /* Rojo para las etiquetas */
+    color: #ff5252;
     display: block;
     margin-bottom: 8px;
+    font-weight: 600;
 }
 
-input.form-control {
-    width: 100%; /* Asegura que el campo ocupe todo el ancho disponible */
-    padding: 12px; /* Aumentar el padding para mayor espacio interno */
-    background-color: #444; /* Fondo gris oscuro */
-    border-radius: 6px;
-    color: white;
-    font-size: 1em;
-    text-align: center; /* Alineación del texto en el centro */
-    transition: border-color 0.3s;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
-    margin: 0; /* Eliminamos márgenes adicionales */
+/* Tabla de usuarios premium */
+.user-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.95em;
+    margin-top: 20px;
 }
 
-    input.form-control:focus {
-        border-color: #f44336; /* Borde rojo en focus */
-        background-color: #555; /* Fondo gris más claro en focus */
-        outline: none;
+    .user-table th {
+        background: linear-gradient(to right, #b71c1c, #8c1616);
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 16px 20px;
+        text-transform: uppercase;
+        font-size: 0.9em;
+        border: none;
     }
+
+    .user-table td {
+        padding: 14px 20px;
+        vertical-align: middle;
+        border-bottom: 1px solid #333;
+        background-color: #1a1a1a;
+        transition: background-color 0.3s;
+    }
+
+    .user-table tr:hover td {
+        background-color: #222;
+    }
+
+    .user-table tr:last-child td {
+        border-bottom: none;
+    }
+
+/* Acciones de administración */
+.admin-actions {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Mensajes de error */
+.error-message {
+    margin-top: 20px;
+    padding: 15px 25px;
+    background: linear-gradient(to right, #8c1616, #b71c1c);
+    color: white;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 500;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+/* Información de usuario */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+    .user-info img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid #b71c1c;
+        transition: all 0.3s;
+    }
+
+        .user-info img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(183, 28, 28, 0.6);
+        }
+
+    .user-info span {
+        font-size: 16px;
+        color: #fff;
+    }
+
+/* Efectos de animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* Responsividad */
 @media (max-width: 768px) {
-    .container {
+    .container,
+    .container-general,
+    .login-signup-container {
         padding: 20px;
-        width: 100%;
+        width: 95%;
     }
 
     h2 {
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
 
-    button[type="submit"], button.btn-primary, button.btn-danger {
-        font-size: 1em;
-        padding: 10px;
+    button[type="submit"],
+    .btn-primary,
+    .btn-danger {
+        padding: 10px 20px;
+        font-size: 0.8em;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    input.form-control {
         width: 70%;
     }
 
@@ -175,308 +326,28 @@ input.form-control {
         flex-direction: column;
         align-items: flex-start;
     }
-}
 
-/* Estilo para imagen de perfil */
-.profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #f44336; /* Borde rojo para la imagen de perfil */
-    margin-bottom: 20px;
-}
-
-/* Estilo original para login, register y otros contenedores */
-.container-general {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-    .container-general h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-/* Estilo para el contenedor principal */
-.container {
-    width: 85%;
-    margin: 0 auto;
-    padding: 30px;
-    background-color: #333; /* Fondo gris oscuro */
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    max-width: 1000px;
-    margin-top: 20px;
-}
-
-    /* Estilo para la lista de usuarios */
-    .container ul {
-        padding-left: 0;
-        list-style-type: none;
-    }
-
-    /* Estilo para cada elemento de usuario en la lista */
-    .container li {
-        background-color: #444; /* Fondo gris oscuro */
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    /* Estilo para la imagen de perfil */
-    .container .user-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-        .container .user-info img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-
-        .container .user-info span {
-            font-size: 16px;
-            color: #fff;
-        }
-
-    /* Estilo para los botones */
-    .container form button {
-        padding: 8px 15px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    /* Botón de "Seguir" */
-    .container form .btn-primary {
-        background-color: #f44336; /* Rojo para el botón primario */
-        color: white;
-    }
-
-    /* Botón de "Dejar de seguir" */
-    .container form .btn-danger {
-        background-color: #f44336; /* Rojo para el botón de peligro */
-        color: white;
-    }
-
-    /* Asegura que los botones no se estiren al lado del input */
-    .container form {
-        display: inline-block;
-    }
-
-/* Estilos generales para el contenedor de login y signup */
-.login-signup-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #333; /* Fondo gris oscuro */
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilos para el formulario de login y signup */
-.form-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #444; /* Fondo gris oscuro */
-    color: white;
-}
-
-/* Estilo del botón de login */
-.btn-primary {
-    padding: 10px;
-    background-color: #f44336; /* Rojo para el botón de login */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-    .btn-primary:hover {
-        background-color: #d32f2f; /* Rojo más oscuro en hover */
-    }
-
-/* Estilo para mensajes de error */
-.error-message {
-    color: red;
-    margin-top: 10px;
-}
-
-/* Estilo para los campos de texto */
-input[type="text"], input.form-control {
-    padding: 12px;
-    border-radius: 6px;
-    width: 80%;
-    max-width: 500px;
-    margin-right: 10px;
-    background-color: #444; /* Fondo gris oscuro */
-    color: white;
-    font-size: 1em;
-    border: 1px solid #f44336; /* Borde rojo */
-    transition: border-color 0.3s, background-color 0.3s; /* Transición suave */
-}
-
-    /* Efecto hover para el input */
-    input[type="text"]:hover, input.form-control:hover {
-        background-color: #555; /* Fondo gris más claro en hover */
-        border-color: #d32f2f; /* Borde rojo más oscuro en hover */
-    }
-
-    /* Efecto focus para el input */
-    input[type="text"]:focus, input.form-control:focus {
-        border-color: #f44336; /* Borde rojo en focus */
-        background-color: #555; /* Fondo gris más claro */
-        outline: none; /* Elimina el contorno predeterminado */
-    }
-
-/* Estilos específicos para la vista de Gestión de Usuarios */
-
-/* Contenedor principal de la vista */
-.container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 30px;
-    background-color: #333;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    color: #fff;
-}
-
-/* Estilo para el título de la vista */
-h2 {
-    color: #f44336;
-    font-size: 2em;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Acciones de administración (botones) */
-.admin-actions {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-    .admin-actions .btn-primary {
-        padding: 12px 25px;
-        background-color: #f44336;
-        color: white;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 1.1em;
-        transition: background-color 0.3s;
-    }
-
-        .admin-actions .btn-primary:hover {
-            background-color: #d32f2f;
-        }
-
-/* Estilo de la tabla de usuarios */
-.user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-    .user-table th, .user-table td {
-        padding: 12px 20px; /* Aumentar el padding de las celdas */
-        text-align: left;
-        border-bottom: 1px solid #555;
-    }
-
-    .user-table th {
-        background-color: #444;
-        color: #f44336;
-        font-size: 1.1em;
-    }
-
-    .user-table tr:nth-child(even) {
-        background-color: #555;
-    }
-
-    .user-table tr:hover {
-        background-color: #666;
-    }
-
-    /* Estilo de los botones de acción en cada fila */
-    .user-table td a {
-        padding: 10px 20px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 1.1em;
-        margin-right: 10px;
-        display: inline-block;
-        transition: background-color 0.3s;
-    }
-
-        /* Botón de "Editar" */
-        .user-table td a.btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-
-            .user-table td a.btn-primary:hover {
-                background-color: #0056b3;
-            }
-
-        /* Botón de "Eliminar" */
-        .user-table td a.btn-danger {
-            background-color: #d32f2f;
-            color: white;
-        }
-
-            .user-table td a.btn-danger:hover {
-                background-color: #b71c1c;
-            }
-
-    /* Estilos para la tabla */
-    .user-table tr {
-        background-color: #444;
-        border-radius: 8px;
-    }
-
-/* Responsividad */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .user-table th, .user-table td {
-        padding: 10px 15px;
-    }
-
-    .admin-actions .btn-primary {
-        padding: 10px 20px;
-    }
-
-    .user-table td a {
-        padding: 8px 15px;
+    .user-table {
+        display: block;
+        overflow-x: auto;
     }
 }
 
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b71c1c;
+    border-radius: 5px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #ff5252;
+    }

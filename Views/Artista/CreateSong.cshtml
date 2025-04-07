@@ -13,75 +13,93 @@
     <link href="~/Content/ArtistMusicManagement.css" rel="stylesheet" />
 </head>
 
-<div class="music-management-container">
+<div class="container music-management-container">
     <h2>@ViewBag.Title</h2>
 
-    @using (Html.BeginForm("CreateSong", "Artista", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("CreateSong", "Artista", FormMethod.Post, new { enctype = "multipart/form-data", @class = "album-form" }))
     {
         @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- Campo Nombre de la Canción -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-music"></i> Nombre de la Canción
+            </label>
+            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "Ingrese el nombre de la canción" } })
+            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "error-message" })
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-                </div>
-            </div>
+        <!-- Campo Duración -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-clock"></i> Duración
+            </label>
+            @Html.EditorFor(model => model.Duracion, new { htmlAttributes = new { @class = "form-control", placeholder = "Formato: HH:MM:SS" } })
+            @Html.ValidationMessageFor(model => model.Duracion, "", new { @class = "error-message" })
+            <small class="file-hint">Formato: HH:MM:SS</small>
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Duracion, htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Duracion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Duracion, "", new { @class = "text-danger" })
-                    <small class="text-muted">Formato: HH:MM:SS</small>
-                </div>
-            </div>
+        <!-- Campo Álbum -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-compact-disc"></i> Álbum
+            </label>
+            @Html.DropDownList("Id_Album", (IEnumerable<SelectListItem>)ViewBag.Id_Album, new { @class = "form-control", style = "height: 50px;" })
+            @Html.ValidationMessageFor(model => model.Id_Album, "", new { @class = "error-message" })
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Id_Album, "Álbum", htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.DropDownList("Id_Album", (IEnumerable<SelectListItem>)ViewBag.Id_Album, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Id_Album, "", new { @class = "text-danger" })
-                </div>
-            </div>
+        <!-- Campo Género -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-guitar"></i> Género
+            </label>
+            @Html.DropDownList("Id_GeneroCancion", null, htmlAttributes: new { @class = "form-control", style = "height: 50px;" })
+            @Html.ValidationMessageFor(model => model.Id_GeneroCancion, "", new { @class = "error-message" })
+        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Id_GeneroCancion, "Género", htmlAttributes: new { @class = "control-label" })
-                <div class="col-md-10">
-                    @Html.DropDownList("Id_GeneroCancion", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Id_GeneroCancion, "", new { @class = "text-danger" })
-                </div>
+        <!-- Campo Portada de Canción -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-image"></i> Portada de Canción
+            </label>
+            <div class="album-cover-container">
+                <img src="@(!string.IsNullOrEmpty(Model?.ImgURL) ? Model.ImgURL : "/Content/Images/SongCovers/default.jpg")"
+                     class="album-cover-preview"
+                     alt="Portada de la canción"
+                     id="songCoverPreview" />
             </div>
+            <input type="file" name="imagen" id="songCoverInput" class="form-control file-input" accept=".jpg,.jpeg,.png,.gif" style="height: 50px;" />
+            <small class="file-hint">Opcional. Formatos: JPG, PNG, GIF (Máx. 5MB)</small>
+        </div>
 
-            <div class="form-group">
-                <label class="control-label">Imagen de Portada</label>
-                <div class="col-md-10">
-                    <div class="song-cover-container">
-                        @if (!string.IsNullOrEmpty(Model?.ImgURL))
-                        {
-                            <img src="@Model.ImgURL" class="song-cover" alt="Portada actual" />
-                        }
-                        else
-                        {
-                            <img src="/Content/Images/SongCovers/default.jpg" class="song-cover" alt="Portada predeterminada" />
-                        }
-                    </div>
-                    <input type="file" name="imagen" class="form-control mt-2" accept=".jpg,.jpeg,.png,.gif" />
-                    <small class="text-muted">Opcional. Formatos: JPG, PNG, GIF</small>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-music"></i> Guardar Canción
-                    </button>
-                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-outline-secondary" })
-                </div>
-            </div>
+        <!-- Botones de acción -->
+        <div class="form-actions">
+            <button type="submit" class="btn-create">
+                <i class="fas fa-save"></i> Guardar Canción
+            </button>
+            <a href="@Url.Action("Index")" class="btn-cancel">
+                <i class="fas fa-arrow-left"></i> Cancelar
+            </a>
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        // Vista previa de la imagen seleccionada
+        document.getElementById('songCoverInput').addEventListener('change', function (e) {
+            const preview = document.getElementById('songCoverPreview');
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

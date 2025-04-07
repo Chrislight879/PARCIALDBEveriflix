@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <div class="music-management-container">
-        <h2>Editar Canción</h2>
+    <div class="container music-management-container">
+        <h2>@ViewBag.Title</h2>
 
         @using (Html.BeginForm("EditSong", "Artista", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -24,14 +24,16 @@
             @Html.HiddenFor(model => model.Id_Artista)
             @Html.HiddenFor(model => model.Id_TipoContenido)
 
+            <!-- Campo Nombre de la Canción -->
             <div class="form-group">
-                @Html.LabelFor(model => model.Nombre)
-                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Nombre)
+                @Html.LabelFor(model => model.Nombre, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", style = "height: 50px;" })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "error-message" })
             </div>
 
+            <!-- Campo Duración de la Canción -->
             <div class="form-group">
-                @Html.LabelFor(model => model.Duracion)
+                @Html.LabelFor(model => model.Duracion, new { @class = "form-label" })
                 <div class="input-group">
                     @Html.TextBoxFor(model => model.Duracion, "{0:hh\\:mm\\:ss}", new
                     {
@@ -39,7 +41,8 @@
                         type = "text",
                         pattern = "[0-9]{2}:[0-9]{2}:[0-9]{2}",
                         placeholder = "00:00:00",
-                        title = "Formato: HH:MM:SS (ej. 03:45:00)"
+                        title = "Formato: HH:MM:SS (ej. 03:45:00)",
+                        style = "height: 50px;"
                     })
                     <div class="input-group-append">
                         <span class="input-group-text">
@@ -47,13 +50,16 @@
                         </span>
                     </div>
                 </div>
-                @Html.ValidationMessageFor(model => model.Duracion)
+                @Html.ValidationMessageFor(model => model.Duracion, "", new { @class = "error-message" })
                 <small class="form-text text-muted">Formato: HH:MM:SS (ej. 03:45:00)</small>
             </div>
 
+            <!-- Campo Imagen de la Canción -->
             <div class="form-group">
-                <label for="imagen">Cambiar imagen de la canción</label>
-                <input type="file" name="imagen" id="imagen" class="form-control" />
+                <label for="imagen" class="form-label">
+                    <i class="fas fa-image"></i> Cambiar imagen de la canción
+                </label>
+                <input type="file" name="imagen" id="imagen" class="form-control" style="height: 50px;" />
                 @if (!string.IsNullOrEmpty(Model.ImgURL))
                 {
                     <div class="mt-2">
@@ -63,21 +69,26 @@
                 }
             </div>
 
+            <!-- Campo para seleccionar el álbum -->
             <div class="form-group">
-                @Html.LabelFor(model => model.Id_Album)
-                @Html.DropDownListFor(model => model.Id_Album, (SelectList)ViewBag.Albums, "Sin álbum", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Id_Album)
+                @Html.LabelFor(model => model.Id_Album, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.Id_Album, (SelectList)ViewBag.Albums, "Sin álbum", new { @class = "form-control", style = "height: 50px;" })
+                @Html.ValidationMessageFor(model => model.Id_Album, "", new { @class = "error-message" })
             </div>
 
+            <!-- Campo para seleccionar el género -->
             <div class="form-group">
-                @Html.LabelFor(model => model.Id_GeneroCancion)
-                @Html.DropDownListFor(model => model.Id_GeneroCancion, (SelectList)ViewBag.Generos, "Seleccione género", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Id_GeneroCancion)
+                @Html.LabelFor(model => model.Id_GeneroCancion, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.Id_GeneroCancion, (SelectList)ViewBag.Generos, "Seleccione género", new { @class = "form-control", style = "height: 50px;" })
+                @Html.ValidationMessageFor(model => model.Id_GeneroCancion, "", new { @class = "error-message" })
             </div>
 
+            <!-- Botones para actualizar o cancelar -->
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Actualizar Canción</button>
-                @Html.ActionLink("Cancelar", "ManageMusic", null, new { @class = "btn btn-secondary" })
+                <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">
+                    <i class="fas fa-save"></i> Actualizar Canción
+                </button>
+                @Html.ActionLink("Cancelar", "ManageMusic", null, new { @class = "btn btn-secondary", style = "padding: 10px 20px;" })
             </div>
         }
     </div>

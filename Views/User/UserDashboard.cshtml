@@ -50,7 +50,29 @@
                 </a>
             </div>
         </div>
+        <!-- Panel de Control del Productor (derecha) -->
+        <div class="control-panel">
+            <div class="control-header">
+                <h2>Panel de Control</h2>
+            </div>
+            <!-- Botón de Búsqueda de Contenido -->
+            <div class="control-card">
+                <h3>Buscar Contenido</h3>
+                <p>Busca películas, series y canciones</p>
+                <a href="@Url.Action("Buscar", "Contenido")" class="btn" style="margin-top: 15px;">
+                    <i class="fas fa-search"></i> Buscar
+                </a>
 
+            </div>
+            <!-- Nueva tarjeta para Votaciones -->
+            <div class="control-card">
+                <h3>Participar en Votaciones</h3>
+                <p>Vota por tus canciones, películas o series favoritas</p>
+                <a href="@Url.Action("Index", "Votacion")" class="btn" style="margin-top: 15px;">
+                    <i class="fas fa-vote-yea"></i> Ir a Votaciones
+                </a>
+            </div>
+        </div>
         <!-- Espacio vacío en el panel derecho -->
         <div class="right-panel">
             <!-- Aquí podrías agregar información adicional si lo necesitas -->

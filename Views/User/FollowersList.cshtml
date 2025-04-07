@@ -7,18 +7,120 @@
 <head>
     <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
 </head>
+
 <div class="container">
     <h2>Mis Seguidores</h2>
-    <ul>
+
+    <ul class="followers-list">
         @foreach (var follower in Model)
         {
             <li>
-                @follower.Username
-                <form action="@Url.Action("UnfollowUser", "User")" method="post" style="display:inline;">
-                    <input type="hidden" name="userIdToUnfollow" value="@follower.id_Usuario" />
-                    <button type="submit" class="btn btn-danger">Dejar de seguir</button>
-                </form>
+                <div class="follower-info">
+                    <img src="@follower.ImgURL" alt="@follower.Username" class="follower-img" />
+                    <div>
+                        <span class="follower-username">@follower.Username</span>
+                    </div>
+                </div>
+
+                <div class="follower-actions">
+                    <form action="@Url.Action("UnfollowUser", "User")" method="post">
+                        <input type="hidden" name="userIdToUnfollow" value="@follower.id_Usuario" />
+                        <button type="submit" class="btn-danger">
+                            <i class="fas fa-user-minus"></i> Dejar de seguir
+                        </button>
+                    </form>
+                </div>
             </li>
         }
     </ul>
 </div>
+
+<style>
+    /* Estilos específicos para esta vista */
+    .followers-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 25px;
+    }
+
+        .followers-list li {
+            background-color: #1a1a1a;
+            border-left: 4px solid #b71c1c;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+            .followers-list li:hover {
+                transform: translateX(5px);
+                background-color: #222;
+                box-shadow: 0 5px 15px rgba(183, 28, 28, 0.2);
+            }
+
+    .follower-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .follower-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #b71c1c;
+        transition: all 0.3s ease;
+    }
+
+        .follower-img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(183, 28, 28, 0.6);
+        }
+
+    .follower-username {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #fff;
+        display: block;
+    }
+
+    .follower-since {
+        font-size: 0.9em;
+        color: #aaa;
+    }
+
+    .follower-actions {
+        margin-left: auto;
+    }
+
+    .btn-danger i {
+        margin-right: 8px;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .followers-list li {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .follower-info {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .follower-actions {
+            width: 100%;
+            margin-left: 0;
+        }
+
+        .btn-danger {
+            width: 100%;
+        }
+    }
+</style>

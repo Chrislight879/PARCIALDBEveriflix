@@ -6,18 +6,70 @@
 <head>
     <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
 </head>
+
 <div class="container">
     <h2>Usuarios a los que sigo</h2>
-    <ul>
+
+    <ul class="following-list">
         @foreach (var following in Model)
         {
             <li>
-                @following.Username
-                <form action="@Url.Action("UnfollowUser", "User")" method="post" style="display:inline;">
+                <div class="user-info">
+                    <img src="@following.ImgURL" alt="@following.Username" class="profile-img-small" />
+                    <span>@following.Username</span>
+                </div>
+
+                <form action="@Url.Action("UnfollowUser", "User")" method="post" class="unfollow-form">
                     <input type="hidden" name="userIdToUnfollow" value="@following.id_Usuario" />
-                    <button type="submit" class="btn btn-danger">Dejar de seguir</button>
+                    <button type="submit" class="btn-danger">Dejar de seguir</button>
                 </form>
             </li>
         }
     </ul>
 </div>
+
+<style>
+    /* Additional specific styles */
+    .profile-img-small {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #b71c1c;
+        margin-right: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .following-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .unfollow-form {
+        margin-left: auto;
+    }
+
+    @@media (max-width: 768px) {
+        .following-list li {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .unfollow-form {
+            margin-left: 0;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-danger {
+            width: 100%;
+        }
+    }
+</style>

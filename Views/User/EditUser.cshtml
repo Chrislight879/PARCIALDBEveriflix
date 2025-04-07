@@ -8,27 +8,132 @@
     <link rel="stylesheet" href="~/Content/StyleSheetcenter.css">
 </head>
 
+<div class="container">
+    <h2 class="page-title">Editar Usuario</h2>
 
-<h2>Editar Usuario</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+        <!-- Campo oculto para el Id -->
+        @Html.HiddenFor(model => model.id_Usuario)
 
-    <!-- Campo oculto para el Id -->
-    @Html.HiddenFor(model => model.id_Usuario)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, new { @class = "form-label" })
+            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "error-message" })
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Username)
-        @Html.EditorFor(model => model.Username)
-        @Html.ValidationMessageFor(model => model.Username)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Id_TipoUsuario, new { @class = "form-label" })
+            @Html.DropDownListFor(model => model.Id_TipoUsuario, (SelectList)ViewBag.TiposUsuario, "Seleccione un tipo", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Id_TipoUsuario, "", new { @class = "error-message" })
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Id_TipoUsuario)
-        @Html.DropDownListFor(model => model.Id_TipoUsuario, (SelectList)ViewBag.TiposUsuario, "Seleccione un tipo", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Id_TipoUsuario)
-    </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Actualizar
+            </button>
+        </div>
+    }
+</div>
 
-    <button type="submit" class="btn btn-primary">Actualizar</button>
-}
+<style>
+    /* Estilos generales para la página */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #121212; /* Fondo oscuro */
+        color: white;
+    }
+
+    .container {
+        max-width: 600px;
+        background-color: #1e1e1e; /* Fondo oscuro para el formulario */
+        padding: 40px;
+        margin-top: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .page-title {
+        text-align: center;
+        color: #f44336; /* Rojo para el título */
+        margin-bottom: 30px;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .form-group {
+        margin-bottom: 25px; /* Espaciado entre los campos */
+        width: 100%; /* Hacer que el formulario ocupe todo el ancho disponible */
+        display: flex;
+        flex-direction: column; /* Disposición en columna */
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #ddd; /* Color blanco suave */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: 1px solid #444;
+        background-color: #333; /* Fondo oscuro para los campos */
+        color: white;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #f44336; /* Rojo cuando está en foco */
+        outline: none;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 30px;
+        width: 100%; /* Asegurar que el botón ocupe todo el ancho */
+    }
+
+    .btn-submit {
+        background-color: #f44336; /* Rojo para el botón */
+        color: white;
+        padding: 12px 25px;
+        border-radius: 6px;
+        border: none;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-submit i {
+        margin-right: 8px;
+    }
+
+    .btn-submit:hover {
+        background-color: #d32f2f; /* Rojo oscuro en hover */
+    }
+
+    .error-message {
+        color: #ff5252;
+        font-size: 0.9em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Responsividad para pantallas pequeñas */
+    @@media (max-width: 768px) {
+        .container {
+            padding: 25px;
+            margin-top: 20px;
+        }
+    }
+</style>

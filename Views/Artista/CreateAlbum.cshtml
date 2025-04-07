@@ -4,51 +4,51 @@
     ViewBag.Title = "Crear Álbum";
 }
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Everiflix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/Content/ArtistMusicManagement.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/ArtistMusicManagement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-
-<div class="music-management-container">
+<div class="container">
     <h2>Crear Nuevo Álbum</h2>
 
-    @using (Html.BeginForm("CreateAlbum", "Artista", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("CreateAlbum", "Artista", FormMethod.Post, new { enctype = "multipart/form-data", @class = "album-form" }))
     {
         @Html.AntiForgeryToken()
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Nombre, new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            <label class="form-label">
+                <i class="fas fa-compact-disc"></i> Nombre del Álbum
+            </label>
+            @Html.TextBoxFor(model => model.Nombre, new
+            {
+                @class = "form-control",
+                placeholder = "Ingrese el nombre del álbum"
+            })
+            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "error-message" })
         </div>
 
         <div class="form-group">
-            <label class="control-label">Portada del Álbum</label>
+            <label class="form-label">
+                <i class="fas fa-image"></i> Portada del Álbum
+            </label>
             <div class="album-cover-container">
-                @if (!string.IsNullOrEmpty(Model?.ImgURL))
-                {
-                    <img src="@Model.ImgURL" class="album-cover" alt="Portada actual" id="albumCoverPreview" />
-                }
-                else
-                {
-                    <img src="/Content/Images/AlbumCovers/default.jpg" class="album-cover" alt="Portada predeterminada" id="albumCoverPreview" />
-                }
+                <img src="@(!string.IsNullOrEmpty(Model?.ImgURL) ? Model.ImgURL : "/Content/Images/AlbumCovers/default.jpg")"
+                     class="album-cover-preview"
+                     alt="Portada del álbum"
+                     id="albumCoverPreview" />
             </div>
-            <input type="file" name="imagen" id="albumCoverInput" class="form-control mt-2" accept=".jpg,.jpeg,.png,.gif" />
+            <input type="file" name="imagen" id="albumCoverInput" class="form-control file-input" accept=".jpg,.jpeg,.png,.gif" />
             @Html.HiddenFor(model => model.ImgURL)
-            @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
-            <small class="text-muted">Formatos aceptados: JPG, PNG, GIF (Máx. 5MB)</small>
+            @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "error-message" })
+            <small class="file-hint">Formatos aceptados: JPG, PNG, GIF (Máx. 5MB)</small>
         </div>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">
+        <div class="form-actions">
+            <button type="submit" class="btn-create">
                 <i class="fas fa-save"></i> Crear Álbum
             </button>
-            @Html.ActionLink("Volver a los Álbumes", "ManageMusic", null, new { @class = "btn btn-outline-secondary" })
+            <a href="@Url.Action("ManageMusic")" class="btn-cancel">
+                <i class="fas fa-arrow-left"></i> Volver a los Álbumes
+            </a>
         </div>
     }
 </div>
@@ -65,7 +65,6 @@
 
                 reader.onload = function (e) {
                     preview.src = e.target.result;
-                    // Actualizar el campo oculto con la nueva imagen (el controlador manejará el guardado real)
                     document.getElementById('ImgURL').value = e.target.result;
                 }
 
@@ -74,3 +73,201 @@
         });
     </script>
 }
+
+<style>
+    /* Estilos base del contenedor */
+    .container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: #111;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(183, 28, 28, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #b71c1c, #8c1616);
+        }
+
+    h2 {
+        color: #ff5252;
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        position: relative;
+        font-size: 2em;
+    }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #b71c1c, transparent);
+        }
+
+    /* Formulario */
+    .album-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        color: #ff5252;
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-control {
+        background-color: #222;
+        border: 1px solid #333;
+        color: white;
+        border-radius: 6px;
+        padding: 12px 15px;
+        width: 100%;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            background-color: #2a2a2a;
+            border-color: #b71c1c;
+            box-shadow: 0 0 0 0.25rem rgba(183, 28, 28, 0.25);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+    /* Portada del álbum */
+    .album-cover-container {
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .album-cover-preview {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 3px solid #b71c1c;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s;
+    }
+
+        .album-cover-preview:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(183, 28, 28, 0.4);
+        }
+
+    .file-input {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .file-hint {
+        color: #aaa;
+        font-size: 0.85em;
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* Botones */
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-create {
+        background: linear-gradient(to right, #b71c1c, #d32f2f);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+    }
+
+        .btn-create:hover {
+            background: linear-gradient(to right, #d32f2f, #b71c1c);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(183, 28, 28, 0.4);
+        }
+
+    .btn-cancel {
+        background: linear-gradient(to right, #555, #666);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        text-decoration: none;
+        text-align: center;
+        justify-content: center;
+    }
+
+        .btn-cancel:hover {
+            background: linear-gradient(to right, #666, #555);
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+    /* Mensajes de error */
+    .error-message {
+        color: #ff5252;
+        font-size: 0.9em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 15px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-create, .btn-cancel {
+            width: 100%;
+        }
+
+        .album-cover-preview {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
